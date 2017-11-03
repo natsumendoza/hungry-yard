@@ -49,11 +49,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="top-right">
-                        <p>Location:<span>Main Street 2020, City 3000</span></p>
-                    </div>
-                </div>
+
 
             </div>
         </div>
