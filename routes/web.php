@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/stall', 'StallController@index');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
