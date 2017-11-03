@@ -51,7 +51,7 @@
 
                 <div class="col-md-6">
                     <div class="top-right">
-                        <p>Location:<span>Main Street 2020, City 3000</span></p>
+                        
                     </div>
                 </div>
 
@@ -66,16 +66,17 @@
         <nav class="navbar">
             <div class="container">
 
-                <div class="navbar-header" style="width: 152.39px; height: 50px;">
-                    <a href="{{url('/')}}" class="">
-                        <img src="{{URL::asset('images/Hungry-Yard.jpg')}}" />
+                <div class="navbar-header">
+                    <a href="{{url('/')}}" class="navbar-brand logo-image">
+                        {{--<img src="{{URL::asset('images/Hungry-Yard.jpg')}}" />--}}
+
                     </a>
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ftheme">
-                        <span class="sr-only">Toggle</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                    {{--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ftheme">--}}
+                        {{--<span class="sr-only">Toggle</span>--}}
+                        {{--<span class="icon-bar"></span>--}}
+                        {{--<span class="icon-bar"></span>--}}
+                        {{--<span class="icon-bar"></span>--}}
+                    {{--</button>--}}
                 </div>
 
                 <div class="navbar-collapse collapse" id="ftheme">
@@ -118,27 +119,14 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="footer-left">
-                    &copy; MyBix Theme. All rights reserved
-                    <div class="credits">
-                        <!--
-            All the links in the footer should remain intact.
-            You can delete the links only if you purchased the pro version.
-            Licensing information: https://bootstrapmade.com/license/
-            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=MyBiz
-          -->
-                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-                    </div>
                 </div>
             </div>
 
             <div class="col-md-8">
                 <div class="footer-right">
                     <ul class="list-unstyled list-inline pull-right">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#service">Service</a></li>
-                        <li><a href="#portfolo">Portfolio</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#home">Location</a></li>
                     </ul>
                 </div>
             </div>

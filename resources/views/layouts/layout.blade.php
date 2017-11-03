@@ -24,6 +24,19 @@
         .panel {
             margin-top:20px;
         }
+
+        @media only screen and (max-width: 768px) {
+            /* For mobile phones: */
+            /*.navbar-header {*/
+                /*width: 100% !important;*/
+            /*}*/
+            /*.container-fluid>.navbar-collapse, .container-fluid>.navbar-header, .container>.navbar-collapse, .container>.navbar-header {*/
+                /*margin-left: 0 !important;*/
+            /*}*/
+            #about {
+                margin-top: 30px;
+            }
+        }
     </style>
 </head>
 
@@ -61,10 +74,11 @@
 
         <nav class="navbar">
             <div class="container">
+                {{--style="width: 152.39px; height: 50px;"--}}
+                <div class="navbar-header" >
+                    <a href="{{url('/')}}" class="navbar-brand logo-image">
+                        {{--<img src="{{URL::asset('images/Hungry-Yard.jpg')}}" />--}}
 
-                <div class="navbar-header" style="width: 152.39px; height: 50px;">
-                    <a href="{{url('/')}}" class="">
-                        <img src="{{URL::asset('images/Hungry-Yard.jpg')}}" />
                     </a>
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ftheme">
                         <span class="sr-only">Toggle</span>

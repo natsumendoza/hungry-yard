@@ -1298,3 +1298,8 @@ textarea:focus {
 	color: #01b1d7;
 }
 
+.logo-image {
+	width: 132px;
+	background-image: url("../images/Hungry-Yard.jpg");
+}
+
