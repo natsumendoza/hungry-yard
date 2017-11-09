@@ -20,4 +20,10 @@ Route::get('/stall', 'StallController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('menus','MenuController');
+Route::resource('menu','MenuController');
+Route::delete('orders/transaction/{transactionCode}', 'OrderController@destroyByTransactionCode');
+Route::patch('orders/transaction/{transactionCode}', 'OrderController@updateByTransactionCode');
+Route::get('orders/{userId}', 'OrderController@showByUserId');
+Route::resource('orders', 'OrderController');
+Route::resource('cart', 'CartController');
+Route::resource('transactions', 'TransactionController');

@@ -35,13 +35,20 @@ class User extends Authenticatable
 
     public function isAdmin () {
 
-        return $this->role['name'] == 'administrator';
+        return $this->role['name'] == config('constants.USER_ROLE_ADMIN');
 
     }
 
-    public function isStallOwner () {
+    public function isOwner () {
 
-        return $this->role['name'] == 'owner';
+        return $this->role['name'] == config('constants.USER_ROLE_OWNER');
 
     }
+
+    public function isCustomer () {
+
+        return $this->role['name'] == config('constants.USER_ROLE_CUSTOMER');
+
+    }
+
 }

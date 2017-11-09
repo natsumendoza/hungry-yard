@@ -92,7 +92,16 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         @auth
-                            <li><a href=""><i class="fa fa-shopping-cart fa-3"></i>(0)</a></li>
+
+                            @if(Auth::user()->isCustomer())
+                                @php($cartSize = 0)
+                                @if (\Session::has('cartSize'))
+                                    @php($cartSize = \Session::get('cartSize'))
+                                @endif
+
+
+                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart"></i>({{$cartSize}})</a></li>
+                            @endif
                             <li><a href="">{{Auth::user()->name}}</a></li>
                             @else
                                 <li><a href="{{url('/login')}}">login</a></li>
@@ -103,7 +112,7 @@
                         {{--<li><a href="#portfolio">portfolio</a></li>--}}
                         {{--<li><a href="#contact">contact</a></li>--}}
                         <li class="hidden-sm hidden-xs">
-                            <a href="#" id="ss"><i class="fa fa-search" aria-hidden="true"></i></a>
+                            <a href="#" id="ss"><i class="glyphicon glyphicon-search"></i></a>
                         </li>
                     </ul>
 
