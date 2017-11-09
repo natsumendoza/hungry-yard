@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Transaction;
 
 class TransactionController extends Controller
 {
@@ -13,7 +14,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -34,7 +35,31 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedTransaction = $this->validate($request,[
+            'transaction_code' => 'required',
+            'customer_id' => 'required|numeric',
+            'stall_id' => 'required|numeric',
+            'pickup_time' => 'required',
+            'total_price' => 'required|numeric',
+            'order_type' => 'required',
+        ]);
+
+
+        $transaction = array();
+        $transaction['transaction_code'] = $validatedTransaction['transaction_code'];
+        $transaction['customer_id'] = $validatedTransaction['customer_id'];
+        $transaction['stall_id'] = $validatedTransaction['stall_id'];
+        $transaction['pickup_time'] = $validatedTransaction['pickup_time'];
+        $transaction['total_price'] = $validatedTransaction['total_price'];
+        $transaction['order_type'] = $validatedTransaction['order_type'];
+        $transaction['status'] = $validatedTransaction['customer_id'];
+
+        Transaction::create($transaction);
+
+
+
+
+
     }
 
     /**

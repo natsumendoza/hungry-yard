@@ -81,6 +81,7 @@
             </tbody>
         </table>
 
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{url('transactions')}}">
         <table class="table" style="width:30%; float: right;">
             <thead>
                 <tr>
@@ -100,7 +101,7 @@
                 <tr>
                     {{--IF STATUS IS PAID GET VALUE ELSE INPUT--}}
                     <td>Pickup time: </td>
-                    <td><input type="time" id="pickup" name="pickup"></td>
+                    <td><input type="time" id="pickup" name="pickup" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>Total price: </td>
@@ -115,11 +116,12 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="time" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Pay Order (via PayMaya)</button>
+                        <button type="button" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Pay Order (via PayMaya)</button>
                     </td>
                 </tr>
             </tbody>
         </table>
+        </form>
 
         <br />
         <br />
