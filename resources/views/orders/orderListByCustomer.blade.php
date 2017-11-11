@@ -1,7 +1,7 @@
 <!-- orderList.blade.php -->
 @extends('layouts.layout')
 @section('content')
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -17,8 +17,9 @@
     @endif
 
     @if(count($data['transactions'])>0)
-    @foreach($data['transactions'] as $transaction_code)
-        @foreach($data['stalls'] as $stall_id => $stall_name)
+    @foreach($data['transactions'] as $transactionCode)
+        @foreach($data['stalls'] as $stallId => $stallName)
+        @if(ISSET($data['orderList'][$transactionCode][$stallId]) AND !EMPTY($data['orderList'][$transactionCode][$stallId]))
         @php
             $totalPrice = 0;
             $totalPrepTime  = 0;
@@ -26,7 +27,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th colspan="7">Transaction code: <i>{{$transaction_code}} - {{$stall_name}}</i></th>
+                <th colspan="7">Transaction code: <i>{{$transactionCode}} - {{$stallName}}</i></th>
             </tr>
             <tr style="background-color: #D2D4DC">
                 <th style="text-align: center">ID</th>
@@ -39,8 +40,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($data['orderList'] as $order)
-                @if($transaction_code == $order['transaction_code'] AND $stall_id == $order['stall_id'])
+            @foreach($data['orderList'][$transactionCode][$stallId] as $order)
                 @php
                     $color = '';
 
@@ -55,7 +55,7 @@
                         $color = '#ff7f7f';
                     endif;
 
-                @endphp
+                    @endphp
                 <tr style="background-color: {{$color}}">
                     <td>{{$order['id']}}</td>
                     <td>{{$order['name']}}</td>
@@ -76,12 +76,15 @@
                         @endif
                     </td>
                 </tr>
-                @endif
             @endforeach
             </tbody>
         </table>
 
-        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{url('transactions')}}">
+        <form class="form-horizontal" method="POST" action="{{url('transactions')}}">
+            {{csrf_field()}}
+        <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
+        <input type="hidden" name="stall_id" id="stall_id" value="{{base64_encode($stallId)}}">
+        <input type="hidden" name="total_price" id="total_price" value="{{base64_encode($totalPrice)}}">
         <table class="table" style="width:30%; float: right;">
             <thead>
                 <tr>
@@ -100,8 +103,13 @@
                 </tr>
                 <tr>
                     {{--IF STATUS IS PAID GET VALUE ELSE INPUT--}}
+                    <td>Pickup Date: </td>
+                    <td>{{"Edit to date"}}</td>
+                </tr>
+                <tr>
+                    {{--IF STATUS IS PAID GET VALUE ELSE INPUT--}}
                     <td>Pickup time: </td>
-                    <td><input type="time" id="pickup" name="pickup" class="form-control"></td>
+                    <td><input type="time" id="pickup_time" name="pickup_time" class="form-control"></td>
                 </tr>
                 <tr>
                     <td>Total price: </td>
@@ -110,13 +118,13 @@
                 <tr>
                     <td>Order Type: </td>
                     <td>
-                        <label class="radio-inline"><input checked type="radio" name="type_<?php echo $stall_name ?>" value="{{config('constants.ORDER_TYPE_DI')}}">{{config('constants.ORDER_TYPE_DI')}}</label>
-                        <label class="radio-inline"><input type="radio" name="type_<?php echo $stall_name ?>" value="{{config('constants.ORDER_TYPE_TO')}}">{{config('constants.ORDER_TYPE_TO')}}</label>
+                        <label class="radio-inline"><input checked type="radio" name="type_<?php echo $stallName ?>" value="{{config('constants.ORDER_TYPE_DI')}}">{{config('constants.ORDER_TYPE_DI')}}</label>
+                        <label class="radio-inline"><input type="radio" name="type_<?php echo $stallName ?>" value="{{config('constants.ORDER_TYPE_TO')}}">{{config('constants.ORDER_TYPE_TO')}}</label>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="button" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Pay Order (via PayMaya)</button>
+                        <button type="submit" class="btn btn-primary" style="width:190px; float: right;">Pay Order (via PayMaya)</button>
                     </td>
                 </tr>
             </tbody>
@@ -127,7 +135,7 @@
         <br />
         <br />
         <br />
-
+        @endif
         @endforeach
     @endforeach
     @else
@@ -135,7 +143,7 @@
         <thead>
         <tr style="background-color: #D2D4DC">
             <th style="text-align: center">ID</th>
-            <th style="text-align: center" colspan="2">Product ID(change to image and name)</th>
+            <th style="text-align: center" colspan="2">Product</th>
             <th style="text-align: center">Quantity</th>
             <th style="text-align: center">Price</th>
             <th style="text-align: center">Preparation Time</th>

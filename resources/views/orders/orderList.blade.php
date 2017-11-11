@@ -118,7 +118,7 @@
         </tr>
         <tr>
             <td>Total price: </td>
-            <td>Total price from tasaction db</td>
+            <td>Total price from transaction db</td>
         </tr>
         <tr>
             <td>Order Type: </td>
