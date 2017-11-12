@@ -27,45 +27,7 @@
         </div><br />
     @endif
 
-    <form method="POST" action="{{url('orders')}}">
-        {{csrf_field()}}
-        <input id="stallId" name="stallId" type="hidden" class="hidden" value="2">
-        <input id="productId" name="productId" type="hidden" class="hidden" value="1">
-        <input id="quantity" name="quantity" type="text">
-        <button class="btn btn-success">Orig Spaghetti</button>
-    </form>
-
-    <form method="POST" action="{{url('orders')}}">
-        {{csrf_field()}}
-        <input id="stallId" name="stallId" type="hidden" class="hidden" value="2">
-        <input id="productId" name="productId" type="hidden" class="hidden" value="2">
-        <input id="quantity" name="quantity" type="text">
-        <button class="btn btn-success">Carbonara Pasta</button>
-    </form>
-
-    <form method="POST" action="{{url('orders')}}">
-        {{csrf_field()}}
-        <input id="stallId" name="stallId" type="hidden" class="hidden" value="3">
-        <input id="productId" name="productId" type="hidden" class="hidden" value="9">
-        <input id="quantity" name="quantity" type="text">
-        <button class="btn btn-success">CB Spicy</button>
-    </form>
-
-    <form method="POST" action="{{url('orders')}}">
-        {{csrf_field()}}
-        <input id="stallId" name="stallId" type="hidden" class="hidden" value="3">
-        <input id="productId" name="productId" type="hidden" class="hidden" value="11">
-        <input id="quantity" name="quantity" type="text">
-        <button class="btn btn-success">Orig Chicken</button>
-    </form>
-
-    <form method="POST" action="{{url('orders')}}">
-        {{csrf_field()}}
-        <input id="stallId" name="stallId" type="hidden" class="hidden" value="4">
-        <input id="productId" name="productId" type="hidden" class="hidden" value="5">
-        <input id="quantity" name="quantity" type="text">
-        <button class="btn btn-success">Isaw (4 sticks)</button>
-    </form>
+    
 
     @if(!empty($cartItems))
 

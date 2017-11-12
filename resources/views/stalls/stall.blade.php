@@ -28,11 +28,20 @@
 
 
                 <div class="col-md-4">
-                    <img height="100" width="100" style="cursor:pointer;" class="img-polaroid" src="{{asset('images/menu/' . $menu['image'])}}">
-                    <p>Name: {{$menu['name']}}</p>
-                    <p>Price: {{$menu['price']}}</p>
-                    <p>Preparation Time: {{$menu['preparation_time']}}</p>
-                    <p><input type="number" /><button class="btn">Add to cart</button></p>
+
+                    <form method="POST" action="{{url('orders')}}">
+                        {{csrf_field()}}
+                        <input id="stallId" name="stallId" type="hidden" class="hidden" value="{{$menu['stall_id']}}">
+                        <input id="productId" name="productId" type="hidden" class="hidden" value="{{$menu['id']}}">
+
+                        <img height="100" width="100" style="cursor:pointer;" class="img-polaroid" src="{{asset('images/menu/' . $menu['image'])}}">
+                        <p>Name: {{$menu['name']}}</p>
+                        <p>Price: {{$menu['price']}}</p>
+                        <p>Preparation Time: {{$menu['preparation_time']}}</p>
+
+                        <p><input name="quantity" type="number" /><button class="btn-success">Add to cart</button></p>
+
+                    </form>
                 </div>
 
             @endforeach
