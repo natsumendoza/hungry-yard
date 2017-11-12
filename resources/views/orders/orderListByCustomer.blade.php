@@ -1,14 +1,20 @@
 <!-- orderList.blade.php -->
 @extends('layouts.layout')
 @section('content')
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>Orders</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="container">
+    @php
+        $arrPrepTotalTime = array();
+        $buttonLabel = "Pay Order (via PayMaya)";
+    @endphp
+
     <br />
     @if (\Session::has('success'))
         <div class="alert alert-success">
@@ -17,16 +23,18 @@
     @endif
 
     @if(count($data['transactions'])>0)
-    @foreach($data['transactions'] as $transaction_code)
-        @foreach($data['stalls'] as $stall_id => $stall_name)
+    @foreach($data['transactions'] as $transactionCode)
+        @foreach($data['stalls'] as $stallId => $stallName)
+        @if(ISSET($data['orderList'][$transactionCode][$stallId]) AND !EMPTY($data['orderList'][$transactionCode][$stallId]))
         @php
             $totalPrice = 0;
             $totalPrepTime  = 0;
+            $showPaymaya = FALSE;
         @endphp
         <table class="table table-striped">
             <thead>
             <tr>
-                <th colspan="7">Transaction code: <i>{{$transaction_code}} - {{$stall_name}}</i></th>
+                <th colspan="7">Transaction code: <i>{{$transactionCode}} - {{$stallName}}</i></th>
             </tr>
             <tr style="background-color: #D2D4DC">
                 <th style="text-align: center">ID</th>
@@ -39,8 +47,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($data['orderList'] as $order)
-                @if($transaction_code == $order['transaction_code'] AND $stall_id == $order['stall_id'])
+            @foreach($data['orderList'][$transactionCode][$stallId] as $order)
                 @php
                     $color = '';
 
@@ -51,11 +58,13 @@
                         $totalPrice += $order['price'];
                         $totalPrepTime += $prepTime;
                         $color = '#7FBF7F';
+                        $showPaymaya = TRUE;
                     elseif ($order['status'] == config('constants.ORDER_STATUS_CANCELLED')):
                         $color = '#ff7f7f';
                     endif;
 
-                @endphp
+                    @endphp
+
                 <tr style="background-color: {{$color}}">
                     <td>{{$order['id']}}</td>
                     <td>{{$order['name']}}</td>
@@ -76,13 +85,52 @@
                         @endif
                     </td>
                 </tr>
-                @endif
             @endforeach
             </tbody>
         </table>
 
-        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{url('transactions')}}">
-        <table class="table" style="width:30%; float: right;">
+
+        @php
+            //TIME MINS TO HOURS
+            $converted_hrs = floor($totalPrepTime / 60);
+            $converted_mins = $totalPrepTime % 60;
+            $action = url('transactions');
+            $dineIn = "checked";
+            $takeOut = "";
+
+
+            if(ISSET($data['transactionList'][$transactionCode][$stallId]) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]))
+            {
+
+            //BASE64 ID
+            //$data['transactionList'][$transactionCode][$stallId];
+                $action = action('TransactionController@update', $data['transactionList'][$transactionCode][$stallId]['id']);
+                $buttonLabel = "Update Transaction";
+
+                if(ISSET($data['transactionList'][$transactionCode][$stallId]['order_type']) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]['order_type']))
+                {
+                    if($data['transactionList'][$transactionCode][$stallId]['order_type'] == config('constant.ORDER_TYPE_DI'))
+                    {
+                        $dineIn = "checked";
+                        $takeOut = "";
+                    }
+                    else
+                    {
+                        $dineIn = "";
+                        $takeOut = "checked";
+                    }
+                }
+
+            }
+
+        @endphp
+        @if($showPaymaya)
+        <form class="form-horizontal" method="POST" action="{{$action}}">
+            {{csrf_field()}}
+        <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
+        <input type="hidden" name="stall_id" id="stall_id" value="{{base64_encode($stallId)}}">
+        <input type="hidden" name="total_price" id="total_price" value="{{base64_encode($totalPrice)}}">
+        <table class="table" style="width:40%; float: right;">
             <thead>
                 <tr>
                     <th colspan="2">Information (Note: For <i>approved</i> orders only.)</th>
@@ -91,51 +139,75 @@
 
             <tbody>
                 <tr>
-                    <td>Transaction code: </td>
-                    <td><b>Edit this.</b></td>
+                    <td style="width: 350px;">Transaction code: </td>
+                    <td style="width: 350px;"><b>{{$transactionCode}}</b></td>
                 </tr>
                 <tr>
-                    <td>Preparation time: </td>
-                    <td>{{$totalPrepTime}} mins (Hours equivalent)</td>
+                    <td>Stall: </td>
+                    <td><b>{{$stallName}}</b></td>
                 </tr>
                 <tr>
-                    {{--IF STATUS IS PAID GET VALUE ELSE INPUT--}}
-                    <td>Pickup time: </td>
-                    <td><input type="time" id="pickup" name="pickup" class="form-control"></td>
+                    <td>Preparation Time: </td>
+                    <td>{{$totalPrepTime . " min/s (" . $converted_hrs . "hr " . $converted_mins ."min"}})</td>
                 </tr>
                 <tr>
-                    <td>Total price: </td>
-                    <td>{{number_format($totalPrice, 2)}}</td>
+                    <td>Pickup Date: </td>
+                    <td><span id="pd_{{$transactionCode."_".$stallId}}">Pickup Date</span> <br><b>Note: This value will change the depends on <i>Pickup Time</i> input upon Paying.</b></td>
+                </tr>
+                <tr>
+                    <td>Recommended Pickup Time: </td>
+                    <td id="recom_{{$transactionCode."_".$stallId}}"></td>
+                </tr>
+
+                @if(ISSET($data['transactionList'][$transactionCode][$stallId]['pickup_time']) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]['pickup_time']))
+                <tr>
+                    <td>Current Pickup Time: </td>
+                    <td>{{$data['transactionList'][$transactionCode][$stallId]['pickup_time']}}</td>
+                </tr>
+                @endif;
+
+                <tr>
+                    <td>Pickup Time: </td>
+                    <td><input type="time" class="time_{{$transactionCode."_".$stallId}}" id="pickup_time" name="pickup_time" class="form-control" required></td>
+                </tr>
+                <tr>
+                    <td>Total Price: </td>
+                    <td>&#8369; {{number_format($totalPrice, 2)}}</td>
                 </tr>
                 <tr>
                     <td>Order Type: </td>
                     <td>
-                        <label class="radio-inline"><input checked type="radio" name="type_<?php echo $stall_name ?>" value="{{config('constants.ORDER_TYPE_DI')}}">{{config('constants.ORDER_TYPE_DI')}}</label>
-                        <label class="radio-inline"><input type="radio" name="type_<?php echo $stall_name ?>" value="{{config('constants.ORDER_TYPE_TO')}}">{{config('constants.ORDER_TYPE_TO')}}</label>
+                        <label class="radio-inline"><input {{$dineIn}} type="radio" name="order_type_{{$transactionCode."_".$stallId}}" value="{{config('constants.ORDER_TYPE_DI')}}">{{config('constants.ORDER_TYPE_DI')}}</label>
+                        <label class="radio-inline"><input {{$takeOut}} type="radio" name="order_type_{{$transactionCode."_".$stallId}}" value="{{config('constants.ORDER_TYPE_TO')}}">{{config('constants.ORDER_TYPE_TO')}}</label>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="button" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Pay Order (via PayMaya)</button>
+                        <button type="submit" class="btn btn-primary" style="width:190px; float: right;">{{$buttonLabel}}</button>
                     </td>
                 </tr>
             </tbody>
         </table>
         </form>
+        @endif
 
         <br />
         <br />
         <br />
         <br />
-
+        @php
+            $arrPrepTotalTime[$transactionCode][$stallId] = $totalPrepTime;
+        @endphp
+        @endif
         @endforeach
+
     @endforeach
     @else
     <table class="table table-striped">
         <thead>
         <tr style="background-color: #D2D4DC">
             <th style="text-align: center">ID</th>
-            <th style="text-align: center" colspan="2">Product ID(change to image and name)</th>
+            <th style="text-align: center" colspan="2">Product</th>
             <th style="text-align: center">Quantity</th>
             <th style="text-align: center">Price</th>
             <th style="text-align: center">Preparation Time</th>
@@ -155,5 +227,58 @@
     @endif
 </div>
 </body>
+<script>
+    $(function($) {
+        var transactions = <?php echo json_encode(@$data['transactions']);?>;
+        var stalls       = <?php echo json_encode(@$data['stalls']);?>;
+        var arrPrepTotalTime = <?php echo json_encode($arrPrepTotalTime);?>;
+
+        var pd = new Date();
+
+        $.each( transactions, function( tran_id, tran_val ) {
+
+            $.each( stalls, function( stall_id, stall_name ) {
+                $('#pd_' + tran_id + '_' + stall_id).text((pd.getMonth()+1)+"/"+pd.getDate()+"/"+pd.getFullYear());
+            });
+        });
+
+        setInterval(function() {
+
+            $.each( transactions, function( tran_id, tran_val ) {
+
+                $.each( stalls, function( stall_id, stall_name ) {
+
+                    if(arrPrepTotalTime[tran_id][stall_id] != undefined)
+                    {
+                        var date = new Date();
+
+                        if(date.getHours() < 16)
+                        {
+                            date.setHours(16);
+                            date.setMinutes(0);
+
+                        }
+
+                        var prep_time = parseInt(arrPrepTotalTime[tran_id][stall_id]) + parseInt(date.getMinutes());
+                        var total_hour = (prep_time / 60) + date.getHours();
+                        var total_mins = prep_time % 60;
+
+                        date.setHours(total_hour);
+                        date.setMinutes(total_mins+5);
+
+                        var time = date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+
+                        $('#recom_' + tran_id + '_' + stall_id).text(time);
+
+                    }
+                });
+            });
+
+
+
+        }, 1);
+    });
+</script>
+
 </html>
 @endsection

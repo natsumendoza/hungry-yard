@@ -9,10 +9,15 @@
     <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
 
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Open+Sans|Raleway" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/flexslider.css') : secure_asset('css/flexslider.css') }}" />
-    <link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/bootstrap.min.css') : secure_asset('css/bootstrap.min.css') }}" />
-    <link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/font-awesome.min.css') : secure_asset('css/font-awesome.min.css') }}" />
-    <link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/style.css') : secure_asset('css/style.css') }}" />
+    {{--<link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/flexslider.css') : secure_asset('css/flexslider.css') }}" />--}}
+    {{--<link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/bootstrap.min.css') : secure_asset('css/bootstrap.min.css') }}" />--}}
+    {{--<link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/font-awesome.min.css') : secure_asset('css/font-awesome.min.css') }}" />--}}
+    {{--<link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/style.css') : secure_asset('css/style.css') }}" />--}}
+
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/flexslider.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/style.css') }}" />
 
     <!-- =======================================================
     Theme Name: MyBiz
@@ -190,9 +195,17 @@
 <script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/bootstrap.min.js') : secure_asset('js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/jquery.flexslider.js') : secure_asset('js/jquery.flexslider.js') }}"></script>
 <script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/jquery.inview.js') : secure_asset('js/jquery.inview.js') }}"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
+{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>--}}
 <script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/script.js') : secure_asset('js/script.js') }}"></script>
 <script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/contactform/contactform.js') : secure_asset('js/contactform/contactform.js') }}"></script>
+
+<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.flexslider.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.inview.js') }}"></script>
+{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>--}}
+<script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/contactform/contactform.js') }}"></script>
 
 </body>
 

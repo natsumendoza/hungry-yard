@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Order;
 Use App\Menu;
 Use App\User;
+use App\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -51,25 +52,71 @@ class OrderController extends Controller
         {
 
             // GET TRANSACTION INFO --TO BE DELETED
-            $orderListTemp = DB::table('orders')
+            $orderListObj = DB::table('orders')
                 ->join('users', 'orders.stall_id', 'users.id')
                 ->join('menus', 'orders.product_id', 'menus.id')
-                ->select('orders.*', 'menus.*', 'users.name as stall_name')
+                ->select('orders.*', 'menus.name', 'menus.image', 'menus.price', 'menus.preparation_time', 'users.name as stall_name')
                 ->where('orders.customer_id', Auth::user()->id)
                 ->where('orders.status', '<>', config('constants.ORDER_STATUS_CART'))
                 ->get();
 
-            foreach ($orderListTemp as $order)
+
+            $orderListTemp = array();
+            foreach ($orderListObj as $orderObj)
             {
-                $orderList[] = (array) $order;
+                $orderListTemp[] = (array) $orderObj;
             }
 
-            $transactions = array_column($orderList, 'transaction_code', 'transaction_code');
+            $transactions = array_column($orderListTemp, 'transaction_code', 'transaction_code');
 
-            $stalls = array_column($orderList, 'stall_name', 'stall_id');
+            $stalls = array_column($orderListTemp, 'stall_name', 'stall_id');
+
+            $orderList = array();
+            foreach ($orderListTemp as $order)
+            {
+                foreach ($transactions as $transaction)
+                {
+                    if($transaction == $order['transaction_code'])
+                    {
+                        foreach ($stalls as $stall_id => $stall)
+                        {
+                            if($stall_id == $order['stall_id'])
+                            {
+                                $orderList[$transaction][$stall_id] = array($order);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $transactionListTemp = Transaction::where('customer_id', Auth::user()->id)
+                ->get()->toArray();
+
+            $transactionList = array();
+            foreach ($transactionListTemp as $tranTemp)
+            {
+                foreach ($transactions as $transaction)
+                {
+                    if($transaction == $tranTemp['transaction_code'])
+                    {
+                        foreach ($stalls as $stall_id => $stall)
+                        {
+                            if($stall_id == $tranTemp['stall_id'])
+                            {
+                                $transactionList[$transaction][$stall_id] = $tranTemp;
+                            }
+                        }
+                    }
+                }
+            }
+
+//            echo '<pre>';
+//            print_r($transactionList);die;
+
+
+            $data['transactionList'] = $transactionList;
 
             $data['stalls'] = $stalls;
-
             $view = 'orders.orderListByCustomer';
         }
 

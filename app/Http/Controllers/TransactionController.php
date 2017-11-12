@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Transaction;
+use Illuminate\Support\Facades\Auth;
+use DateTime;
+use function PHPSTORM_META\elementType;
 
 class TransactionController extends Controller
 {
@@ -35,31 +38,52 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+
         $validatedTransaction = $this->validate($request,[
             'transaction_code' => 'required',
-            'customer_id' => 'required|numeric',
-            'stall_id' => 'required|numeric',
+            'stall_id' => 'required',
             'pickup_time' => 'required',
-            'total_price' => 'required|numeric',
-            'order_type' => 'required',
+            'total_price' => 'required',
         ]);
 
+        date_default_timezone_set('Asia/Manila');
+
+        $pickupTime = (int) substr($validatedTransaction['pickup_time'],0,2);
+        $pickupDate = new DateTime(date('Y-m-d'));
+
+        if($pickupTime < 16)
+        {
+            $pickupDate = date_add($pickupDate, date_interval_create_from_date_string('1 days'));
+            $pickupDate = date_format($pickupDate, 'Y-m-d');
+        }
+        else
+        {
+            $pickupDate = date_format($pickupDate, 'Y-m-d');
+        }
+
+
+        $pickupDate = $pickupDate . ' ' . $validatedTransaction['pickup_time'];
+
+        $cleanTransactionCode = base64_decode($validatedTransaction['transaction_code']);
+        $cleanStallId         = base64_decode($validatedTransaction['stall_id']);
 
         $transaction = array();
-        $transaction['transaction_code'] = $validatedTransaction['transaction_code'];
-        $transaction['customer_id'] = $validatedTransaction['customer_id'];
-        $transaction['stall_id'] = $validatedTransaction['stall_id'];
-        $transaction['pickup_time'] = $validatedTransaction['pickup_time'];
-        $transaction['total_price'] = $validatedTransaction['total_price'];
-        $transaction['order_type'] = $validatedTransaction['order_type'];
-        $transaction['status'] = $validatedTransaction['customer_id'];
+        $transaction['transaction_code'] = $cleanTransactionCode;
+        $transaction['customer_id'] = Auth::user()->id;
+        $transaction['stall_id'] = $cleanStallId;
+        $transaction['pickup_time'] = $pickupDate;
+        $transaction['total_price'] = base64_decode($validatedTransaction['total_price']);
+        $transaction['order_type'] = $request->get('order_type_' . $cleanTransactionCode . "_" . $cleanStallId);
+        $transaction['status'] = config('constants.TRANSACTION_STATUS_PAID');
+
+//        echo '<pre>';
+//        print_r($transaction);
+//        die;
+
 
         Transaction::create($transaction);
 
-
-
-
-
+        return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.');
     }
 
     /**
