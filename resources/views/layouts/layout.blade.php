@@ -113,13 +113,14 @@
 
                                 <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
                                 <li><a href="{{url('stall')}}">Stalls</a></li>
-                                <li><a href="{{url('orders')}}">Orders</a></li>
+
 
                             @endif
                             @if(Auth::user()->isOwner())
 
                                 <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
                                 <li><a href="{{url('menu')}}">Menus</a></li>
+                                    <li><a href="{{url('orders')}}">Orders</a></li>
 
                             @endif
 
