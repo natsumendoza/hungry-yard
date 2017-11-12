@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Menu;
+use App\StallImage;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,15 +17,28 @@ use App\Menu;
 */
 
 Route::get('/', function () {
-    $stalls = User::all()->where('role_id', '2')->toArray();
+    $stallsWithImage = DB::table('users')
+        ->join('stall_images', 'users.id', 'stall_images.user_id')
+        ->select('users.id', 'users.name', 'users.name', 'users.email', 'stall_images.image_path')
+        ->where('users.role_id', '2')
+        ->get();
+
+    $stalls = array();
+    foreach ($stallsWithImage as $stallWithImage)
+    {
+        $stallWithImage                   = (array) $stallWithImage;
+        $stalls[$stallWithImage['id']] = $stallWithImage;
+    }
 
     return view('index')->with(array('stalls' => $stalls));
 });
 
 Route::get('/stalls/{id}', function ($id) {
+    $stallImage = StallImage::where('user_id', $id)->get();
+
     $menus = Menu::all()->where('stall_id', $id)->toArray();
 
-    return view('stalls/stall')->with(array('menus' => $menus));
+    return view('stalls/stall')->with(array('menus' => $menus, 'stallImage' => $stallImage[0]));
 });
 
 Route::resource('stall', 'StallController');
