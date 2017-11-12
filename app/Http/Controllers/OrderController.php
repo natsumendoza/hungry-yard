@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Order;
 Use App\Menu;
 Use App\User;
+use App\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -88,9 +89,34 @@ class OrderController extends Controller
                 }
             }
 
+            $transactionListTemp = Transaction::where('customer_id', Auth::user()->id)
+                ->get()->toArray();
+
+            $transactionList = array();
+            foreach ($transactionListTemp as $tranTemp)
+            {
+                foreach ($transactions as $transaction)
+                {
+                    if($transaction == $tranTemp['transaction_code'])
+                    {
+                        foreach ($stalls as $stall_id => $stall)
+                        {
+                            if($stall_id == $tranTemp['stall_id'])
+                            {
+                                $transactionList[$transaction][$stall_id] = $tranTemp;
+                            }
+                        }
+                    }
+                }
+            }
+
+//            echo '<pre>';
+//            print_r($transactionList);die;
+
+
+            $data['transactionList'] = $transactionList;
 
             $data['stalls'] = $stalls;
-
             $view = 'orders.orderListByCustomer';
         }
 
