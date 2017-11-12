@@ -101,8 +101,33 @@
 
 
                                 <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart"></i>({{$cartSize}})</a></li>
+                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
                             @endif
-                            <li><a href="">{{Auth::user()->name}}</a></li>
+                            @if(Auth::user()->isAdmin())
+
+                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
+                                <li><a href="{{url('stall')}}">Stalls</a></li>
+
+                            @endif
+                            @if(Auth::user()->isOwner())
+
+                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
+                                <li><a href="{{url('menu')}}">Menus</a></li>
+
+                            @endif
+
+                            <li>
+                                <a class="nav-link" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{--<i class="fa fa-fw fa-sign-out"></i>--}}
+                                    Logout
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
                             @else
                                 <li><a href="{{url('/login')}}">login</a></li>
                                 <li><a href="{{url('/register')}}">register</a></li>

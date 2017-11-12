@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Menu;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,10 +16,18 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    $stalls = User::all()->where('role_id', '2')->toArray();
+
+    return view('index')->with(array('stalls' => $stalls));
 });
 
-Route::get('/stall', 'StallController@index');
+Route::get('/stalls/{id}', function ($id) {
+    $menus = Menu::all()->where('stall_id', $id)->toArray();
+
+    return view('stalls/stall')->with(array('menus' => $menus));
+});
+
+Route::resource('stall', 'StallController');
 
 Auth::routes();
 
