@@ -107,11 +107,13 @@
 
                                 <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart"></i>({{$cartSize}})</a></li>
                                 <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
+                                <li><a href="{{url('orders')}}">Orders</a></li>
                             @endif
                             @if(Auth::user()->isAdmin())
 
                                 <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
                                 <li><a href="{{url('stall')}}">Stalls</a></li>
+                                    <li><a href="{{url('orders')}}">Orders</a></li>
 
                             @endif
                             @if(Auth::user()->isOwner())

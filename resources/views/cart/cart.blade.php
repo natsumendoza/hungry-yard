@@ -27,7 +27,7 @@
         </div><br />
     @endif
 
-    
+
 
     @if(!empty($cartItems))
 
@@ -94,7 +94,6 @@
         @endif
         </tbody>
     </table>
-
 </div>
 </body>
 </html>

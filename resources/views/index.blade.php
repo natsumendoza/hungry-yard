@@ -42,12 +42,14 @@
 
     </div>
 
-    @if(isset(Auth::user()->id))
 
-        @if(Auth::user()->isCustomer())
 
 
             <div id="about">
+
+                @if(isset(Auth::user()->id))
+
+                    @if(Auth::user()->isCustomer())
 
                 <div class="container">
                     <div class="row">
@@ -72,9 +74,12 @@
                     </div>
 
                 </div>
-            </div>
-        @endif
 
-    @endif
+                    @endif
+
+                @endif
+
+            </div>
+
 
 @endsection
