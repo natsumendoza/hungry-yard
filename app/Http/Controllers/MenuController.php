@@ -111,9 +111,13 @@ class MenuController extends Controller
             'preparationTime' => 'numeric|required'
         ]);
 
+        $cleanName = preg_replace('/\s+/', '_', $validatedMenu['name']);
+        $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
+        $request->file('image')->move(public_path('images/menu'), $imageName);
+
         $menu['stall_id']           = Auth::user()->id;
         $menu['name']               = $validatedMenu['name'];
-        $menu['image']              = $validatedMenu['image'];
+        $menu['image']              = $imageName;
         $menu['price']              = $validatedMenu['price'];
         $menu['preparation_time']   = $validatedMenu['preparationTime'];
         $menu->save();
