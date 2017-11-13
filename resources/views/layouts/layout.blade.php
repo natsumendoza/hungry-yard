@@ -105,7 +105,7 @@
                                 @endif
 
 
-                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart"></i>({{$cartSize}})</a></li>
+                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i>({{$cartSize}})</a></li>
                                 <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
                                 <li><a href="{{url('orders')}}">Orders</a></li>
                             @endif
@@ -149,6 +149,9 @@
                        {{-- <li class="hidden-sm hidden-xs">
                             <a href="#" id="ss"><i class="glyphicon glyphicon-search"></i></a>
                         </li>--}}
+                        <li class="hidden-sm hidden-xs">
+                            <a href="#" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
+                        </li>
                     </ul>
 
                 </div>
