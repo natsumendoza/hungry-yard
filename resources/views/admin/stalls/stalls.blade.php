@@ -13,7 +13,7 @@
                 </div><br />
             @endif
             <div>
-                <a href="{{action('StallController@create')}}" class="btn btn-success" style="float: right;">Add New Stall</a>
+                <a href="{{action('StallController@create')}}" class="btn btn-success" style="float: right; width:150px;"><i class="glyphicon glyphicon-plus"></i>Add New Stall</a>
             </div>
             <table class="table table-striped">
                 <thead>
@@ -21,6 +21,7 @@
                     <th style="text-align: center">Stall Name</th>
                     <th style="text-align: center">Email</th>
                     <th style="text-align: center">Stall Image</th>
+                    <th style="text-align: center" width="20px;">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,6 +38,10 @@
                                     {{--<button class="btn btn-danger" type="submit">Delete</button>--}}
                                 {{--</form>--}}
                             {{--</td>--}}
+                            <td style="text-align: center;">
+                                <a href="" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                                <button class="btn btn-small btn-danger" type="submit"><i class="glyphicon glyphicon-trash"></i></button>
+                            </td>
                         </tr>
                     @endforeach
                 @else

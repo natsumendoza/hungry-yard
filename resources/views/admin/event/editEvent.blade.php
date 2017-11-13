@@ -76,7 +76,7 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
+                                <div class="col-md-6 col-md-offset-4"  style="float:right;">
                                     <a href="{{action('GalleryController@index')}}" class="btn btn-default">Cancel</a>
                                     <button type="submit" class="btn btn-success" style="margin-left:15px">Update</button>
                                 </div>

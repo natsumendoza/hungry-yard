@@ -13,7 +13,7 @@
                 </div><br />
             @endif
             <div>
-                <a href="{{action('EventController@create')}}" class="btn btn-success" style="float: right;">Add New Event</a>
+                <a href="{{action('EventController@create')}}" class="btn btn-success" style="float: right; width: 170px;"><i class="glyphicon glyphicon-plus"></i>Add New Event</a>
             </div>
             <table class="table table-striped">
                 <thead>
@@ -32,7 +32,7 @@
                             <td style="text-align: center;">{{$event['name']}}</td>
                             <td style="text-align: center;">{{$event['description']}}</td>
                             <td style="text-align: center;">{{$event['date']}}</td>
-                            <td style="text-align: center;"><img width="50" height="50" src="{{asset('images/event/'.$event['image_path'])}}"></td>
+                            <td style="text-align: center;"><img width="100" height="80" src="{{asset('images/event/'.$event['image_path'])}}"></td>
                             <td style="text-align: center;">
                                 <a href="{{action('EventController@edit', base64_encode($event['id']))}}" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
                                 <form action="{{action('EventController@destroy', base64_encode($event['id']))}}" method="post">
