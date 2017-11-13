@@ -49,6 +49,7 @@
         @if(!empty($cartItems))
         @foreach($cartItems as $item)
             <tr>
+                <form>
                 <td style="text-align: center;">{{$item['id']}}</td>
                 <td>{{$item['transaction_code']}}</td>
                 <td style="text-align: center;">{{$item['name']}}</td>
@@ -63,6 +64,7 @@
                         <button class="btn btn-danger" type="submit">Remove</button>
                     </form>
                 </td>
+                </form>
             </tr>
         @endforeach
         <tr>
@@ -76,7 +78,7 @@
                     <button type="submit" class="btn btn-info" style="width: 130px;">Place your order</button>
                 </form>
             </td>
-            <td style="text-align: right;" colspan="3">
+            <td style="text-align: right;" colspan="4">
                 <form action="{{action('OrderController@destroyByTransactionCode', $transactionCode)}}" method="POST">
                     {{csrf_field()}}
                     <input name="_method" type="hidden" value="DELETE">
@@ -86,10 +88,10 @@
         </tr>
         @else
         <tr>
-            <td colspan="7" style="text-align: center">Cart is empty.</td>
+            <td colspan="8" style="text-align: center">Cart is empty.</td>
         </tr>
         <tr>
-            <td colspan="7" style="text-align: left;">
+            <td colspan="8" style="text-align: left;">
                 <a href="{{url('')}}" class="btn btn-primary" style="width: 150px;">Continue Order</a>
             </td>
         </tr>
