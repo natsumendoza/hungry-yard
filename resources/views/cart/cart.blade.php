@@ -36,11 +36,12 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th style="text-align: center" width="10%">ID</th>
+            <th style="text-align: center" width="5%">ID</th>
             <th style="text-align: center" width="15%">Transaction Code</th>
-            <th style="text-align: center" width="40%" colspan="2">Product</th>
+            <th style="text-align: center" width="25%" colspan="2">Product</th>
             <th style="text-align: center" width="5%">Quantity</th>
-            <th style="text-align: center" width="15%">Price</th>
+            <th style="text-align: center" width="10%">Price</th>
+            <th style="text-align: center" width="25%">Comment</th>
             <th style="text-align: center" width="15%">Action</th>
         </tr>
         </thead>
@@ -51,9 +52,10 @@
                 <td style="text-align: center;">{{$item['id']}}</td>
                 <td>{{$item['transaction_code']}}</td>
                 <td style="text-align: center;">{{$item['name']}}</td>
-                <td style="text-align: center;"><a href="{{asset('images/menu/'.$item['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="80" width="120" src="{{asset('images/menu/'.$item['image'])}}"></a></td>
-                <td style="text-align: center;">{{$item['quantity']}}</td>
+                <td style="text-align: center;"><a href="{{asset('images/menu/'.$item['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="50" width="80" src="{{asset('images/menu/'.$item['image'])}}"></a></td>
+                <td style="text-align: center;"><input style="width: 50px;" type="number" id="quantity" name="quantity" value="{{$item['quantity']}}" size="4" pattern="[0-9]*" step="1" required autofocus></td>
                 <td style="text-align: right;">{{number_format($item['quantity'] * $item['price'], 2)}}</td>
+                <td style="text-align: right;"><textarea id="comment" value="comment" style="resize:none" cols="30" rows="2">{{$item['comment']}}</textarea></td>
                 <td style="text-align: center;">
                     <form action="{{action('CartController@destroy', base64_encode($item['id']))}}" method="POST">
                         {{csrf_field()}}

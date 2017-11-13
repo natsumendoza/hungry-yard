@@ -44,7 +44,7 @@ class MenuController extends Controller
             'name' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'price' => 'numeric|required',
-            'preparationTime' => 'numeric|required'
+            'preparationTime' => 'numeric|required|max:30'
         ]);
 
         $cleanName = preg_replace('/\s+/', '_', $validatedMenu['name']);
@@ -105,19 +105,25 @@ class MenuController extends Controller
         $menu = Menu::find($id);
 
         $validatedMenu = $this->validate($request, [
-            'name' => '|required',
-            'image' => 'required',
+            'name' => 'required',
             'price' => 'numeric|required',
-            'preparationTime' => 'numeric|required'
+            'preparationTime' => 'numeric|required|max:30'
         ]);
 
-        $cleanName = preg_replace('/\s+/', '_', $validatedMenu['name']);
-        $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(public_path('images/menu'), $imageName);
+
+        if($request->file('image') != NULL)
+        {
+            $destinationPath = public_path('images/menu');
+            File::delete([$destinationPath.'/'.$menu['image']]);
+
+            $cleanName = preg_replace('/\s+/', '_', $validatedMenu['name']);
+            $imageName = $cleanName . (Auth::user()->id * 2) . time() . '.' . $request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move($destinationPath, $imageName);
+            $menu['image'] = $imageName;
+        }
 
         $menu['stall_id']           = Auth::user()->id;
         $menu['name']               = $validatedMenu['name'];
-        $menu['image']              = $imageName;
         $menu['price']              = $validatedMenu['price'];
         $menu['preparation_time']   = $validatedMenu['preparationTime'];
         $menu->save();

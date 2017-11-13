@@ -34,7 +34,18 @@ Route::get('/', function () {
 });
 
 Route::get('/stalls/{id}', function ($id) {
-    $stallImage = StallImage::where('user_id', $id)->get();
+
+    $stallImageTemp = DB::table('stall_images')
+        ->join('users', 'stall_images.user_id', 'users.id')
+        ->select('stall_images.image_path', 'users.id as stall_id', 'users.name as stall_name')
+        ->where('user_id', $id)->get();
+
+
+    $stallImage = array();
+    foreach($stallImageTemp as $stall)
+    {
+        $stallImage[] = (array) $stall;
+    }
 
     $menus = Menu::all()->where('stall_id', $id)->toArray();
 

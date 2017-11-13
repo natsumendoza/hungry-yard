@@ -156,7 +156,6 @@ class OrderController extends Controller
         $validatedOrder = $this->validate($request,[
             'stallId' => 'required|numeric',
             'productId' => 'required|numeric',
-            'quantity' => 'required|numeric'
         ]);
 
         $product = Menu::find($validatedOrder['productId']);
@@ -166,7 +165,7 @@ class OrderController extends Controller
         $order['stall_id']          = $validatedOrder['stallId'];
         $order['product_id']        = $validatedOrder['productId'];
         $order['customer_id']       = Auth::user()->id;
-        $order['quantity']          = $validatedOrder['quantity'];
+        $order['quantity']          = 1;
         $order['status']            = config('constants.ORDER_STATUS_CART');
 
         Order::create($order);
