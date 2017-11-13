@@ -6,6 +6,7 @@ use App\Menu;
 use App\StallImage;
 use App\Gallery;
 use App\Event;
+use App\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,11 +36,41 @@ Route::get('/', function () {
         $stalls[$stallWithImage['id']] = $stallWithImage;
     }
 
+    if (!Auth::guest())
+    {
+        if (Auth::user()->isCustomer()) {
+            $cartItems = Order::where('customer_id', Auth::user()->id)
+                ->where('status', config('constants.ORDER_STATUS_CART'))
+                ->get()->toArray();
+
+            if (!empty($cartItems)) {
+                Session::put('cartSize', count($cartItems));
+                if (!(\Session::has('transactionCode'))) {
+                    Session::put('transactionCode', $cartItems[0]['transaction_code']);
+                }
+            }
+        }
+    }
+
+
     return view('index')->with(array('stalls' => $stalls, 'gallery' => $gallery, 'events' => $events));
 });
 
 Route::get('/stalls/{id}', function ($id) {
-    $stallImage = StallImage::where('user_id', $id)->get();
+
+    $id = base64_decode($id);
+
+    $stallImageTemp = DB::table('stall_images')
+        ->join('users', 'stall_images.user_id', 'users.id')
+        ->select('stall_images.image_path', 'users.id as stall_id', 'users.name as stall_name')
+        ->where('user_id', $id)->get();
+
+
+    $stallImage = array();
+    foreach($stallImageTemp as $stall)
+    {
+        $stallImage[] = (array) $stall;
+    }
 
     $menus = Menu::all()->where('stall_id', $id)->toArray();
     $stall = User::find($id);

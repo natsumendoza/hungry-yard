@@ -43,7 +43,7 @@
                                 <label for="image" class="col-md-4 control-label">Item Image</label>
 
                                 <div class="col-md-6">
-                                    <input id="image" type="file" class="form-control" name="image" value="{{@$menu['image']}}" required autofocus>
+                                    <input id="image" type="file" class="form-control" name="image" {{(isset($menu['id'])) ? "" : "required"}} autofocus>
 
                                     @if ($errors->has('image'))
                                         <span class="help-block">
@@ -81,7 +81,7 @@
                                 <label for="preparationTime" class="col-md-4 control-label">Preparation Time (mins)</label>
 
                                 <div class="col-md-6">
-                                    <input id="preparationTime" type="number" class="form-control" name="preparationTime" value="{{@$menu['preparation_time']}}" required autofocus>
+                                    <input id="preparationTime" type="number" class="form-control" name="preparationTime" value="{{@$menu['preparation_time']}}" required autofocus max="30">
 
                                     @if ($errors->has('preparationTime'))
                                         <span class="help-block">

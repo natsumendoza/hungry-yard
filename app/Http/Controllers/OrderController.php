@@ -82,12 +82,13 @@ class OrderController extends Controller
                         {
                             if($stall_id == $order['stall_id'])
                             {
-                                $orderList[$transaction][$stall_id] = array($order);
+                                $orderList[$transaction][$stall_id][] = (array) $order;
                             }
                         }
                     }
                 }
             }
+
 
             $transactionListTemp = Transaction::where('customer_id', Auth::user()->id)
                 ->get()->toArray();
@@ -156,7 +157,6 @@ class OrderController extends Controller
         $validatedOrder = $this->validate($request,[
             'stallId' => 'required|numeric',
             'productId' => 'required|numeric',
-            'quantity' => 'required|numeric'
         ]);
 
         $product = Menu::find($validatedOrder['productId']);
@@ -166,7 +166,7 @@ class OrderController extends Controller
         $order['stall_id']          = $validatedOrder['stallId'];
         $order['product_id']        = $validatedOrder['productId'];
         $order['customer_id']       = Auth::user()->id;
-        $order['quantity']          = $validatedOrder['quantity'];
+        $order['quantity']          = 1;
         $order['status']            = config('constants.ORDER_STATUS_CART');
 
         Order::create($order);
@@ -242,7 +242,7 @@ class OrderController extends Controller
      */
     public function destroyByTransactionCode($transactionCode)
     {
-        Order::where('transaction_code', $transactionCode)->delete();
+        Order::where('transaction_code', base64_decode($transactionCode))->delete();
         Session::put('cartSize', 0);
         return redirect('cart/'.$transactionCode)->with('success', 'Cart has been emptied');;
     }

@@ -34,21 +34,6 @@ class HomeController extends Controller
     public function index()
     {
 
-        if (Auth::user()->isCustomer()) {
-            $cartItems = Order::where('customer_id', Auth::user()->id)
-                ->where('status', 'constants.ORDER_STATUS_CART')
-                ->get()->toArray();
-
-            if(!empty($cartItems))
-            {
-                Session::put('cartSize', count($cartItems));
-                if(!(\Session::has('transactionCode')))
-                {
-                    Session::put('transactionCode', $cartItems[0]['transaction_code']);
-                }
-            }
-        }
-
         return view('home');
     }
 }

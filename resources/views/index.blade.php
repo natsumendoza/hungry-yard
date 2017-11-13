@@ -35,7 +35,6 @@
 
 
 
-
     </div>
 
             </div>
@@ -60,7 +59,7 @@
             <div class="row" style="text-align: center;">
                 @foreach($stalls as $stall)
                     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3" style="width: 150px; margin-top: 20px;">
-                        <a href="{{url('/stalls/' . $stall['id'])}}">
+                        <a href="{{url('/stalls/' .  base64_encode($stall['id']))}}">
                             {{$stall['name']}}
                             <img width="100" height="100" class="img-circle" style="cursor:pointer;" src="{{asset('images/stall/'.$stall['image_path'])}}">
                         </a>

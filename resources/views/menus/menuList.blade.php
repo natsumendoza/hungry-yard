@@ -37,11 +37,11 @@
                     <td style="text-align: right;">{{number_format($menu['price'], 2)}}</td>
                     <td style="text-align: center;">{{$menu['preparation_time']}} mins</td>
                     <td style="text-align: center;">
-                        <a href="{{action('MenuController@edit', base64_encode($menu['id']))}}" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                        <a href="{{action('MenuController@edit', base64_encode($menu['id']))}}" class="btn btn-warning" data-toggle="tooltip" title="Edit Item"><i class="glyphicon glyphicon-edit"></i></a>
                         <form action="{{action('MenuController@destroy', base64_encode($menu['id']))}}" method="post">
                             {{csrf_field()}}
                             <input name="_method" type="hidden" value="DELETE">
-                            <button class="btn btn-small btn-danger" type="submit"><i class="glyphicon glyphicon-trash"></i></button>
+                            <button class="btn btn-small btn-danger" type="submit" data-toggle="tooltip" title="Remove Item"><i class="glyphicon glyphicon-trash"></i></button>
                         </form>
                     </td>
                 </tr>

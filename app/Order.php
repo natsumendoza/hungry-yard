@@ -12,9 +12,7 @@ class Order extends Model
         'product_id',
         'customer_id',
         'quantity',
-        'price',
-        'pickup',
-        'type',
+        'comment',
         'status'
     ];
 
