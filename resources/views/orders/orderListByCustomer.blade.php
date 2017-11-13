@@ -55,7 +55,7 @@
                     $prepTime   = $order['preparation_time'] * $order['quantity'];
 
                     if($order['status'] == config('constants.ORDER_STATUS_APPROVED')):
-                        $totalPrice += $order['price'];
+                        $totalPrice += ($order['price'] * $order['quantity']);
                         $totalPrepTime += $prepTime;
                         $color = '#7FBF7F';
                         $showPaymaya = TRUE;
@@ -70,7 +70,7 @@
                     <td>{{$order['name']}}</td>
                     <td><a href="{{asset('images/menu/'.$order['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="30" width="40" src="{{asset('images/menu/'.$order['image'])}}"></a></td>
                     <td style="text-align: center;">{{$order['quantity']}}</td>
-                    <td style="text-align: right;">{{number_format($order['quantity'] * $order['price'], 2)}}</td>
+                    <td style="text-align: right;">{{number_format($order['price'] * $order['quantity'], 2)}}</td>
                     <td style="text-align: right;">{{$prepTime}} mins.</td>
                     <td style="text-align: center;">{{$order['status']}}</td>
                     <td style="text-align: center;">
@@ -148,7 +148,7 @@
                 </tr>
                 <tr>
                     <td>Preparation Time: </td>
-                    <td>{{$totalPrepTime . " min/s (" . $converted_hrs . "hr " . $converted_mins ."min"}})</td>
+                    <td>{{$totalPrepTime . " min/s (" . $converted_hrs . "hr " . $converted_mins ."min"}})<br><b>Note: This value can be change the stall owner.</td>
                 </tr>
                 <tr>
                     <td>Pickup Date: </td>

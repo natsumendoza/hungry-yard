@@ -24,6 +24,7 @@ class OrderController extends Controller
         $data = array();
         $orderList = array();
         $transactions = array();
+        $transactionList = array();
 
         if(Auth::user()->isOwner())
         {
@@ -45,6 +46,25 @@ class OrderController extends Controller
             }
 
             $transactions = array_column($orderList, 'customer_id', 'transaction_code');
+
+            $transactionListTemp = Transaction::where('stall_id', Auth::user()->id)
+                ->get()->toArray();
+
+
+            foreach ($transactionListTemp as $tranTemp)
+            {
+                foreach ($transactions as $transaction_code => $transaction)
+                {
+                    if($transaction_code == $tranTemp['transaction_code'])
+                    {
+                        $transactionList[$transaction_code] = $tranTemp;
+                    }
+                }
+            }
+
+//            echo '<pre>';
+//            print_r($transactionList);
+//            die;
 
             $view = 'orders.orderList';
         }
@@ -93,7 +113,6 @@ class OrderController extends Controller
             $transactionListTemp = Transaction::where('customer_id', Auth::user()->id)
                 ->get()->toArray();
 
-            $transactionList = array();
             foreach ($transactionListTemp as $tranTemp)
             {
                 foreach ($transactions as $transaction)
@@ -111,19 +130,13 @@ class OrderController extends Controller
                 }
             }
 
-//            echo '<pre>';
-//            print_r($transactionList);die;
-
-
-            $data['transactionList'] = $transactionList;
-
             $data['stalls'] = $stalls;
             $view = 'orders.orderListByCustomer';
         }
 
         $data['orderList'] = $orderList;
-
         $data['transactions'] = $transactions;
+        $data['transactionList'] = $transactionList;
 
         return view($view, compact('data'));
     }

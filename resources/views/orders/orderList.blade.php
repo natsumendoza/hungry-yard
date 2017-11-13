@@ -94,9 +94,10 @@
         @endif
         </tbody>
     </table>
-
-    {{--IF PAID--}}
-    <table class="table" style="width:30%; float: right;">
+    @if(ISSET($data['transactionList'][$transaction_code]) AND !EMPTY($data['transactionList'][$transaction_code]))
+    <form class="form-horizontal" method="POST" action="{{action('TransactionController@update', base64_encode($transaction_code))}}">
+    {{csrf_field()}}
+    <table class="table" style="width:40%; float: right;">
         <thead>
         <tr>
             <th colspan="2">Information (Note: For <i>approved</i> orders only.)</th>
@@ -105,12 +106,12 @@
 
         <tbody>
         <tr>
-            <td>Transaction code: </td>
-            <td><b>Edit this.</b></td>
+            <td style="width: 350px;">Transaction code: </td>
+            <td style="width: 350px;"><b>{{$transaction_code}}</b></td>
         </tr>
         <tr>
-            <td>Preparation time: </td>
-            <td>Total prep(change this) mins (Hours equivalent)</td>
+            <td>Preparation Time: </td>
+            <td><input type="time" class="time_{{$transaction_code}}" id="preparation_time" name="preparation_time" class="form-control" required></td>
         </tr>
         <tr>
             <td>Pickup time: </td>
@@ -122,15 +123,23 @@
         </tr>
         <tr>
             <td>Order Type: </td>
-            <td>From transaction db</td>
+            <td>{{$data['transactionList'][$transaction_code]['order_type']}}</td>
         </tr>
         <tr>
             <td colspan="2">
-                <button type="button" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Serve</button>
+                @if($data['transactionList'][$transaction_code]['status'] == config('constants.TRANSACTION_STATUS_PAID'))
+                    <button type="button" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Ready to serve</button>
+                @elseif($data['transactionList'][$transaction_code]['status'] == config('constants.TRANSACTION_STATUS_READY'))
+                    <button type="button" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Serve</button>
+                @else($data['transactionList'][$transaction_code]['status'] == config('constants.TRANSACTION_STATUS_SERVED'))
+                    <button type="button" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Served</button>
+                @endif
             </td>
         </tr>
         </tbody>
     </table>
+    </form>
+    @endif
 
     <br />
     <br />

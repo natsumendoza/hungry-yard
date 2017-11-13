@@ -10,6 +10,7 @@ class Transaction extends Model
         'transaction_code',
         'customer_id',
         'stall_id',
+        'preparation_time',
         'pickup_time',
         'total_price',
         'order_type',
