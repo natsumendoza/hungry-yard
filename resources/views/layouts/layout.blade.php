@@ -146,9 +146,9 @@
                         {{--<li><a href="#service">services</a></li>--}}
                         {{--<li><a href="#portfolio">portfolio</a></li>--}}
                         {{--<li><a href="#contact">contact</a></li>--}}
-                        <li class="hidden-sm hidden-xs">
+                       {{-- <li class="hidden-sm hidden-xs">
                             <a href="#" id="ss"><i class="glyphicon glyphicon-search"></i></a>
-                        </li>
+                        </li>--}}
                     </ul>
 
                 </div>

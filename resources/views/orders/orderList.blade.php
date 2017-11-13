@@ -106,20 +106,20 @@
 
         <tbody>
         <tr>
-            <td style="width: 350px;">Transaction code: </td>
-            <td style="width: 350px;"><b>{{$transaction_code}}</b></td>
+            <td style="width: 330px;">Transaction code: </td>
+            <td style="width: 380px;"><b>{{$transaction_code}}</b></td>
         </tr>
         <tr>
             <td>Preparation Time: </td>
-            <td><input type="time" class="time_{{$transaction_code}}" id="preparation_time" name="preparation_time" class="form-control" required></td>
+            <td><input type="time" class="time_{{$transaction_code}}" id="preparation_time" name="preparation_time" class="form-control" required>&nbsp;&nbsp;<button class="btn btn-warning">Update</button></td>
         </tr>
         <tr>
             <td>Pickup time: </td>
-            <td>Pickup time</td>
+            <td>{{$data['transactionList'][$transaction_code]['order_type']}}</td>
         </tr>
         <tr>
             <td>Total price: </td>
-            <td>Total price from transaction db</td>
+            <td>{{$data['transactionList'][$transaction_code]['total_price']}}</td>
         </tr>
         <tr>
             <td>Order Type: </td>
