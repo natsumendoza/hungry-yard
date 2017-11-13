@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hy.minad@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'dduummyy1234@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Hungry Yard Admin'),
     ],
 
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME', 'hy.minad@gmail.com'),
+    'username' => env('MAIL_USERNAME'),
 
-    'password' => env('MAIL_PASSWORD', 'admin...'),
+    'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------

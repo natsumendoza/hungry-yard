@@ -92,7 +92,28 @@ class CartController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $id = base64_decode($id);
+
+        $cartItem = Order::find($id);
+
+        $validatedCartItem = $this->validate($request, [
+            'quantity' => 'required',
+            'comment' => 'max:150',
+        ]);
+
+
+        if($validatedCartItem['quantity'] < 1)
+        {
+            $cartItem->delete();
+        }
+        else
+        {
+            $cartItem['quantity'] = $validatedCartItem['quantity'];
+            $cartItem['comment'] = $validatedCartItem['comment'];
+            $cartItem->save();
+        }
+
+        return redirect('cart/'.base64_encode($cartItem['transaction_code']))->with('success', 'Cart item with ID ' . $id . ' has been updated');
     }
 
     /**

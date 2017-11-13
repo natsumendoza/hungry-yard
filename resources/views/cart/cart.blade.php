@@ -49,22 +49,26 @@
         @if(!empty($cartItems))
         @foreach($cartItems as $item)
             <tr>
-                <form>
+                <form action="{{action('CartController@update', base64_encode($item['id']))}}" method="post">
+                {{csrf_field()}}
+                <input name="_method" type="hidden" value="PATCH">
                 <td style="text-align: center;">{{$item['id']}}</td>
                 <td>{{$item['transaction_code']}}</td>
                 <td style="text-align: center;">{{$item['name']}}</td>
-                <td style="text-align: center;"><a href="{{asset('images/menu/'.$item['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="50" width="80" src="{{asset('images/menu/'.$item['image'])}}"></a></td>
+                <td style="text-align: center;"><a href="{{asset('images/menu/'.$item['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="70" width="100" src="{{asset('images/menu/'.$item['image'])}}"></a></td>
                 <td style="text-align: center;"><input style="width: 50px;" type="number" id="quantity" name="quantity" value="{{$item['quantity']}}" size="4" pattern="[0-9]*" step="1" required autofocus></td>
                 <td style="text-align: right;">{{number_format($item['quantity'] * $item['price'], 2)}}</td>
-                <td style="text-align: right;"><textarea id="comment" value="comment" style="resize:none" cols="30" rows="2">{{$item['comment']}}</textarea></td>
+                <td style="text-align: right;"><textarea id="comment" name="comment" style="resize:none" cols="30" rows="2">{{$item['comment']}}</textarea></td>
                 <td style="text-align: center;">
+                    <button class="btn btn-small btn-warning" type="submit"  data-toggle="tooltip" title="Update Item"><i class="glyphicon glyphicon-edit"></i></button>
+                </form>
                     <form action="{{action('CartController@destroy', base64_encode($item['id']))}}" method="POST">
                         {{csrf_field()}}
                         <input name="_method" type="hidden" value="DELETE">
-                        <button class="btn btn-danger" type="submit">Remove</button>
+                        <button class="btn btn-danger" type="submit" data-toggle="tooltip" title="Remove Item"><i class="glyphicon glyphicon-trash"></i></button>
                     </form>
                 </td>
-                </form>
+
             </tr>
         @endforeach
         <tr>
