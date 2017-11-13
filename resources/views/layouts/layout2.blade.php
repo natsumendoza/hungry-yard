@@ -19,6 +19,8 @@
     <link type="text/css" rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link type="text/css" rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
     <link type="text/css" rel="stylesheet" href="{{ asset('css/style.css') }}" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 
     <!-- =======================================================
     Theme Name: MyBiz
@@ -158,6 +160,8 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
 <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/contactform/contactform.js') }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="{{ asset('js/hungryadmin.js') }}"></script>
 
 </body>
 

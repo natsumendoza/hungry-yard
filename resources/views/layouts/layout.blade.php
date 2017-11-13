@@ -113,6 +113,8 @@
 
                                 <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
                                 <li><a href="{{url('stall')}}">Stalls</a></li>
+                                    <li><a href="{{url('event')}}">Events</a></li>
+                                <li><a href="{{url('gallery')}}">Gallery</a></li>
 
 
                             @endif
@@ -209,6 +211,7 @@
 {{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>--}}
 <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/contactform/contactform.js') }}"></script>
+
 
 </body>
 

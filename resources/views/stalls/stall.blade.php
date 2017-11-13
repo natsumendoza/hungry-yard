@@ -20,7 +20,10 @@
         <div class="container" style="margin-top: 30px;">
 
             <div class="row">
-                <img height="100" width="100" class="img-circle" style="cursor:pointer;" class="img-polaroid" src="{{asset('images/stall/'.$stallImage['image_path'])}}">
+                <div class="col-md-12 text-center">
+                    <p>{{$stall['name']}}</p>
+                    <img height="100" width="100" class="img-circle" style="cursor:pointer;" class="img-polaroid" src="{{asset('images/stall/'.$stallImage['image_path'])}}">
+                </div>
             </div>
 
             <div class="row" style="text-align: center">
@@ -39,7 +42,9 @@
                         <p>Price: {{$menu['price']}}</p>
                         <p>Preparation Time: {{$menu['preparation_time']}}</p>
 
-                        <p><input name="quantity" type="number" /><button class="btn-success">Add to cart</button></p>
+                        @auth
+                            <p><input name="quantity" type="number" /><button class="btn-success">Add to cart</button></p>
+                        @endauth
 
                     </form>
                 </div>

@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Menu;
 use App\StallImage;
+use App\Gallery;
+use App\Event;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,9 @@ Route::get('/', function () {
         ->where('users.role_id', '2')
         ->get();
 
+    $gallery = Gallery::all();
+    $events = Event::all();
+
     $stalls = array();
     foreach ($stallsWithImage as $stallWithImage)
     {
@@ -30,15 +35,16 @@ Route::get('/', function () {
         $stalls[$stallWithImage['id']] = $stallWithImage;
     }
 
-    return view('index')->with(array('stalls' => $stalls));
+    return view('index')->with(array('stalls' => $stalls, 'gallery' => $gallery, 'events' => $events));
 });
 
 Route::get('/stalls/{id}', function ($id) {
     $stallImage = StallImage::where('user_id', $id)->get();
 
     $menus = Menu::all()->where('stall_id', $id)->toArray();
+    $stall = User::find($id);
 
-    return view('stalls/stall')->with(array('menus' => $menus, 'stallImage' => $stallImage[0]));
+    return view('stalls/stall')->with(array('menus' => $menus, 'stallImage' => $stallImage[0], 'stall' => $stall));
 });
 
 Route::resource('stall', 'StallController');
@@ -53,3 +59,5 @@ Route::get('orders/{userId}', 'OrderController@showByUserId');
 Route::resource('orders', 'OrderController');
 Route::resource('cart', 'CartController');
 Route::resource('transactions', 'TransactionController');
+Route::resource('event', 'EventController');
+Route::resource('gallery', 'GalleryController');
