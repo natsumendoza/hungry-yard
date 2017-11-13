@@ -46,7 +46,7 @@
                         <a href="{{asset('images/menu/'.$menu['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="100" width="120" src="{{asset('images/menu/'.$menu['image'])}}"></a>
                         <p>Name: {{$menu['name']}}</p>
                         <p>Price: &#8369; {{$menu['price']}}</p>
-                        <p>Preparation Time: {{$menu['preparation_time']}}</p>
+                        <p>Preparation Time: {{$menu['preparation_time']}} mins.</p>
 
                         @auth
                             <p><button class="btn-success">Add to cart</button></p>
