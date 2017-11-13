@@ -19,23 +19,24 @@
 
 
 
-            <div id="about">
+            <div>
+                <div id="about">
 
 
-                <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-                <div class="about-heading">
-                    <h2>hungry yard</h2>
-                    <h3>Tarlac's first food park</h3>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                                <div class="about-heading">
+                                    <h2>hungry yard</h2>
+                                    <h3>Tarlac's first food park</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                 </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    </div>
 
             </div>
 
@@ -99,6 +100,7 @@
         </div>
 
     </div>
+            </div>
 
 
 

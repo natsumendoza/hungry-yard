@@ -13,6 +13,7 @@ body {
 	font-smooth: always;
 	-webkit-font-smoothing: antialiased;
 	-moz-font-smoothing: antialiased;
+	background-image: url(../images/hungryyardbackground.png);
 }
 
 a {
