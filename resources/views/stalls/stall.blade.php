@@ -17,7 +17,7 @@
         </div>
 
         <!--about wrapper left-->
-        <div class="container" style="margin-top: 30px; text-align: center;">
+        <div class="container"  style="margin-top: 30px; text-align: center;">
 
             <div class="row">
                 <p style="font-size: large"><b>{{$stallImage['stall_name']}}</b></p>
