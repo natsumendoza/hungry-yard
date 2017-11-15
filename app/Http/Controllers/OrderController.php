@@ -280,6 +280,6 @@ class OrderController extends Controller
 
         Session::forget('cartSize');
         Session::forget('transactionCode');
-        return redirect('/');
+        return redirect('orders');
     }
 }
