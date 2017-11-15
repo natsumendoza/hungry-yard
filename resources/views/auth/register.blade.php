@@ -1,7 +1,7 @@
 @extends('layouts.layout2')
 
 @section('content')
-<div class="container">
+<div class="container" style="background: #f9f9f9; width: 100%; background-image: url(../images/register_background.png);">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">

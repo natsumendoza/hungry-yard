@@ -85,7 +85,7 @@
         </div>
 
         <!--about wrapper left-->
-        <div class="container" style="margin-top: 30px;">
+        <div class="container" style="margin-top: 10px;">
 
             <div class="row" style="text-align: center;">
                 @foreach($events as $event)
