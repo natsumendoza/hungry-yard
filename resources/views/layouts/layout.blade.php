@@ -96,6 +96,7 @@
                 <div class="navbar-collapse collapse" id="ftheme">
 
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{url('/')}}">Home</a></li>
                         @auth
 
                             @if(Auth::user()->isCustomer())
