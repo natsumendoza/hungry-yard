@@ -59,7 +59,7 @@
 
             <div class="row" style="text-align: center;">
                 @foreach($stalls as $stall)
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="margin-top: 35px;">
                         <a href="{{url('/stalls/' .  base64_encode($stall['id']))}}">
                             {{$stall['name']}}<br>
                             <img width="150" height="150" class="img-circle" style="cursor:pointer;" src="{{asset('images/stall/'.$stall['image_path'])}}">
