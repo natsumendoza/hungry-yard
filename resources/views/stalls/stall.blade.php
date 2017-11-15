@@ -20,11 +20,11 @@
         <div class="container"  style="margin-top: 30px; text-align: center;">
 
             <div class="row">
-                <p style="font-size: large"><b>{{$stallImage['stall_name']}}</b></p>
+                <p style="font-size: 30px;"><b>{{$stallImage['stall_name']}}</b></p>
             </div>
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <img height="100" width="100" class="img-circle" style="cursor:pointer;" class="img-polaroid" src="{{asset('images/stall/'.$stallImage['image_path'])}}">
+                    <img height="150" width="150" class="img-circle" style="cursor:pointer;" class="img-polaroid" src="{{asset('images/stall/'.$stallImage['image_path'])}}">
                 </div>
             </div>
 
@@ -43,14 +43,12 @@
                         {{csrf_field()}}
                         <input id="stallId" name="stallId" type="hidden" class="hidden" value="{{$menu['stall_id']}}">
                         <input id="productId" name="productId" type="hidden" class="hidden" value="{{$menu['id']}}">
-                        <a href="{{asset('images/menu/'.$menu['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="100" width="120" src="{{asset('images/menu/'.$menu['image'])}}"></a>
-                        <p>Name: {{$menu['name']}}</p>
-                        <p>Price: &#8369; {{$menu['price']}}</p>
-                        <p>Preparation Time: {{$menu['preparation_time']}} mins.</p>
+                        <a href="{{asset('images/menu/'.$menu['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="200" width="270" src="{{asset('images/menu/'.$menu['image'])}}"></a>
+                        <p style="font-size: 20px;"><b>{{$menu['name']}}</b></p>
+                        <p style="color: forestgreen;">&#8369; {{$menu['price']}}</p>
+                        <p><b>Preparation Time: {{$menu['preparation_time']}} mins.</b></p>
 
-                        @auth
-                            <p><button class="btn-success">Add to cart</button></p>
-                        @endauth
+                        <p><button class="btn">Add to cart</button></p>
 
                     </form>
                 </div>

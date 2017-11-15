@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->string('transaction_code');
             $table->integer('customer_id');
             $table->integer('stall_id');
-            $table->dateTime('preparation_time')->nullable();
+            $table->integer('preparation_time')->nullable();
             $table->dateTime('pickup_time');
             $table->decimal('total_price', 10, 2);
             $table->string('order_type');

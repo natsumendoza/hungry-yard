@@ -42,6 +42,15 @@
                 margin-top: 30px;
             }
         }
+
+        @font-face {
+            font-family: Scrap Food Regular;
+            src: url('{{ asset('fonts/scrap-food-regular.ttf')}}');
+        }
+        @font-face {
+            font-family: Tastysushi Line;
+            src: url('{{ asset('fonts/tastysushi-line.ttf')}}');
+        }
     </style>
 </head>
 
@@ -96,6 +105,7 @@
                 <div class="navbar-collapse collapse" id="ftheme">
 
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{url('/')}}">Home</a></li>
                         @auth
 
                             @if(Auth::user()->isCustomer())
@@ -149,9 +159,13 @@
                        {{-- <li class="hidden-sm hidden-xs">
                             <a href="#" id="ss"><i class="glyphicon glyphicon-search"></i></a>
                         </li>--}}
-                        <li class="hidden-sm hidden-xs">
-                            <a href="#" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
-                        </li>
+                        @if(!Auth::guest())
+                            @if(Auth::user()->isOwner() OR Auth::user()->isCustomer())
+                            <li class="hidden-sm hidden-xs">
+                                <a href="#" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
+                            </li>
+                            @endif
+                        @endif
                     </ul>
 
                 </div>

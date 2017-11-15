@@ -12,6 +12,7 @@
 <div class="container">
     @php
         $arrPrepTotalTime = array();
+        $arrCreatedAt = array();
         $buttonLabel = "Pay Order (via PayMaya)";
     @endphp
 
@@ -97,19 +98,24 @@
             $action = url('transactions');
             $dineIn = "checked";
             $takeOut = "";
+            $pickupDateTime = "";
+            $pickupDate = "";
+            $pickupTime = "";
+
+            $update = FALSE;
+
 
 
             if(ISSET($data['transactionList'][$transactionCode][$stallId]) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]))
             {
 
-            //BASE64 ID
-            //$data['transactionList'][$transactionCode][$stallId];
-                $action = action('TransactionController@update', $data['transactionList'][$transactionCode][$stallId]['id']);
+                $action = action('TransactionController@update', base64_encode($data['transactionList'][$transactionCode][$stallId]['id']));
                 $buttonLabel = "Update Transaction";
+                $update = TRUE;
 
                 if(ISSET($data['transactionList'][$transactionCode][$stallId]['order_type']) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]['order_type']))
                 {
-                    if($data['transactionList'][$transactionCode][$stallId]['order_type'] == config('constant.ORDER_TYPE_DI'))
+                    if($data['transactionList'][$transactionCode][$stallId]['order_type'] == config('constants.ORDER_TYPE_DI'))
                     {
                         $dineIn = "checked";
                         $takeOut = "";
@@ -121,15 +127,29 @@
                     }
                 }
 
+                if(ISSET($data['transactionList'][$transactionCode][$stallId]['pickup_time']) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]['pickup_time']))
+                {
+                    // SET PICKUP DATETIME
+                    $pickupDateTime = strtotime($data['transactionList'][$transactionCode][$stallId]['pickup_time']);
+                    $pickupDate = date("m/d/Y", $pickupDateTime);
+                    $pickupTime = date("H:i", $pickupDateTime);
+                }
+
+                if(ISSET($data['transactionList'][$transactionCode][$stallId]['preparation_time']) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]['preparation_time']))
+                {
+                    $totalPrepTime = $data['transactionList'][$transactionCode][$stallId]['preparation_time'];
+                }
             }
 
         @endphp
         @if($showPaymaya)
-        <form class="form-horizontal" method="POST" action="{{$action}}">
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{$action}}">
             {{csrf_field()}}
         <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
         <input type="hidden" name="stall_id" id="stall_id" value="{{base64_encode($stallId)}}">
         <input type="hidden" name="total_price" id="total_price" value="{{base64_encode($totalPrice)}}">
+        <input type="hidden" name="preparation_time" id="preparation_time" value="{{base64_encode($totalPrepTime)}}">
+
         <table class="table" style="width:40%; float: right;">
             <thead>
                 <tr>
@@ -150,25 +170,39 @@
                     <td>Preparation Time: </td>
                     <td>{{$totalPrepTime . " min/s (" . $converted_hrs . "hr " . $converted_mins ."min"}})<br><b>Note: This value can be change the stall owner.</td>
                 </tr>
+
                 <tr>
                     <td>Pickup Date: </td>
-                    <td><span id="pd_{{$transactionCode."_".$stallId}}">Pickup Date</span> <br><b>Note: This value will change the depends on <i>Pickup Time</i> input upon Paying.</b></td>
+                    <td><span id="pd_{{$transactionCode."_".$stallId}}">{{$pickupDate}}</span> <br><b>Note: This value will change the depends on <i>Pickup Time</i> input upon Paying.</b></td>
                 </tr>
                 <tr>
                     <td>Recommended Pickup Time: </td>
                     <td id="recom_{{$transactionCode."_".$stallId}}"></td>
                 </tr>
 
-                @if(ISSET($data['transactionList'][$transactionCode][$stallId]['pickup_time']) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]['pickup_time']))
                 <tr>
-                    <td>Current Pickup Time: </td>
-                    <td>{{$data['transactionList'][$transactionCode][$stallId]['pickup_time']}}</td>
-                </tr>
-                @endif;
+                    @php
+                        $hasError = FALSE;
+                        $errFontColor = "black";
+                        $fontWeight = "";
 
-                <tr>
-                    <td>Pickup Time: </td>
-                    <td><input type="time" class="time_{{$transactionCode."_".$stallId}}" id="pickup_time" name="pickup_time" class="form-control" required></td>
+                        if($errors->has('pickup_time'))
+                        {
+                            $hasError = TRUE;
+                            $errFontColor = "#a94442";
+                            $fontWeight = "font-weight: bold;";
+                        }
+                    @endphp
+                    <td style="color: {{$errFontColor}}; {{$fontWeight}}">Pickup Time: </td>
+                    <td>
+                        <input type="time" class="time_{{$transactionCode."_".$stallId}}" id="pickup_time" name="pickup_time" class="form-control" value="{{$pickupTime}}" min="14:00" max="24:00" required autofocus>
+                        @if ($hasError)
+                            <br>
+                            <span class="help-blockr">
+                                <strong style="color: {{$errFontColor}};">{{ str_replace("date", "time", $errors->first('pickup_time')) }}</strong>
+                            </span>
+                        @endif
+                    </td>
                 </tr>
                 <tr>
                     <td>Total Price: </td>
@@ -183,6 +217,10 @@
                 </tr>
                 <tr>
                     <td colspan="2">
+                        @if($update)
+                            <input name="_method" type="hidden" value="PATCH">
+                            <a>Download Receipt</a>
+                        @endif
                         <button type="submit" class="btn btn-primary" style="width:190px; float: right;">{{$buttonLabel}}</button>
                     </td>
                 </tr>
@@ -197,6 +235,10 @@
         <br />
         @php
             $arrPrepTotalTime[$transactionCode][$stallId] = $totalPrepTime;
+            if(ISSET($data['transactionList'][$transactionCode][$stallId]['created_at']) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]['created_at']))
+            {
+                $arrCreatedAt[$transactionCode][$stallId] = $data['transactionList'][$transactionCode][$stallId]['created_at'];
+            }
         @endphp
         @endif
         @endforeach
@@ -232,15 +274,16 @@
         var transactions = <?php echo json_encode(@$data['transactions']);?>;
         var stalls       = <?php echo json_encode(@$data['stalls']);?>;
         var arrPrepTotalTime = <?php echo json_encode($arrPrepTotalTime);?>;
+        var arrCreatedAt = <?php echo json_encode($arrCreatedAt);?>
 
-        var pd = new Date();
+//        var pd = new Date();
 
-        $.each( transactions, function( tran_id, tran_val ) {
-
-            $.each( stalls, function( stall_id, stall_name ) {
-                $('#pd_' + tran_id + '_' + stall_id).text((pd.getMonth()+1)+"/"+pd.getDate()+"/"+pd.getFullYear());
-            });
-        });
+//        $.each( transactions, function( tran_id, tran_val ) {
+//
+//            $.each( stalls, function( stall_id, stall_name ) {
+//                $('#pd_' + tran_id + '_' + stall_id).text((pd.getMonth()+1)+"/"+pd.getDate()+"/"+pd.getFullYear());
+//            });
+//        });
 
         setInterval(function() {
 
@@ -251,6 +294,10 @@
                     if(arrPrepTotalTime[tran_id][stall_id] != undefined)
                     {
                         var date = new Date();
+                        if(arrCreatedAt[tran_id][stall_id] != undefined)
+                        {
+                            date = new Date(arrCreatedAt[tran_id][stall_id]);
+                        }
 
                         if(date.getHours() < 16)
                         {

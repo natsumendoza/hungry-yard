@@ -1,7 +1,6 @@
 @extends('layouts.layout')
 
 @section('content')
-
     <div id="slider" class="flexslider">
 
         <ul class="slides">
@@ -25,9 +24,9 @@
 
                     <div class="container">
                         <div class="row">
-                            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-                                <div class="about-heading">
-                                    <h2>hungry yard</h2>
+                            <div class="col-md-12">
+                                <div style="text-align: center;">
+                                    <h2 style="font-family:'Scrap Food Regular'; font-size: 100px;">HUNGRY YARD</h2>
                                     <h3>Tarlac's first food park</h3>
                                 </div>
                             </div>
@@ -48,21 +47,21 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                     <div class="about-heading">
-                        <h3>Choose a stall</h3>
+                        <h1 style="font-family: 'Tastysushi Line'; font-size: 80px;">Choose a stall</h1>
                     </div>
                 </div>
             </div>
         </div>
 
         <!--about wrapper left-->
-        <div class="container" style="margin-top: 30px;">
+        <div class="container">
 
             <div class="row" style="text-align: center;">
                 @foreach($stalls as $stall)
-                    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3" style="width: 150px; margin-top: 20px;">
-                        <a href="{{url('/stalls/' .  base64_encode($stall['id']))}}">
-                            {{$stall['name']}}
-                            <img width="100" height="100" class="img-circle" style="cursor:pointer;" src="{{asset('images/stall/'.$stall['image_path'])}}">
+                    <div class="col-md-4" style="margin-bottom: 35px;">
+                        <a href="{{url('/stalls/' .  base64_encode($stall['id']))}}" style=" color: #333; font-size: 20px;">
+                            {{$stall['name']}}<br>
+                            <img width="150" height="150" class="img-circle" style="cursor:pointer;" src="{{asset('images/stall/'.$stall['image_path'])}}">
                         </a>
                     </div>
                 @endforeach
@@ -78,8 +77,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-                    <div class="about-heading">
-                        <h2>What's new?</h2>
+                    <div style="text-align: center;">
+                        <h2><span style="font-family: 'Tastysushi Line'; font-size: 120px;">What<span style="font-family:'Courier New';font-size: 50px;"><i>'</i></span>s new?</span></h2>
                     </div>
                 </div>
             </div>
@@ -100,8 +99,7 @@
         </div>
 
     </div>
-            </div>
-
+    </div>
 
 
 

@@ -159,32 +159,39 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        if(!(\Session::has('transactionCode'))) :
-            //SET $transactionCode
-            $transactionCode = date("dmy") . Auth::user()->id . date("siH");
-            Session::put('transactionCode', $transactionCode);
-        else:
-            $transactionCode = Session::get('transactionCode');
-        endif;
+        if(Auth::guest())
+        {
+            return redirect('login');
+        }
+        else
+        {
+            if (!(\Session::has('transactionCode'))) :
+                //SET $transactionCode
+                $transactionCode = date("dmy") . Auth::user()->id . date("siH");
+                Session::put('transactionCode', $transactionCode);
+            else:
+                $transactionCode = Session::get('transactionCode');
+            endif;
 
-        $validatedOrder = $this->validate($request,[
-            'stallId' => 'required|numeric',
-            'productId' => 'required|numeric',
-        ]);
+            $validatedOrder = $this->validate($request, [
+                'stallId' => 'required|numeric',
+                'productId' => 'required|numeric',
+            ]);
 
-        $product = Menu::find($validatedOrder['productId']);
+            $product = Menu::find($validatedOrder['productId']);
 
-        $order                      = array();
-        $order['transaction_code']  = $transactionCode;
-        $order['stall_id']          = $validatedOrder['stallId'];
-        $order['product_id']        = $validatedOrder['productId'];
-        $order['customer_id']       = Auth::user()->id;
-        $order['quantity']          = 1;
-        $order['status']            = config('constants.ORDER_STATUS_CART');
+            $order = array();
+            $order['transaction_code'] = $transactionCode;
+            $order['stall_id'] = $validatedOrder['stallId'];
+            $order['product_id'] = $validatedOrder['productId'];
+            $order['customer_id'] = Auth::user()->id;
+            $order['quantity'] = 1;
+            $order['status'] = config('constants.ORDER_STATUS_CART');
 
-        Order::create($order);
+            Order::create($order);
 
-        return redirect('cart/'.base64_encode($transactionCode));
+            return redirect('cart/' . base64_encode($transactionCode));
+        }
 
     }
 
@@ -280,6 +287,6 @@ class OrderController extends Controller
 
         Session::forget('cartSize');
         Session::forget('transactionCode');
-        return redirect('/');
+        return redirect('orders');
     }
 }
