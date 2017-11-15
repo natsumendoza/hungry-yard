@@ -176,7 +176,7 @@
 @yield('content')
 
 <!--bottom footer-->
-<div id="bottom-footer" class="hidden-xs">
+<div id="bottom-footer" class="">
     <div class="container">
         <div class="row">
             <div class="col-md-4">

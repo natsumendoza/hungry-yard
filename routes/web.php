@@ -8,6 +8,7 @@ use App\Gallery;
 use App\Event;
 use App\Order;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +19,8 @@ use App\Order;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/testpaymaya', 'PaymayaController@index');
 
 Route::get('/', function () {
     $stallsWithImage = DB::table('users')
