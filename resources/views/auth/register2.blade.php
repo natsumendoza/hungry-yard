@@ -102,6 +102,9 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+        span{
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -116,65 +119,67 @@
             </a>
         </div>
         <form class="form-horizontal" method="POST" action="{{ route('register') }}">
-        {{ csrf_field() }}
-        <input type="hidden" name="regType" value="customer" />
-        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-            <label for="name" class="col-md-4 control-label">Name</label>
+            {{ csrf_field() }}
+            <input type="hidden" name="regType" value="customer" />
+            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                <label for="name" class="col-md-4 control-label">Name</label>
 
-            <div class="col-md-8">
-                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
-
-                @if ($errors->has('name'))
-                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                @endif
+                <div class="col-md-8">
+                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                    @if ($errors->has('name'))
+                        <span class="help-block" style="text-align: center;">
+                        <strong>{{ $errors->first('name') }}</strong>
+                    </span>
+                    @endif
+                </div>
             </div>
-        </div>
 
-        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
-            <div class="col-md-8">
-                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                <div class="col-md-8">
+                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
 
-                @if ($errors->has('email'))
-                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                @endif
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('email') }}</strong>
+                        </span>
+                    @endif
+                </div>
             </div>
-        </div>
 
-        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-            <label for="password" class="col-md-4 control-label">Password</label>
+            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                <label for="password" class="col-md-4 control-label">Password</label>
 
-            <div class="col-md-8">
-                <input id="password" type="password" class="form-control" name="password" required>
+                <div class="col-md-8">
+                    <input id="password" type="password" class="form-control" name="password" required>
 
-                @if ($errors->has('password'))
-                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                @endif
+                    @if ($errors->has('password'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('password') }}</strong>
+                        </span>
+                    @endif
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+            <div class="form-group">
+                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
 
-            <div class="col-md-8">
-                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                <div class="col-md-8">
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary">
                     Register
                 </button>
-        </div>
+            </div>
         </form>
-</div>
+        <div class="col-md-12" style="margin-top: 10px;">
+            <a href="{{url('/')}}" style="color:#333;">← Back to Hungry Yard</a>
+        </div>
+    </div>
 </div>
 </body>
 <script>

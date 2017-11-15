@@ -6,7 +6,7 @@
         @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
         .login-page {
-            width: 400px;
+            width: 360px;
             padding: 8% 0 0;
             margin: auto;
         }
@@ -14,7 +14,7 @@
             position: relative;
             z-index: 1;
             background: #FFFFFF;
-            max-width: 400px;
+            max-width: 360px;
             margin: 0 auto 100px;
             padding: 45px;
             text-align: center;
@@ -62,7 +62,7 @@
         .container {
             position: relative;
             z-index: 1;
-            max-width: 400px;
+            max-width: 300px;
             margin: 0 auto;
         }
         .container:before, .container:after {
@@ -115,58 +115,61 @@
                 <img src="{{URL::asset('images/Hungry-Yard.jpg')}}" />
             </a>
         </div>
-        <form method="POST" action="{{ route('login') }}">
+        <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
             {{ csrf_field() }}
 
+            <input type="hidden" name="token" value="{{ $token }}">
+
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                <div class="col-md-12">
-                    <label for="email" class="col-md-12 control-label" style="text-align: center;">E-Mail Address</label>
-                </div>
-                <div class="col-md-12" style="margin-top: 5px;">
-                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
+                <div class="col-md-6">
+                    <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
 
                     @if ($errors->has('email'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
                     @endif
                 </div>
             </div>
+
             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                <div class="col-md-12">
-                    <label for="password" class="col-md-12 control-label"  style="text-align: center;">Password</label>
-                </div>
-                <div class="col-md-12" style="margin-top: 5px;">
+                <label for="password" class="col-md-4 control-label">Password</label>
+
+                <div class="col-md-6">
                     <input id="password" type="password" class="form-control" name="password" required>
 
                     @if ($errors->has('password'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
                     @endif
                 </div>
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">
-                    Login
-                </button>
 
-                <a class="btn btn-link" href="{{ route('password.request') }}">
-                    Forgot Your Password?
-                </a>
+            <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                <div class="col-md-6">
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+
+                    @if ($errors->has('password_confirmation'))
+                        <span class="help-block">
+                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                    </span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-4">
+                    <button type="submit" class="btn btn-primary">
+                        Reset Password
+                    </button>
+                </div>
             </div>
         </form>
-        <div class="col-md-12" style="margin-top: 10px;">
-            <a href="{{url('/')}}" style="color:#333;">← Back to Hungry Yard</a>
-        </div>
-    </div>
+</div>
 </div>
 </body>
-<script>
-
-    $('.message a').click(function(){
-        $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-    });
-</script>
-
 </html>
