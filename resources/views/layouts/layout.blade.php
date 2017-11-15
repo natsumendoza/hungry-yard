@@ -42,6 +42,15 @@
                 margin-top: 30px;
             }
         }
+
+        @font-face {
+            font-family: Scrap Food Regular;
+            src: url('{{ asset('fonts/scrap-food-regular.ttf')}}');
+        }
+        @font-face {
+            font-family: Tastysushi Line;
+            src: url('{{ asset('fonts/tastysushi-line.ttf')}}');
+        }
     </style>
 </head>
 
