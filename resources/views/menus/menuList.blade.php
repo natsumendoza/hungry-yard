@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="container container-height">
     <br />
     @if (\Session::has('success'))
         <div class="alert alert-success">

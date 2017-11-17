@@ -5,7 +5,7 @@
 
     <div id="about">
 
-        <div class="container">
+        <div class="container container-height">
             <br />
             @if (\Session::has('success'))
                 <div class="alert alert-success">

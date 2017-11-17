@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Order;
 use Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -16,10 +17,14 @@ class CartController extends Controller
      */
     public function index()
     {
-        $cartItems = 0;
-        Session::put('cartSize', 0);
+        if(Auth::user()->isCustomer()) {
+            $cartItems = 0;
+            Session::put('cartSize', 0);
 
-        return view('cart.cart', compact('cartItems'));
+            return view('cart.cart', compact('cartItems'));
+        } else {
+            return redirect('/');
+        }
     }
 
     /**

@@ -16,9 +16,14 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $galleryList = Gallery::all()->toArray();
+        if(Auth::user()->isAdmin()) {
+            $galleryList = Gallery::all()->toArray();
+//        $galleryList = Gallery::orderBy('created_at', 'desc')->take(5)->get();
 
-        return view('admin/gallery/galleryList', compact('galleryList', $galleryList));
+            return view('admin/gallery/galleryList', compact('galleryList', $galleryList));
+        } else {
+            return redirect('/');
+        }
     }
 
     /**

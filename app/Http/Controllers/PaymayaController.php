@@ -14,10 +14,13 @@ use Illuminate\Foundation\Auth\User;
 class PaymayaController extends Controller
 {
     public function index() {
+        $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
+        $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
+        $apiEnvironment = env('PAYMAYA_API_ENV');
         PayMayaSDK::getInstance()->initCheckout(
-            'pk-Lks2bOCVTPho0GMq69xpucndRw0iNGjvNMNmLlY7IKL',
-            'sk-C1UqJMXtAhJ4vIlgplX2bz6WZOti6pjSG5YTVIm84Tw',
-            'SANDBOX'
+            $publicApiKey,
+            $privateApiKey,
+            $apiEnvironment
         );
 
         // Checkout

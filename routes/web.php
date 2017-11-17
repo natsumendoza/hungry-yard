@@ -29,8 +29,8 @@ Route::get('/', function () {
         ->where('users.role_id', '2')
         ->get();
 
-    $gallery = Gallery::all();
-    $events = Event::all();
+    $gallery = Gallery::orderBy('created_at', 'desc')->take(5)->get();
+    $events = Event::orderBy('date', 'desc')->take(5)->get();
 
     $stalls = array();
     foreach ($stallsWithImage as $stallWithImage)
@@ -95,3 +95,4 @@ Route::resource('cart', 'CartController');
 Route::resource('transactions', 'TransactionController');
 Route::resource('event', 'EventController');
 Route::resource('gallery', 'GalleryController');
+Route::resource('customer', 'CustomerController');
