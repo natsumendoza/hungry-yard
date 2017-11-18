@@ -21,6 +21,14 @@ class PaymayaAPIController extends Controller
 
     public function __construct()
     {
+        $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
+        $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
+        $apiEnvironment = env('PAYMAYA_API_ENV');
+        PayMayaSDK::getInstance()->initCheckout(
+            $publicApiKey,
+            $privateApiKey,
+            $apiEnvironment
+        );
     }
 
     /**
@@ -103,14 +111,7 @@ class PaymayaAPIController extends Controller
 
 //        $itemCheckout->buyer = $user->buyerInfo();
 
-        $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
-        $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
-        $apiEnvironment = env('PAYMAYA_API_ENV');
-        PayMayaSDK::getInstance()->initCheckout(
-            $publicApiKey,
-            $privateApiKey,
-            $apiEnvironment
-        );
+
 
         //Checkout
         $itemCheckout = new Checkout();
@@ -190,15 +191,6 @@ class PaymayaAPIController extends Controller
     }
 
     public function success() {
-        $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
-        $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
-        $apiEnvironment = env('PAYMAYA_API_ENV');
-        PayMayaSDK::getInstance()->initCheckout(
-            $publicApiKey,
-            $privateApiKey,
-            $apiEnvironment
-        );
-
         //Checkout
         $itemCheckout = new Checkout();
 
