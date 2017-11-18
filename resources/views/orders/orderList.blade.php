@@ -53,7 +53,7 @@
                 <td style="text-align: center;">{{$order['id']}}</td>
                 <td>{{$order['transaction_code']}}</td>
                 <td>{{$order['product_name']}}</td>
-                <td><a href="{{asset('images/menu/'.$order['product_image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="30" width="40" src="{{asset('images/menu/'.$order['product_image'])}}"></a></td>
+                <td><a href="{{asset('images/menu/'.$order['product_image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="50" width="70" src="{{asset('images/menu/'.$order['product_image'])}}"></a></td>
                 <td style="text-align: center;">{{$order['quantity']}}</td>
                 <td style="text-align: right;">{{number_format($order['quantity'] * $order['product_price'], 2)}}</td>
                 <td style="text-align: center; max-width: 300px;" >{{$order['comment']}}</td>
@@ -65,8 +65,14 @@
                         <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
                         <input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($user)}}">
                     @if($order['status'] == config('constants.ORDER_STATUS_PENDING'))
-                        <input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_APPROVED'))}}">
-                        <button class="btn btn-small btn-success" type="submit">Approve</button>
+                        <form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">
+                            {{csrf_field()}}
+                            <input name="_method" type="hidden" value="PATCH">
+                            <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
+                            <input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($user)}}">
+                            <input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_APPROVED'))}}">
+                            <button class="btn btn-small btn-success" type="submit">Approve</button>
+                        </form>
                     @elseif($order['status'] == config('constants.ORDER_STATUS_PAID'))
                             <input name="status" type="hidden" value="{{base64_encode(config('ORDER_STATUS_SERVED'))}}">
                             <button class="btn btn-small btn-success" type="submit">Serve</button>
@@ -75,8 +81,14 @@
                     @endif
 
                     @if($order['status'] == config('constants.ORDER_STATUS_PENDING'))
-                        <input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_CANCELLED'))}}">
-                        <button class="btn btn-small btn-danger" type="submit">Cancel</button>
+                        <form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">
+                            {{csrf_field()}}
+                            <input name="_method" type="hidden" value="PATCH">
+                            <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
+                            <input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($user)}}">
+                            <input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_CANCELLED'))}}">
+                            <button class="btn btn-small btn-danger" type="submit">Cancel</button>
+                        </form>
                     @endif
                     </form>
                 </td>

@@ -244,7 +244,7 @@ class OrderController extends Controller
         $notification           = array();
         $notification['from']   = Auth::user()->id;
         $notification['to']     = base64_decode($request['customer_id']);
-        $notification['action'] = "[".Auth::user()->name."] " . base64_decode($request['status']) ." the order with an ID " . $id ." under Transaction Code " . base64_decode($request['transaction_code']);
+        $notification['action'] = Auth::user()->name." " . base64_decode($request['status']) ." the order with an ID " . $id ." under Transaction Code " . base64_decode($request['transaction_code']);
         $notification['read_flag']  = config('constants.ENUM_NO');
         Notification::create($notification);
 
