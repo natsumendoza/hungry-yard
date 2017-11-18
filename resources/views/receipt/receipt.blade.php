@@ -24,14 +24,14 @@
 </head>
 
 <body>
-<table width="50%">
+<table width="100%">
     <thead>
         <tr>
             <th style="text-align: center;"  colspan="2"><p style="font-size: 20px;">HUNGRY YARD</p></th>
         </tr>
     </thead>
 </table>
-<table width="50%" class="border">
+<table width="100%" class="border">
     <thead>
         <tr>
             <th style="text-align: center;" class="border-bot" colspan="2"><span style="font-size: 20px;">Receipt</span></th>
@@ -54,6 +54,14 @@
         <tr class="border-bot">
             <td style="font-weight: bold;" class="border-bot">Transaction Code: </td>
             <td class="border-bot">{{$data['receipt'][0]['transaction_code']}}</td>
+        </tr>
+        <tr class="border-bot">
+            <td style="font-weight: bold;" class="border-bot">Paymaya Receipt No: </td>
+            <td class="border-bot">{{$data['receipt'][0]['paymaya_receipt_number']}}</td>
+        </tr>
+        <tr class="border-bot">
+            <td style="font-weight: bold;" class="border-bot">Paymaya Transaction Ref: </td>
+            <td class="border-bot">{{$data['receipt'][0]['paymaya_transaction_reference_number']}}</td>
         </tr>
         <tr class="border-bot">
             <td style="font-weight: bold;" class="border-bot">Created Date: </td>
