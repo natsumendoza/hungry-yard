@@ -39,8 +39,12 @@
                                 {{--</form>--}}
                             {{--</td>--}}
                             <td style="text-align: center;">
-                                <a href="" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
-                                <button class="btn btn-small btn-danger" type="submit"><i class="glyphicon glyphicon-trash"></i></button>
+                                <a href="{{action('StallController@edit', base64_encode($user['id']))}}" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                                <form action="{{action('StallController@destroy', base64_encode($user['id']))}}" method="post">
+                                    {{csrf_field()}}
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    <button class="btn btn-small btn-danger" type="submit"><i class="glyphicon glyphicon-trash"></i></button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

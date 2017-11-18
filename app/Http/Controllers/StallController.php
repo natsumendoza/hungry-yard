@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\User;
 use App\StallImage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class StallController extends Controller
 {
@@ -20,21 +21,25 @@ class StallController extends Controller
     {
 
 //        $users = User::all()->where('role_id', '2')->toArray();
-        $usersWithImage = DB::table('users')
-            ->join('stall_images', 'users.id', 'stall_images.user_id')
-            ->select('users.id', 'users.name', 'users.name', 'users.email', 'stall_images.image_path')
-            ->where('users.role_id', '2')
-            ->get();
+        if (Auth::user()->isAdmin()) {
+            $usersWithImage = DB::table('users')
+                ->join('stall_images', 'users.id', 'stall_images.user_id')
+                ->select('users.id', 'users.name', 'users.name', 'users.email', 'stall_images.image_path')
+                ->where('users.role_id', '2')
+                ->get();
 
-        $users = array();
-        foreach ($usersWithImage as $userWithImage)
-        {
-            $userWithImage                   = (array) $userWithImage;
-            $users[$userWithImage['id']] = $userWithImage;
+            $users = array();
+            foreach ($usersWithImage as $userWithImage)
+            {
+                $userWithImage                   = (array) $userWithImage;
+                $users[$userWithImage['id']] = $userWithImage;
+            }
+
+
+            return view('admin/stalls/stalls', compact('users', $users));
+        } else {
+            return redirect('/');
         }
-
-
-        return view('admin/stalls/stalls', compact('users', $users));
     }
 
     /**
@@ -101,7 +106,11 @@ class StallController extends Controller
      */
     public function edit($id)
     {
-        //
+        $id = base64_decode($id);
+        $stall = User::find($id);
+        $stallImage = StallImage::where('user_id', $id)->get()[0];
+
+        return view('admin/stalls/editstall')->with(array('stall' => $stall, 'stallImage' => $stallImage));
     }
 
     /**
@@ -113,7 +122,34 @@ class StallController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $id = base64_decode($id);
+        $stall = User::find($id);
+        $stallImage = StallImage::where('user_id', $id)->get()[0];
+
+        $validatedStall = $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+        ]);
+
+
+        if($request->file('image') != NULL)
+        {
+            File::delete(public_path('images/stall/'.$stallImage['image_path']));
+
+            $cleanName = preg_replace('/\s+/', '_', $validatedStall['name']);
+            $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('images/stall'), $imageName);
+
+            $stallImage['image_path'] = $imageName;
+            $stallImage->save();
+        }
+
+        $stall['name'] = $validatedStall['name'];
+        $stall['email'] = $validatedStall['email'];
+
+        $stall->save();
+
+        return redirect('stall')->with('success', 'Stall has been updated');
     }
 
     /**
@@ -124,6 +160,16 @@ class StallController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $id = base64_decode($id);
+        $stall = User::find($id);
+        $stallImage = StallImage::where('user_id', $id)->get()[0];
+
+        File::delete(public_path('images/stall/'.$stallImage['image_path']));
+
+        $stall->delete();
+        $stallImage->delete();
+
+        return redirect('stall')->with('success', 'Stall has been deleted');
     }
 }

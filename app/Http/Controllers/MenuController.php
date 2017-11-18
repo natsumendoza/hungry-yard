@@ -16,10 +16,14 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menuList = Menu::where('stall_id', Auth::user()->id)
-            ->get()->toArray();
+        if(Auth::user()->isCustomer()) {
+            $menuList = Menu::where('stall_id', Auth::user()->id)
+                ->get()->toArray();
 
-        return view('menus.menuList', compact('menuList'));
+            return view('menus.menuList', compact('menuList'));
+        } else {
+            return redirect('/');
+        }
     }
 
     /**

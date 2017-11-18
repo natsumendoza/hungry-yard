@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use DateTime;
 
 class EventController extends Controller
 {
@@ -16,9 +17,14 @@ class EventController extends Controller
      */
     public function index()
     {
-        $eventList = Event::all()->toArray();
+        if(Auth::user()->isAdmin()) {
+            $eventList = Event::all()->toArray();
+//        $eventList = Event::orderBy('date', 'desc')->take(5)->get();
 
-        return view('admin/event/eventList', compact('eventList', $eventList));
+            return view('admin/event/eventList', compact('eventList', $eventList));
+        } else {
+            return redirect('/');
+        }
     }
 
     /**
@@ -50,10 +56,14 @@ class EventController extends Controller
         $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
         $request->file('image')->move(public_path('images/event'), $imageName);
 
+
+        $date = new DateTime($validatedEvent['date']);
+        $formattedDate = $date->format('Y-m-d H:i:s');
+
         $event = array();
         $event['name'] = $validatedEvent['name'];
         $event['description'] = $validatedEvent['description'];
-        $event['date'] = $validatedEvent['date'];
+        $event['date'] = $formattedDate;
         $event['image_path'] = $imageName;
 
         Event::create($event);

@@ -10,17 +10,21 @@ use PayMaya\Model\Checkout\ItemAmount;
 use PayMaya\Model\Checkout\ItemAmountDetails;
 use PayMaya\API\Checkout;
 use Illuminate\Foundation\Auth\User;
+use PayMaya\API\Webhook;
 
 class PaymayaController extends Controller
 {
     public function index() {
+        $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
+        $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
+        $apiEnvironment = env('PAYMAYA_API_ENV');
         PayMayaSDK::getInstance()->initCheckout(
-            'pk-Lks2bOCVTPho0GMq69xpucndRw0iNGjvNMNmLlY7IKL',
-            'sk-C1UqJMXtAhJ4vIlgplX2bz6WZOti6pjSG5YTVIm84Tw',
-            'SANDBOX'
+            $publicApiKey,
+            $privateApiKey,
+            $apiEnvironment
         );
 
-        // Checkout
+         //Checkout
         $itemCheckout = new Checkout();
         $user = new PaymayaUser();
         $itemCheckout->buyer = $user->buyerInfo();
@@ -45,14 +49,27 @@ class PaymayaController extends Controller
         $itemCheckout->items = array($item);
         $itemCheckout->totalAmount = $itemAmount;
         $itemCheckout->requestReferenceNumber = "123456789";
+//        $itemCheckout->redirectUrl = array(
+//            "success" => "https://shop.com/success",
+//            "failure" => "https://shop.com/failure",
+//            "cancel" => "https://shop.com/cancel"
+//        );
         $itemCheckout->redirectUrl = array(
-            "success" => "https://shop.com/success",
-            "failure" => "https://shop.com/failure",
-            "cancel" => "https://shop.com/cancel"
+            "success" => "http://127.0.0.1:8000/success",
+            "failure" => "http://127.0.0.1:8000/testpaymaya",
+            "cancel" => "http://127.0.0.1:8000/testpaymaya"
         );
         $itemCheckout->execute();
 
+
         echo $itemCheckout->id .'<br>'; // Checkout ID
-        echo $itemCheckout->url; // Checkout URL
+        echo $itemCheckout->url .'<br>'; // Checkout URL
+
+        echo '<pre>';
+        @$itemCheckout->retrieve();
+
+
+
+
     }
 }

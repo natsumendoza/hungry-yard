@@ -134,11 +134,15 @@ class OrderController extends Controller
             $view = 'orders.orderListByCustomer';
         }
 
-        $data['orderList'] = $orderList;
-        $data['transactions'] = $transactions;
-        $data['transactionList'] = $transactionList;
+        if(!Auth::user()->isAdmin()) {
+            $data['orderList'] = $orderList;
+            $data['transactions'] = $transactions;
+            $data['transactionList'] = $transactionList;
 
-        return view($view, compact('data'));
+            return view($view, compact('data'));
+        } else {
+            return redirect('/');
+        }
     }
 
     /**

@@ -109,6 +109,10 @@ textarea:focus {
 	z-index: 3;
 }
 
+.container-height {
+	min-height: 500px;
+}
+
 /*Header*/
 /*Top nav left*/
 .top-nav {
