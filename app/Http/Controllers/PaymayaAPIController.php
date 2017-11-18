@@ -169,9 +169,9 @@ class PaymayaAPIController extends Controller
 //            "cancel" => "https://shop.com/cancel"
 //        );
         $itemCheckout->redirectUrl = array(
-            "success" => "http://127.0.0.1:8000/success",
-            "failure" => "http://127.0.0.1:8000/testpaymaya",
-            "cancel" => "http://127.0.0.1:8000/testpaymaya"
+            "success" => env('APP_URL')."/success",
+            "failure" => env('APP_URL')."/testpaymaya",
+            "cancel" => env('APP_URL')."/testpaymaya"
         );
         $itemCheckout->execute();
 

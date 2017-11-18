@@ -56,6 +56,14 @@
             <td class="border-bot">{{$data['receipt'][0]['transaction_code']}}</td>
         </tr>
         <tr class="border-bot">
+            <td style="font-weight: bold;" class="border-bot">Paymaya Receipt No: </td>
+            <td class="border-bot">{{$data['receipt'][0]['paymaya_receipt_number']}}</td>
+        </tr>
+        <tr class="border-bot">
+            <td style="font-weight: bold;" class="border-bot">Paymaya Transaction Ref: </td>
+            <td class="border-bot">{{$data['receipt'][0]['paymaya_transaction_reference_number']}}</td>
+        </tr>
+        <tr class="border-bot">
             <td style="font-weight: bold;" class="border-bot">Created Date: </td>
             <td class="border-bot">{{$createdDate}}</td>
         </tr>
