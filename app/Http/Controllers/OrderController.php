@@ -241,6 +241,8 @@ class OrderController extends Controller
         Order::where('id', $id)
             ->update(['status' => $status]);
 
+        //TODO MOVE TO COMMON NOTIF STORE
+        date_default_timezone_set('Asia/Manila');
         $notification           = array();
         $notification['from']   = Auth::user()->id;
         $notification['to']     = base64_decode($request['customer_id']);
@@ -259,7 +261,17 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        $order = Order::find(base64_decode($id));
+        $id =base64_decode($id);
+        $order = Order::find($id);
+
+        //TODO MOVE TO COMMON NOTIF STORE
+        date_default_timezone_set('Asia/Manila');
+        $notification           = array();
+        $notification['from']   = Auth::user()->id;
+        $notification['to']     = $order['stall_id'];
+        $notification['action'] = "User [". Auth::user()->id ."] " . Auth::user()->name . " DELETED the order with an ID " . $id ." under Transaction Code " . $order['transaction_code'];
+        $notification['read_flag']  = config('constants.ENUM_NO');
+        Notification::create($notification);
 
         $order->delete();
 
@@ -296,6 +308,24 @@ class OrderController extends Controller
 
         Order::where('transaction_code', $transactionCode)
             ->update($data);
+
+        $orderList = Order::where('transaction_code', $transactionCode)
+            ->get()->toArray();
+
+        $stalls = array_column($orderList,'stall_id', 'stall_id');
+
+        foreach ($stalls as $stall)
+        {
+            //TODO MOVE TO COMMON NOTIF STORE
+            date_default_timezone_set('Asia/Manila');
+            $notification = array();
+            $notification['from'] = Auth::user()->id;
+            $notification['to'] = $stall;
+            $notification['action'] = "User [". Auth::user()->id ."] " . Auth::user()->name . " has placed order/s with Transaction Code " . $transactionCode;
+            $notification['read_flag'] = config('constants.ENUM_NO');
+            Notification::create($notification);
+        }
+
 
         Session::forget('cartSize');
         Session::forget('transactionCode');

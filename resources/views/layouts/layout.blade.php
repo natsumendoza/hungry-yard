@@ -173,7 +173,7 @@
                         @if(!Auth::guest())
                             @if(Auth::user()->isOwner() OR Auth::user()->isCustomer())
                             <li class="hidden-sm hidden-xs">
-                                <a href="#" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
+                                <a href="{{url('/notifications')}}" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
                             </li>
                             @endif
                         @endif

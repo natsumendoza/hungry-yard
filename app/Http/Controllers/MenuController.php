@@ -16,7 +16,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->isCustomer()) {
+        if(Auth::user()->isOwner()) {
             $menuList = Menu::where('stall_id', Auth::user()->id)
                 ->get()->toArray();
 

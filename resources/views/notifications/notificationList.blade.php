@@ -21,7 +21,7 @@
             <th style="text-align: center" colspan="2">Notifications</th>
         </tr>
         <tr>
-            <th style="text-align: center" width="20%">Action</th>
+            <th style="text-align: center" width="40%">Action</th>
             <th style="text-align: center" width="20%">Date and Time</th>
         </tr>
         </thead>

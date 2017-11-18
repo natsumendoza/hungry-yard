@@ -256,7 +256,7 @@ class TransactionController extends Controller
                  ])
             ->update($data);
 
-
+        date_default_timezone_set('Asia/Manila');
         // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
         $notification           = array();
         $notification['from']   = Auth::user()->id;
