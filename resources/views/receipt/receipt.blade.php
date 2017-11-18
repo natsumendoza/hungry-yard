@@ -24,14 +24,14 @@
 </head>
 
 <body>
-<table width="100%">
+<table width="" style="width: 100%">
     <thead>
         <tr>
             <th style="text-align: center;"  colspan="2"><p style="font-size: 20px;">HUNGRY YARD</p></th>
         </tr>
     </thead>
 </table>
-<table width="100%" class="border">
+<table width="100%" class="border" style="width: 100%">
     <thead>
         <tr>
             <th style="text-align: center;" class="border-bot" colspan="2"><span style="font-size: 20px;">Receipt</span></th>
