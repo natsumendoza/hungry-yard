@@ -23,6 +23,8 @@ class CreateTransactionsTable extends Migration
             $table->decimal('total_price', 10, 2);
             $table->string('order_type');
             $table->string('status');
+            $table->string('paymaya_receipt_number')->nullable();
+            $table->string('paymaya_transsaction_reference_number')->nullable();
             $table->timestamps();
         });
     }

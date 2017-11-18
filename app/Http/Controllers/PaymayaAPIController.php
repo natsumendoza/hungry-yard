@@ -200,15 +200,18 @@ class PaymayaAPIController extends Controller
         $itemCheckout->id = session('checkoutId');
         $retrievedCheckout = json_decode(@$itemCheckout->retrieve(), true);
         $status = $retrievedCheckout['status'];
+        print_r($retrievedCheckout);
 
         if($status === 'COMPLETED') {
             $transId = base64_decode($transactionPending['trans_id']);
 
             $transaction = Transaction::find($transId);
             $transaction['status'] = config('constants.TRANSACTION_STATUS_PAID');
+            $transaction['paymaya_receipt_number'] = $retrievedCheckout['receiptNumber'];
+            $transaction['paymaya_transsaction_reference_number'] = $retrievedCheckout['transactionReferenceNumber'];
             $transaction->save();
 
-            return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.');
+            return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.')->send();
         }
 
     }
