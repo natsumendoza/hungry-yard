@@ -14,7 +14,9 @@ class Transaction extends Model
         'pickup_time',
         'total_price',
         'order_type',
-        'status'
+        'status',
+        'paymaya_receipt_number',
+        'paymaya_transsaction_reference_number'
     ];
 
 }

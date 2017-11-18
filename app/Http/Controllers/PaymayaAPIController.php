@@ -12,6 +12,7 @@ use PayMaya\Model\Checkout\ItemAmount;
 use PayMaya\Model\Checkout\ItemAmountDetails;
 use PayMaya\API\Checkout;
 use App\Menu;
+use App\Transaction;
 
 class PaymayaAPIController extends Controller
 {
@@ -20,18 +21,6 @@ class PaymayaAPIController extends Controller
 
     public function __construct()
     {
-        $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
-        $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
-        $apiEnvironment = env('PAYMAYA_API_ENV');
-        PayMayaSDK::getInstance()->initCheckout(
-            $publicApiKey,
-            $privateApiKey,
-            $apiEnvironment
-        );
-
-        //Checkout
-        $this->itemCheckout = new Checkout();
-        $user = new PaymayaUser();
     }
 
     /**
@@ -41,10 +30,7 @@ class PaymayaAPIController extends Controller
      */
     public function index()
     {
-        echo '<pre>';
-        $this->itemCheckout->id = session('checkoutId');
-        echo '<pre>';
-        print_r(@$this->itemCheckout->retrieve());
+        $this->processPaymaya();
     }
 
     /**
@@ -66,70 +52,6 @@ class PaymayaAPIController extends Controller
     public function store(Request $request)
     {
 
-//        $itemCheckout->buyer = $user->buyerInfo();
-
-
-
-
-// Item
-        $itemAmountDetails = new ItemAmountDetails();
-        $itemAmountDetails->shippingFee = "";
-        $itemAmountDetails->tax = "";
-        $itemAmountDetails->subtotal = "50.00";
-        $itemAmount = new ItemAmount();
-        $itemAmount->currency = "PHP";
-        $itemAmount->value = base64_decode($request['total_price']);
-//        $item = new Item();
-//        $item->name = "Leather Belt";
-//        $item->code = "pm_belt";
-//        $item->description = "Medium-sized belt made from authentic leather";
-//        $item->quantity = "1";
-//        $item->amount = $itemAmount;
-//        $item->totalAmount = $itemAmount;
-
-        $productIds = (strpos($request['productIds'], ',') > 0) ? explode(',', $request['productIds']) : array($request['productIds']);
-
-        $quantities = (strpos($request['quantities'], ',') > 0) ? explode(',', $request['quantities']) : array($request['quantities']);
-
-        $items = array();
-        for ($i = 0; $i < count($productIds); $i++) {
-//            echo $productIds[$i];
-            $menu = Menu::find($productIds[$i]);
-            $item = new Item();
-            $item->name = $menu['name'];
-            $item->quantity = $quantities[$i];
-            $item->amount = $itemAmount;
-            $item->totalAmount = $itemAmount;
-            $items[$i] = $item;
-        }
-
-        $this->itemCheckout->items = array($item);
-        $this->itemCheckout->totalAmount = $itemAmount;
-        $this->itemCheckout->requestReferenceNumber = "123456789";
-//        $itemCheckout->redirectUrl = array(
-//            "success" => "https://shop.com/success",
-//            "failure" => "https://shop.com/failure",
-//            "cancel" => "https://shop.com/cancel"
-//        );
-        $this->itemCheckout->redirectUrl = array(
-            "success" => "http://127.0.0.1:8000/success",
-            "failure" => "http://127.0.0.1:8000/testpaymaya",
-            "cancel" => "http://127.0.0.1:8000/testpaymaya"
-        );
-        $this->itemCheckout->execute();
-
-
-//        echo $itemCheckout->id .'<br>'; // Checkout ID
-//        echo $itemCheckout->url .'<br>'; // Checkout URL
-//
-//        echo '<pre>';
-//        print_r(@$itemCheckout->retrieve());
-
-        session(['checkoutId' => $this->itemCheckout->id]);
-//        echo session('checkoutId');
-//        die;
-
-        return Redirect::to($this->itemCheckout->url);
     }
 
     /**
@@ -175,5 +97,122 @@ class PaymayaAPIController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function processPaymaya() {
+
+//        $itemCheckout->buyer = $user->buyerInfo();
+
+        $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
+        $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
+        $apiEnvironment = env('PAYMAYA_API_ENV');
+        PayMayaSDK::getInstance()->initCheckout(
+            $publicApiKey,
+            $privateApiKey,
+            $apiEnvironment
+        );
+
+        //Checkout
+        $itemCheckout = new Checkout();
+
+        $transactionPending = session('transactionPending');
+
+
+// Item
+        $itemAmountDetails = new ItemAmountDetails();
+        $itemAmountDetails->shippingFee = "";
+        $itemAmountDetails->tax = "";
+        $itemAmountDetails->subtotal = "50.00";
+        $itemAmount = new ItemAmount();
+        $itemAmount->currency = "PHP";
+        $itemAmount->value = base64_decode($transactionPending['total_price']);
+//        $item = new Item();
+//        $item->name = "Leather Belt";
+//        $item->code = "pm_belt";
+//        $item->description = "Medium-sized belt made from authentic leather";
+//        $item->quantity = "1";
+//        $item->amount = $itemAmount;
+//        $item->totalAmount = $itemAmount;
+
+        $decodedPID = base64_decode($transactionPending['product_ids']);
+        $decodedQuantities = base64_decode($transactionPending['quantities']);
+
+        $productIds = (strpos($decodedPID, ',') > 0) ? explode(',', $decodedPID) : array($decodedPID);
+
+        $quantities = (strpos($decodedQuantities, ',') > 0) ? explode(',', $decodedQuantities) : array($decodedQuantities);
+
+        $items = array();
+        for ($i = 0; $i < count($productIds); $i++) {
+//            echo $productIds[$i];
+            $menu = Menu::find($productIds[$i]);
+            $item = new Item();
+            $item->name = $menu['name'];
+            $item->quantity = $quantities[$i];
+            $item->amount = $itemAmount;
+            $item->totalAmount = $itemAmount;
+            $items[$i] = $item;
+        }
+
+        $itemCheckout->items = array($item);
+        $itemCheckout->totalAmount = $itemAmount;
+        $itemCheckout->requestReferenceNumber = "123456789";
+//        $itemCheckout->redirectUrl = array(
+//            "success" => "https://shop.com/success",
+//            "failure" => "https://shop.com/failure",
+//            "cancel" => "https://shop.com/cancel"
+//        );
+        $itemCheckout->redirectUrl = array(
+            "success" => "http://127.0.0.1:8000/success",
+            "failure" => "http://127.0.0.1:8000/testpaymaya",
+            "cancel" => "http://127.0.0.1:8000/testpaymaya"
+        );
+        $itemCheckout->execute();
+
+
+//        echo $itemCheckout->id .'<br>'; // Checkout ID
+//        echo @$itemCheckout->url .'<br>'; // Checkout URL
+//
+//        echo '<pre>';
+//        print_r(@$itemCheckout->retrieve());
+
+
+//        echo session('checkoutId');
+//        die;
+        session(['checkoutId' => $itemCheckout->id]);
+        Redirect::to(@$itemCheckout->url)->send();
+
+    }
+
+    public function success() {
+        $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
+        $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
+        $apiEnvironment = env('PAYMAYA_API_ENV');
+        PayMayaSDK::getInstance()->initCheckout(
+            $publicApiKey,
+            $privateApiKey,
+            $apiEnvironment
+        );
+
+        //Checkout
+        $itemCheckout = new Checkout();
+
+        $transactionPending = session('transactionPending');
+        $itemCheckout->id = session('checkoutId');
+        $retrievedCheckout = json_decode(@$itemCheckout->retrieve(), true);
+        $status = $retrievedCheckout['status'];
+        print_r($retrievedCheckout);
+
+        if($status === 'COMPLETED') {
+            $transId = base64_decode($transactionPending['trans_id']);
+
+            $transaction = Transaction::find($transId);
+            $transaction['status'] = config('constants.TRANSACTION_STATUS_PAID');
+            $transaction['paymaya_receipt_number'] = $retrievedCheckout['receiptNumber'];
+            $transaction['paymaya_transsaction_reference_number'] = $retrievedCheckout['transactionReferenceNumber'];
+            $transaction->save();
+
+            return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.')->send();
+        }
+
     }
 }
