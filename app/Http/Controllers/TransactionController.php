@@ -93,7 +93,6 @@ class TransactionController extends Controller
         $transactionPending['product_ids'] = base64_encode($request['productIds']);
         $transactionPending['quantities'] = base64_encode($request['quantities']);
 
-
         session(['transactionPending' => $transactionPending]);
         return redirect()->action(
             'PaymayaAPIController@store'

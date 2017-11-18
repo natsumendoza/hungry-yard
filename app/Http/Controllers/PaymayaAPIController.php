@@ -123,9 +123,10 @@ class PaymayaAPIController extends Controller
         $itemAmountDetails->shippingFee = "";
         $itemAmountDetails->tax = "";
         $itemAmountDetails->subtotal = "50.00";
-        $itemAmount = new ItemAmount();
-        $itemAmount->currency = "PHP";
-        $itemAmount->value = base64_decode($transactionPending['total_price']);
+
+        $itemAmountTotal = new ItemAmount();
+        $itemAmountTotal->currency = "PHP";
+        $itemAmountTotal->value = base64_decode($transactionPending['total_price']);
 //        $item = new Item();
 //        $item->name = "Leather Belt";
 //        $item->code = "pm_belt";
@@ -145,6 +146,11 @@ class PaymayaAPIController extends Controller
         for ($i = 0; $i < count($productIds); $i++) {
 //            echo $productIds[$i];
             $menu = Menu::find($productIds[$i]);
+
+            $itemAmount = new ItemAmount();
+            $itemAmount->currency = "PHP";
+            $itemAmount->value = $menu['price'];
+
             $item = new Item();
             $item->name = $menu['name'];
             $item->quantity = $quantities[$i];
@@ -153,8 +159,8 @@ class PaymayaAPIController extends Controller
             $items[$i] = $item;
         }
 
-        $itemCheckout->items = array($item);
-        $itemCheckout->totalAmount = $itemAmount;
+        $itemCheckout->items = $items;
+        $itemCheckout->totalAmount = $itemAmountTotal;
         $itemCheckout->requestReferenceNumber = "123456789";
 //        $itemCheckout->redirectUrl = array(
 //            "success" => "https://shop.com/success",
