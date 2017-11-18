@@ -168,7 +168,7 @@
                 </tr>
                 <tr>
                     <td>Preparation Time: </td>
-                    <td>{{$totalPrepTime . " min/s (" . $converted_hrs . "hr " . $converted_mins ."min"}})<br><b>Note: This value can be change the stall owner.</td>
+                    <td>{{$totalPrepTime . " min/s (" . $converted_hrs . "hr " . $converted_mins ."min )"}}<br><b>Note: This value can be change the stall owner.</b></td>
                 </tr>
 
                 <tr>
@@ -195,10 +195,10 @@
                     @endphp
                     <td style="color: {{$errFontColor}}; {{$fontWeight}}">Pickup Time: </td>
                     <td>
-                        <input type="time" class="time_{{$transactionCode."_".$stallId}}" id="pickup_time" name="pickup_time" class="form-control" value="{{$pickupTime}}" min="14:00" max="24:00" required autofocus>
+                        <input type="time" class="time_{{$transactionCode."_".$stallId}}" id="pickup_time" name="pickup_time" class="form-control" value="{{$pickupTime}}" min="16:00" max="24:00" required autofocus>
                         @if ($hasError)
                             <br>
-                            <span class="help-blockr">
+                            <span class="help-blocker">
                                 <strong style="color: {{$errFontColor}};">{{ str_replace("date", "time", $errors->first('pickup_time')) }}</strong>
                             </span>
                         @endif
@@ -219,7 +219,7 @@
                     <td colspan="2">
                         @if($update)
                             <input name="_method" type="hidden" value="PATCH">
-                            <a>Download Receipt</a>
+                            <a href="{{url('receipt/'.base64_encode($transactionCode).'/'.base64_encode($stallId))}}">Download Receipt</a>
                         @endif
                         <button type="submit" class="btn btn-primary" style="width:190px; float: right;">{{$buttonLabel}}</button>
                     </td>
@@ -270,20 +270,20 @@
 </div>
 </body>
 <script>
-    $(function($) {
+    $(function() {
         var transactions = <?php echo json_encode(@$data['transactions']);?>;
         var stalls       = <?php echo json_encode(@$data['stalls']);?>;
         var arrPrepTotalTime = <?php echo json_encode($arrPrepTotalTime);?>;
         var arrCreatedAt = <?php echo json_encode($arrCreatedAt);?>
 
-//        var pd = new Date();
+        var pd = new Date();
 
-//        $.each( transactions, function( tran_id, tran_val ) {
-//
-//            $.each( stalls, function( stall_id, stall_name ) {
-//                $('#pd_' + tran_id + '_' + stall_id).text((pd.getMonth()+1)+"/"+pd.getDate()+"/"+pd.getFullYear());
-//            });
-//        });
+        $.each( transactions, function( tran_id, tran_val ) {
+
+            $.each( stalls, function( stall_id, stall_name ) {
+                $('#pd_' + tran_id + '_' + stall_id).text((pd.getMonth()+1)+"/"+pd.getDate()+"/"+pd.getFullYear());
+            });
+        });
 
         setInterval(function() {
 

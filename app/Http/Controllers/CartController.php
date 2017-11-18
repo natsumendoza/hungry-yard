@@ -97,7 +97,7 @@ class CartController extends Controller
         $cartItem = Order::find($id);
 
         $validatedCartItem = $this->validate($request, [
-            'quantity' => 'required',
+            'quantity' => 'required|numeric',
             'comment' => 'max:150',
         ]);
 
