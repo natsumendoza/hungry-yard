@@ -214,7 +214,7 @@ class PaymayaAPIController extends Controller
             $transaction = Transaction::find($transId);
             $transaction['status'] = config('constants.TRANSACTION_STATUS_PAID');
             $transaction['paymaya_receipt_number'] = $retrievedCheckout['receiptNumber'];
-            $transaction['paymaya_transsaction_reference_number'] = $retrievedCheckout['transactionReferenceNumber'];
+            $transaction['paymaya_transaction_reference_number'] = $retrievedCheckout['transactionReferenceNumber'];
             $transaction->save();
 
             return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.')->send();

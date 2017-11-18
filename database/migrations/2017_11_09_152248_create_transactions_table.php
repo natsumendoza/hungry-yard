@@ -24,7 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->string('order_type');
             $table->string('status');
             $table->string('paymaya_receipt_number')->nullable();
-            $table->string('paymaya_transsaction_reference_number')->nullable();
+            $table->string('paymaya_transaction_reference_number')->nullable();
             $table->timestamps();
         });
     }
