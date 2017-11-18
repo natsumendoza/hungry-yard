@@ -7,6 +7,7 @@ use App\Order;
 Use App\Menu;
 Use App\User;
 use App\Transaction;
+use App\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -239,6 +240,13 @@ class OrderController extends Controller
 
         Order::where('id', $id)
             ->update(['status' => $status]);
+
+        $notification           = array();
+        $notification['from']   = Auth::user()->id;
+        $notification['to']     = base64_decode($request['customer_id']);
+        $notification['action'] = "[".Auth::user()->name."] " . base64_decode($request['status']) ." the order with an ID " . $id ." under Transaction Code " . base64_decode($request['transaction_code']);
+        $notification['read_flag']  = config('constants.ENUM_NO');
+        Notification::create($notification);
 
         return redirect('orders')->with('success','Order with ID ' . $id . ' status has been updated to ' . $status);
     }

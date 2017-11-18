@@ -21,7 +21,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th colspan="8">Transaction code: <i>{{$transactionCode}}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ordered By: <i>{{$user}}</i></th>
+                <th colspan="9">Transaction code: <i>{{$transactionCode}}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ordered By: <i>{{$user}}</i></th>
             </tr>
             <tr>
                 <th style="text-align: center">ID</th>
@@ -29,6 +29,7 @@
                 <th style="text-align: center" colspan="2">Product ID</th>
                 <th style="text-align: center">Quantity</th>
                 <th style="text-align: center">Total Price</th>
+                <th style="text-align: center">Comment</th>
                 <th style="text-align: center">Status</th>
                 <th style="text-align: center">Action</th>
             </tr>
@@ -55,41 +56,36 @@
                 <td><a href="{{asset('images/menu/'.$order['product_image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="30" width="40" src="{{asset('images/menu/'.$order['product_image'])}}"></a></td>
                 <td style="text-align: center;">{{$order['quantity']}}</td>
                 <td style="text-align: right;">{{number_format($order['quantity'] * $order['product_price'], 2)}}</td>
+                <td style="text-align: center; max-width: 300px;" >{{$order['comment']}}</td>
                 <td style="text-align: center;">{{$order['status']}}</td>
                 <td style="text-align: center;">
-                    @if($order['status'] == config('constants.ORDER_STATUS_PENDING'))
                     <form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">
                         {{csrf_field()}}
                         <input name="_method" type="hidden" value="PATCH">
+                        <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
+                        <input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($user)}}">
+                    @if($order['status'] == config('constants.ORDER_STATUS_PENDING'))
                         <input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_APPROVED'))}}">
                         <button class="btn btn-small btn-success" type="submit">Approve</button>
-                    </form>
                     @elseif($order['status'] == config('constants.ORDER_STATUS_PAID'))
-                        <form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">
-                            {{csrf_field()}}
-                            <input name="_method" type="hidden" value="PATCH">
                             <input name="status" type="hidden" value="{{base64_encode(config('ORDER_STATUS_SERVED'))}}">
                             <button class="btn btn-small btn-success" type="submit">Serve</button>
-                        </form>
                     @elseif( $order['status'] == config('constants.ORDER_STATUS_APPROVED') OR $order['status'] == config('constants.ORDER_STATUS_CANCELLED') OR $order['status'] == config('constants.ORDER_STATUS_SERVED') )
                         <i>No action available</i>
                     @endif
 
                     @if($order['status'] == config('constants.ORDER_STATUS_PENDING'))
-                    <form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">
-                        {{csrf_field()}}
-                        <input name="_method" type="hidden" value="PATCH">
                         <input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_CANCELLED'))}}">
                         <button class="btn btn-small btn-danger" type="submit">Cancel</button>
-                    </form>
                     @endif
+                    </form>
                 </td>
             </tr>
             @endif
         @endforeach
         @else
             <tr>
-                <td style="text-align: center;" colspan="8"><i>No item available.</i></td>
+                <td style="text-align: center;" colspan="9"><i>No item available.</i></td>
             </tr>
         @endif
         </tbody>
@@ -102,6 +98,7 @@
             <input name="_method" type="hidden" value="PATCH">
             <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
             <input type="hidden" name="stall_id" id="stall_id" value="{{base64_encode(Auth::user()->id)}}">
+            <input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($data['transactionList'][$transactionCode]['customer_id'])}}">
             <input type="hidden" name="status" id="status" value="{{base64_encode($data['transactionList'][$transactionCode]['status'])}}">
         <thead>
         <tr>
@@ -165,6 +162,7 @@
                 <form class="form-horizontal" method="POST" action="{{action('TransactionController@updateStatus', base64_encode($data['transactionList'][$transactionCode]['id']))}}">
                     {{csrf_field()}}
                     <input name="_method" type="hidden" value="PATCH">
+                    <input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($data['transactionList'][$transactionCode]['customer_id'])}}">
                     @if($data['transactionList'][$transactionCode]['status'] == config('constants.TRANSACTION_STATUS_PAID'))
                         <input type="hidden" name="status" id="status" value="{{base64_encode(config('constants.TRANSACTION_STATUS_READY'))}}">
                         <button type="submit" id="pickup" class="btn btn-primary" style="width:175px; float: right;">Ready to serve</button>
@@ -197,6 +195,7 @@
                     <th style="text-align: center" colspan="2">Product ID</th>
                     <th style="text-align: center">Quantity</th>
                     <th style="text-align: center">Total Price</th>
+                    <th style="text-align: center">Comment</th>
                     <th style="text-align: center">Status</th>
                     <th style="text-align: center">Action</th>
                 </tr>
@@ -204,7 +203,7 @@
             <tbody>
             <tr>
             <tr>
-                <td style="text-align: center;" colspan="8"><i>No item available.</i></td>
+                <td style="text-align: center;" colspan="9"><i>No item available.</i></td>
             </tr>
             </tr>
             </tbody>

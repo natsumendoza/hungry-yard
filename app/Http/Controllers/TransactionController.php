@@ -11,6 +11,7 @@ use DateTime;
 use function PHPSTORM_META\elementType;
 use PDF;
 use Illuminate\Support\Facades\DB;
+use App\Notification;
 
 class TransactionController extends Controller
 {
@@ -84,8 +85,6 @@ class TransactionController extends Controller
             ['status', '<>', config('constants.ORDER_STATUS_APPROVED')]
             ])->delete();
 
-
-
         $transaction = array();
         $transaction['transaction_code'] = $cleanTransactionCode;
         $transaction['customer_id'] = Auth::user()->id;
@@ -97,6 +96,14 @@ class TransactionController extends Controller
         $transaction['status'] = config('constants.TRANSACTION_STATUS_PAID');
 
         Transaction::create($transaction);
+
+        // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
+        $notification           = array();
+        $notification['from']   = Auth::user()->id;
+        $notification['to']     = $cleanStallId;
+        $notification['action'] = "User [" . Auth::user()->id . "] "  . Auth::user()->name .  " paid the Orders with Transaction Code " . $cleanTransactionCode;
+        $notification['read_flag']  = config('constants.ENUM_NO');
+        Notification::create($notification);
 
         return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.');
     }
@@ -124,7 +131,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update transaction detail (order type, pickup time).
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -164,6 +171,15 @@ class TransactionController extends Controller
                 ['stall_id', Auth::user()->id]
             ])
                 ->update($updateTransaction);
+
+
+            // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
+            $notification               = array();
+            $notification['from']       = $cleanStallId;
+            $notification['to']         = base64_decode($request['customer_id']);
+            $notification['action']     = Auth::user()->name . " updates the Orders with Transaction Code " . $cleanTransactionCode;
+            $notification['read_flag']  = config('constants.ENUM_NO');
+            Notification::create($notification);
         }
 
         if(Auth::user()->isCustomer())
@@ -175,6 +191,15 @@ class TransactionController extends Controller
                 ['customer_id', Auth::user()->id]
             ])
                 ->update($updateTransaction);
+
+            // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
+            $notification           = array();
+            $notification['from']   = Auth::user()->id;
+            $notification['to']     = $cleanStallId;
+            $notification['action'] = "User [" . Auth::user()->id . "] "  . Auth::user()->name .  " updates the Orders with Transaction Code " . $cleanTransactionCode;
+            $notification['read_flag']  = config('constants.ENUM_NO');
+            Notification::create($notification);
+
         }
 
         return redirect('orders')->with('success','Transaction has been updated.');
@@ -212,12 +237,22 @@ class TransactionController extends Controller
             'status' =>  base64_decode($validatedTransaction['status'])
         );
 
+
         Transaction::where([
                      ['id', $id]
                  ])
             ->update($data);
 
-        return redirect('orders');
+
+        // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
+        $notification           = array();
+        $notification['from']   = Auth::user()->id;
+        $notification['to']     = base64_decode($request['customer_id']);
+        $notification['action'] = "[".Auth::user()->name."] The Orders with Transaction Code is now " . base64_decode($validatedTransaction['status']);
+        $notification['read_flag']  = config('constants.ENUM_NO');
+        Notification::create($notification);
+
+        return redirect('orders')->with('success','Transaction has been updated.');
     }
 
 
@@ -265,7 +300,5 @@ class TransactionController extends Controller
 
         return $pdf->download('receipt_'. $transactionCode . '_' . $stallId . '.pdf');
 
-
-//        return view('receipt.receipt', compact('receipt'));
     }
 }

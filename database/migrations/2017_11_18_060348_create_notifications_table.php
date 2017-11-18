@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventsTable extends Migration
+class CreateNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('events'))
+        if (!Schema::hasTable('notifications'))
         {
-            Schema::create('events', function (Blueprint $table) {
+            Schema::create('notifications', function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('name');
-                $table->string('description');
-                $table->string('image_path');
-                $table->dateTime('date');
+                $table->integer('from');
+                $table->integer('to');
+                $table->string('action');
+                $table->enum('read_flag', ['Y', 'N']);
                 $table->timestamps();
             });
         }
@@ -33,6 +33,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('notifications');
     }
 }

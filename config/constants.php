@@ -21,4 +21,8 @@ return [
     'ORDER_TYPE_DI'           => 'Dine In',
     'ORDER_TYPE_TO'           => 'Takeout',
 
+    // ENUM YES AND NO
+    'ENUM_YES'  => 'Y',
+    'ENUM_NO'   => 'N',
+
 ];
