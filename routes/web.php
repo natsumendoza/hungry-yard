@@ -7,6 +7,8 @@ use App\StallImage;
 use App\Gallery;
 use App\Event;
 use App\Order;
+use PayMaya\API\Webhook;
+use PayMaya\PayMayaSDK;
 
 
 /*
@@ -21,6 +23,41 @@ use App\Order;
 */
 
 Route::get('/testpaymaya', 'PaymayaController@index');
+
+Route::get('/success', 'PaymayaAPIController@index');
+    //function () {
+//    return view('paymaya');
+//    print_r($request->getContent());
+//    $publicApiKey = env('PAYMAYA_PUBLIC_API_KEY');
+//    $privateApiKey = env('PAYMAYA_SECRET_API_KEY');
+//    $apiEnvironment = env('PAYMAYA_API_ENV');
+//    PayMayaSDK::getInstance()->initCheckout(
+//        $publicApiKey,
+//        $privateApiKey,
+//        $apiEnvironment
+//    );
+//
+//    $successWebhook = new Webhook();
+//    $successWebhook->name = Webhook::CHECKOUT_SUCCESS;
+//    $successWebhook->callbackUrl = "http://localhost:8000/success";
+//    $successWebhook->register();
+//    $failureWebhook = new Webhook();
+//    $failureWebhook->name = Webhook::CHECKOUT_FAILURE;
+//    $failureWebhook->callbackUrl = "http://shop.someserver.com/failure";
+//    $failureWebhook->register();
+//    $webhooks = Webhook::retrieve();
+//    print_r($webhooks);
+//    $webhook = $webhooks[0];
+//    $webhook->callbackUrl .= "Updated";
+//    $webhook->update();
+//    print_r(Webhook::retrieve());
+//    $webhookCopy = clone $webhook;
+//    echo $webhook->delete();
+//    print_r(Webhook::retrieve());
+//    $webhookCopy->register();
+//    print_r(Webhook::retrieve());
+//}
+//);
 
 Route::get('/', function () {
     $stallsWithImage = DB::table('users')
@@ -96,3 +133,4 @@ Route::resource('transactions', 'TransactionController');
 Route::resource('event', 'EventController');
 Route::resource('gallery', 'GalleryController');
 Route::resource('customer', 'CustomerController');
+Route::resource('paymaya', 'PaymayaAPIController');

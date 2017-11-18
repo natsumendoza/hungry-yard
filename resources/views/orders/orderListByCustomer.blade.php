@@ -14,6 +14,9 @@
         $arrPrepTotalTime = array();
         $arrCreatedAt = array();
         $buttonLabel = "Pay Order (via PayMaya)";
+
+        $productIds = array();
+        $quantities = array();
     @endphp
 
     <br />
@@ -51,6 +54,9 @@
             @foreach($data['orderList'][$transactionCode][$stallId] as $order)
                 @php
                     $color = '';
+
+                    $productIds[] = $order['product_id'];
+                    $quantities[] = $order['quantity'];
 
                     // TIME COMPUTATIONS
                     $prepTime   = $order['preparation_time'] * $order['quantity'];
@@ -109,7 +115,8 @@
             if(ISSET($data['transactionList'][$transactionCode][$stallId]) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]))
             {
 
-                $action = action('TransactionController@update', base64_encode($data['transactionList'][$transactionCode][$stallId]['id']));
+                //$action = action('TransactionController@update', base64_encode($data['transactionList'][$transactionCode][$stallId]['id']));
+                $action = action('PaymayaController@index');
                 $buttonLabel = "Update Transaction";
                 $update = TRUE;
 
@@ -143,12 +150,15 @@
 
         @endphp
         @if($showPaymaya)
-        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{$action}}">
+{{--        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{$action}}">--}}
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{url('paymaya')}}">
             {{csrf_field()}}
         <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
         <input type="hidden" name="stall_id" id="stall_id" value="{{base64_encode($stallId)}}">
         <input type="hidden" name="total_price" id="total_price" value="{{base64_encode($totalPrice)}}">
         <input type="hidden" name="preparation_time" id="preparation_time" value="{{base64_encode($totalPrepTime)}}">
+        <input type="hidden" name="productIds" value="{{implode(',', $productIds)}}">
+        <input type="hidden" name="quantities" value="{{implode(',', $quantities)}}">
 
         <table class="table" style="width:40%; float: right;">
             <thead>
