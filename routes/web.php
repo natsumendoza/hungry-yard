@@ -24,7 +24,7 @@ use PayMaya\PayMayaSDK;
 
 Route::get('/testpaymaya', 'PaymayaController@index');
 
-Route::get('/success', 'PaymayaAPIController@index');
+Route::get('/success', 'PaymayaAPIController@success');
     //function () {
 //    return view('paymaya');
 //    print_r($request->getContent());

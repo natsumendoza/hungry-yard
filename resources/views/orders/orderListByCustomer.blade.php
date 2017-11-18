@@ -115,8 +115,8 @@
             if(ISSET($data['transactionList'][$transactionCode][$stallId]) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]))
             {
 
-                //$action = action('TransactionController@update', base64_encode($data['transactionList'][$transactionCode][$stallId]['id']));
-                $action = action('PaymayaController@index');
+                $action = action('TransactionController@update', base64_encode($data['transactionList'][$transactionCode][$stallId]['id']));
+                //$action = action('PaymayaController@index');
                 $buttonLabel = "Update Transaction";
                 $update = TRUE;
 
@@ -150,8 +150,8 @@
 
         @endphp
         @if($showPaymaya)
-{{--        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{$action}}">--}}
-        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{url('paymaya')}}">
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{$action}}">
+        {{--<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{url('paymaya')}}">--}}
             {{csrf_field()}}
         <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
         <input type="hidden" name="stall_id" id="stall_id" value="{{base64_encode($stallId)}}">

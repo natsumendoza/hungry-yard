@@ -81,11 +81,27 @@ class TransactionController extends Controller
         $transaction['pickup_time'] = $pickupDateTime;
         $transaction['total_price'] = $validatedTransaction['total_price'];
         $transaction['order_type'] = $request->get('order_type_' . $cleanTransactionCode . "_" . $cleanStallId);
-        $transaction['status'] = config('constants.TRANSACTION_STATUS_PAID');
+//        $transaction['status'] = config('constants.TRANSACTION_STATUS_PAID');
+        $transaction['status'] = config('constants.TRANSACTION_STATUS_PENDING');
 
-        Transaction::create($transaction);
+        $createdTrans = Transaction::create($transaction);
 
-        return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.');
+        $transactionPending = array();
+        $transactionPending['trans_id'] = base64_encode($createdTrans->id);
+        $transactionPending['transaction_code'] = base64_encode($cleanTransactionCode);
+        $transactionPending['total_price'] = base64_encode($validatedTransaction['total_price']);
+        $transactionPending['product_ids'] = base64_encode($request['productIds']);
+        $transactionPending['quantities'] = base64_encode($request['quantities']);
+
+
+        session(['transactionPending' => $transactionPending]);
+        return redirect()->action(
+            'PaymayaAPIController@store'
+        );
+
+//        return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.');
+
+
     }
 
     /**
