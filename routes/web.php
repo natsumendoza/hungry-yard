@@ -129,8 +129,12 @@ Route::patch('orders/transaction/{transactionCode}', 'OrderController@updateByTr
 Route::get('orders/{userId}', 'OrderController@showByUserId');
 Route::resource('orders', 'OrderController');
 Route::resource('cart', 'CartController');
+Route::patch('transactions/status/{id}', 'TransactionController@updateStatus');
+Route::get('receipt/{transactionCode}/{stallId}', 'TransactionController@downloadReceipt');
 Route::resource('transactions', 'TransactionController');
 Route::resource('event', 'EventController');
 Route::resource('gallery', 'GalleryController');
 Route::resource('customer', 'CustomerController');
 Route::resource('paymaya', 'PaymayaAPIController');
+Route::resource('notifications', 'NotificationController');
+

@@ -13,8 +13,6 @@
     @php
         $arrPrepTotalTime = array();
         $arrCreatedAt = array();
-        $buttonLabel = "Pay Order (via PayMaya)";
-
         $productIds = array();
         $quantities = array();
     @endphp
@@ -34,11 +32,12 @@
             $totalPrice = 0;
             $totalPrepTime  = 0;
             $showPaymaya = FALSE;
+            $buttonLabel = "Pay Order (via PayMaya)";
         @endphp
         <table class="table table-striped">
             <thead>
             <tr>
-                <th colspan="7">Transaction code: <i>{{$transactionCode}} - {{$stallName}}</i></th>
+                <th colspan="9">Transaction code: <i>{{$transactionCode}} - {{$stallName}}</i></th>
             </tr>
             <tr style="background-color: #D2D4DC">
                 <th style="text-align: center">ID</th>
@@ -46,6 +45,7 @@
                 <th style="text-align: center">Quantity</th>
                 <th style="text-align: center">Price</th>
                 <th style="text-align: center">Preparation Time</th>
+                <th style="text-align: center">Comment</th>
                 <th style="text-align: center">Status</th>
                 <th style="text-align: center">Action</th>
             </tr>
@@ -79,6 +79,7 @@
                     <td style="text-align: center;">{{$order['quantity']}}</td>
                     <td style="text-align: right;">{{number_format($order['price'] * $order['quantity'], 2)}}</td>
                     <td style="text-align: right;">{{$prepTime}} mins.</td>
+                    <td style="text-align: center; max-width: 300px;">{{$order['comment']}}</td>
                     <td style="text-align: center;">{{$order['status']}}</td>
                     <td style="text-align: center;">
                         @if($order['status'] == config('constants.ORDER_STATUS_PENDING') OR $order['status'] == config('constants.ORDER_STATUS_CANCELLED'))
@@ -150,7 +151,7 @@
 
         @endphp
         @if($showPaymaya)
-        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{$action}}">
+       <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{$action}}">
         {{--<form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{url('paymaya')}}">--}}
             {{csrf_field()}}
         <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
@@ -178,7 +179,7 @@
                 </tr>
                 <tr>
                     <td>Preparation Time: </td>
-                    <td>{{$totalPrepTime . " min/s (" . $converted_hrs . "hr " . $converted_mins ."min"}})<br><b>Note: This value can be change the stall owner.</td>
+                    <td>{{$totalPrepTime . " min/s (" . $converted_hrs . "hr " . $converted_mins ."min )"}}<br><b>Note: This value can be change the stall owner.</b></td>
                 </tr>
 
                 <tr>
@@ -205,10 +206,10 @@
                     @endphp
                     <td style="color: {{$errFontColor}}; {{$fontWeight}}">Pickup Time: </td>
                     <td>
-                        <input type="time" class="time_{{$transactionCode."_".$stallId}}" id="pickup_time" name="pickup_time" class="form-control" value="{{$pickupTime}}" min="14:00" max="24:00" required autofocus>
+                        <input type="time" class="time_{{$transactionCode."_".$stallId}}" id="pickup_time" name="pickup_time" class="form-control" value="{{$pickupTime}}" min="16:00" max="24:00" required autofocus>
                         @if ($hasError)
                             <br>
-                            <span class="help-blockr">
+                            <span class="help-blocker">
                                 <strong style="color: {{$errFontColor}};">{{ str_replace("date", "time", $errors->first('pickup_time')) }}</strong>
                             </span>
                         @endif
@@ -229,7 +230,7 @@
                     <td colspan="2">
                         @if($update)
                             <input name="_method" type="hidden" value="PATCH">
-                            <a>Download Receipt</a>
+                            <a href="{{url('receipt/'.base64_encode($transactionCode).'/'.base64_encode($stallId))}}">Download Receipt</a>
                         @endif
                         <button type="submit" class="btn btn-primary" style="width:190px; float: right;">{{$buttonLabel}}</button>
                     </td>
@@ -263,6 +264,7 @@
             <th style="text-align: center">Quantity</th>
             <th style="text-align: center">Price</th>
             <th style="text-align: center">Preparation Time</th>
+            <th style="text-align: center">Comment</th>
             <th style="text-align: center">Status</th>
             <th style="text-align: center">Action</th>
         </tr>
@@ -270,7 +272,7 @@
         <tbody>
         <tr>
         <tr>
-            <td style="text-align: center;" colspan="8"><i>No item available.</i></td>
+            <td style="text-align: center;" colspan="9"><i>No item available.</i></td>
         </tr>
         </tr>
         </tbody>
@@ -280,20 +282,20 @@
 </div>
 </body>
 <script>
-    $(function($) {
+    $(function() {
         var transactions = <?php echo json_encode(@$data['transactions']);?>;
         var stalls       = <?php echo json_encode(@$data['stalls']);?>;
         var arrPrepTotalTime = <?php echo json_encode($arrPrepTotalTime);?>;
         var arrCreatedAt = <?php echo json_encode($arrCreatedAt);?>
 
-//        var pd = new Date();
+        var pd = new Date();
 
-//        $.each( transactions, function( tran_id, tran_val ) {
-//
-//            $.each( stalls, function( stall_id, stall_name ) {
-//                $('#pd_' + tran_id + '_' + stall_id).text((pd.getMonth()+1)+"/"+pd.getDate()+"/"+pd.getFullYear());
-//            });
-//        });
+        $.each( transactions, function( tran_id, tran_val ) {
+
+            $.each( stalls, function( stall_id, stall_name ) {
+                $('#pd_' + tran_id + '_' + stall_id).text((pd.getMonth()+1)+"/"+pd.getDate()+"/"+pd.getFullYear());
+            });
+        });
 
         setInterval(function() {
 
