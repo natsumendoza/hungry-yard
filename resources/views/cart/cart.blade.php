@@ -56,7 +56,7 @@
                 <td>{{$item['transaction_code']}}</td>
                 <td style="text-align: center;">{{$item['name']}}</td>
                 <td style="text-align: center;"><a href="{{asset('images/menu/'.$item['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="70" width="100" src="{{asset('images/menu/'.$item['image'])}}"></a></td>
-                <td style="text-align: center;"><input style="width: 50px;" type="number" id="quantity" name="quantity" value="{{$item['quantity']}}" size="4" pattern="[0-9]*" step="1" required autofocus></td>
+                <td style="text-align: center;"><input style="width: 50px;" class="quantity" type="number" id="quantity" name="quantity" value="{{$item['quantity']}}" size="4" pattern="[0-9]*" step="1" min="1" required autofocus></td>
                 <td style="text-align: right;">{{number_format($item['quantity'] * $item['price'], 2)}}</td>
                 <td style="text-align: right;"><textarea id="comment" name="comment" style="resize:none" cols="30" rows="2">{{$item['comment']}}</textarea></td>
                 <td style="text-align: center;">
@@ -104,5 +104,16 @@
     </table>
 </div>
 </body>
+<script>
+    $(function (){
+
+        $('.quantity').on('change', function(){
+            if($(this).val() < 1)
+            {
+                alert("Invalid input! The value of quantity must be greater or equal to one!");
+            }
+        });
+    });
+</script>
 </html>
 @endsection

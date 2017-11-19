@@ -24,14 +24,22 @@
 </head>
 
 <body>
+<<<<<<< HEAD
 <table width="75%">
+=======
+<table width="" style="width: 100%">
+>>>>>>> b97548d70d77212532efde338911e90e68bd2071
     <thead>
         <tr>
             <th style="text-align: center;"  colspan="2"><p style="font-size: 20px;">HUNGRY YARD</p></th>
         </tr>
     </thead>
 </table>
+<<<<<<< HEAD
 <table width="75%" class="border">
+=======
+<table width="100%" class="border" style="width: 100%">
+>>>>>>> b97548d70d77212532efde338911e90e68bd2071
     <thead>
         <tr>
             <th style="text-align: center;" class="border-bot" colspan="2"><span style="font-size: 20px;">Receipt</span></th>

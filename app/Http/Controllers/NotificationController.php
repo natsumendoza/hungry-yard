@@ -20,7 +20,7 @@ class NotificationController extends Controller
             ->orderBy('created_at', 'desc')->get()->toArray();
 
         Notification::where('to', Auth::user()->id)
-            ->update(array());
+            ->update(array('read_flag' => config('constants.ENUM_YES')));
 
         return view('notifications.notificationList', compact('notificationList'));
 
