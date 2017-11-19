@@ -174,7 +174,7 @@
                         </li>--}}
                         @if(!Auth::guest())
                             @if(Auth::user()->isOwner() OR Auth::user()->isCustomer())
-                            <li class="hidden-sm hidden-xs">
+                            <li class="">
                                 {{--<a href="{{url('/notifications')}}" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>--}}
 
                                     <a id="notification" data-toggle="dropdown"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
@@ -183,6 +183,7 @@
                                         <li><a href="#">Notif 2 sample</a></li>
                                         <li><a href="{{url('/notifications')}}">See all notifications...</a></li>
                                     </ul>
+
 
 
                             </li>
@@ -235,23 +236,18 @@
 
 
 <!-- jQuery -->
-<script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/jquery.min.js') : secure_asset('js/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/bootstrap.min.js') : secure_asset('js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/jquery.flexslider.js') : secure_asset('js/jquery.flexslider.js') }}"></script>
-<script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/jquery.inview.js') : secure_asset('js/jquery.inview.js') }}"></script>
-{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>--}}
-<script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/script.js') : secure_asset('js/script.js') }}"></script>
-<script type="text/javascript" src="{{ env('APP_URL') == 'http://localhost' ? asset('js/contactform/contactform.js') : secure_asset('js/contactform/contactform.js') }}"></script>
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
+{{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--}}
 
 <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jquery.flexslider.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jquery.inview.js') }}"></script>
-{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>--}}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
 <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/contactform/contactform.js') }}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 
 
 </body>
