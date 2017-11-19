@@ -91,6 +91,10 @@ Route::group(['middleware' => ['web']], function () {
                     }
                 }
             }
+
+
+            //CHANGE THIS TO COMMON METHOD
+
         }
 
 

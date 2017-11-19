@@ -18,6 +18,8 @@
     <link type="text/css" rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link type="text/css" rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
     <link type="text/css" rel="stylesheet" href="{{ asset('css/style.css') }}" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- =======================================================
     Theme Name: MyBiz
@@ -125,7 +127,7 @@
                                 @endif
 
 
-                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i>({{$cartSize}})</a></li>
+                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i><span class="w3-badge w3-red">{{$cartSize}}</span></a></li>
                                 <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
                                 <li><a href="{{url('orders')}}">Orders</a></li>
                             @endif
@@ -173,7 +175,16 @@
                         @if(!Auth::guest())
                             @if(Auth::user()->isOwner() OR Auth::user()->isCustomer())
                             <li class="hidden-sm hidden-xs">
-                                <a href="{{url('/notifications')}}" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
+                                {{--<a href="{{url('/notifications')}}" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>--}}
+
+                                    <a id="notification" data-toggle="dropdown"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Notif 1 sample</a></li>
+                                        <li><a href="#">Notif 2 sample</a></li>
+                                        <li><a href="{{url('/notifications')}}">See all notifications...</a></li>
+                                    </ul>
+
+
                             </li>
                             @endif
                         @endif
@@ -239,6 +250,8 @@
 {{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>--}}
 <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/contactform/contactform.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 </body>
