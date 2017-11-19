@@ -96,7 +96,7 @@
 
     <!--main-nav-->
 
-    <div id="main-nav">
+    <div id="main-nav" class="affix">
 
         <nav class="navbar">
             <div class="container">
@@ -181,6 +181,10 @@
                                     <ul class="dropdown-menu">
                                         <li><a href="#">Notif 1 sample</a></li>
                                         <li><a href="#">Notif 2 sample</a></li>
+                                        <li><a href="#">Notif 1 sample</a></li>
+                                        <li><a href="#">Notif 2 sample</a></li>
+                                        <li><a href="#">Notif 1 sample</a></li>
+                                        <li><a href="#">Notif 2 sample</a></li>
                                         <li><a href="{{url('/notifications')}}">See all notifications...</a></li>
                                     </ul>
 
@@ -252,6 +256,15 @@
 <script type="text/javascript" src="{{ asset('js/contactform/contactform.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#notification").on("click", function( e ) {
+            e.preventDefault();
+            $("body, html").scrollTop(100);
+
+        });
+    });
+</script>
 
 
 </body>

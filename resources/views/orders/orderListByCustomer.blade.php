@@ -55,17 +55,16 @@
                 @php
                     $color = '';
 
-                    $productIds[] = $order['product_id'];
-                    $quantities[] = $order['quantity'];
-
                     // TIME COMPUTATIONS
                     $prepTime   = $order['preparation_time'] * $order['quantity'];
-
                     if($order['status'] == config('constants.ORDER_STATUS_APPROVED')):
                         $totalPrice += ($order['price'] * $order['quantity']);
                         $totalPrepTime += $prepTime;
                         $color = '#7FBF7F';
                         $showPaymaya = TRUE;
+
+                        $productIds[] = $order['product_id'];
+                        $quantities[] = $order['quantity'];
                     elseif ($order['status'] == config('constants.ORDER_STATUS_CANCELLED')):
                         $color = '#ff7f7f';
                     endif;
