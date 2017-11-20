@@ -110,8 +110,6 @@
 
             $update = FALSE;
 
-
-
             if(ISSET($data['transactionList'][$transactionCode][$stallId]) AND !EMPTY($data['transactionList'][$transactionCode][$stallId]))
             {
 
@@ -188,12 +186,13 @@
                 <tr>
                     <td>Recommended Pickup Time: </td>
                     <td id="recom_{{$transactionCode."_".$stallId}}"></td>
+                    <input type="hidden" id="recommended_{{$transactionCode.'_'.$stallId}}" name="recommended_{{$transactionCode.'_'.$stallId}}" value=""/>
                 </tr>
 
                 <tr>
                     @php
                         $hasError = FALSE;
-                        $errFontColor = "black";
+                        $errFontColor = "";
                         $fontWeight = "";
 
                         if($errors->has('pickup_time'))
@@ -320,16 +319,34 @@
 
                         }
 
-                        var prep_time = parseInt(arrPrepTotalTime[tran_id][stall_id]) + parseInt(date.getMinutes());
+                        var prep_time = parseInt(arrPrepTotalTime[tran_id][stall_id]) + parseInt(date.getMinutes()) +5;
                         var total_hour = (prep_time / 60) + date.getHours();
                         var total_mins = prep_time % 60;
 
                         date.setHours(total_hour);
-                        date.setMinutes(total_mins+5);
+                        date.setMinutes(total_mins);
 
                         var time = date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+                        if(date.getHours() < 16)
+                        {
+                            date.setHours(16);
+                            date.setMinutes(0);
+
+                            prep_time = parseInt(arrPrepTotalTime[tran_id][stall_id]) + parseInt(date.getMinutes());
+                            total_hour = (prep_time / 60) + date.getHours();
+                            total_mins = prep_time % 60;
+
+                            date.setHours(total_hour);
+                            date.setMinutes(total_mins);
+
+                            time = date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+                        }
+
+                        $('#pd_' + tran_id + '_' + stall_id).text((date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear());
+
 
                         $('#recom_' + tran_id + '_' + stall_id).text(time);
+                        $('#recommended_' + tran_id + '_' + stall_id).val(btoa(time));
 
                     }
                 });
