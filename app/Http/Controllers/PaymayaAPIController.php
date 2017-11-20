@@ -13,6 +13,8 @@ use PayMaya\Model\Checkout\ItemAmountDetails;
 use PayMaya\API\Checkout;
 use App\Menu;
 use App\Transaction;
+use App\Http\Helpers;
+use Illuminate\Support\Facades\Auth;
 
 class PaymayaAPIController extends Controller
 {
@@ -208,6 +210,11 @@ class PaymayaAPIController extends Controller
             $transaction['paymaya_receipt_number'] = $retrievedCheckout['receiptNumber'];
             $transaction['paymaya_transaction_reference_number'] = $retrievedCheckout['transactionReferenceNumber'];
             $transaction->save();
+
+            $notification           = array();
+            $notification['to']     = base64_decode($transactionPending['stall_id']);
+            $notification['action'] = "User [" . Auth::user()->id . "] "  . Auth::user()->name .  " paid the Orders with Transaction Code " . $transaction['transaction_code'] . ".";
+            Helpers::storeNotification($notification);
 
             return redirect('orders')->with('success','Transaction ' . $transaction['transaction_code'] . ' approved items has been paid.')->send();
         }

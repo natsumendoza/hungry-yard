@@ -249,6 +249,10 @@
             {
                 $arrCreatedAt[$transactionCode][$stallId] = $data['transactionList'][$transactionCode][$stallId]['created_at'];
             }
+            else
+            {
+                $arrCreatedAt[$transactionCode][$stallId] = "";
+            }
         @endphp
         @endif
         @endforeach
@@ -285,7 +289,7 @@
         var transactions = <?php echo json_encode(@$data['transactions']);?>;
         var stalls       = <?php echo json_encode(@$data['stalls']);?>;
         var arrPrepTotalTime = <?php echo json_encode($arrPrepTotalTime);?>;
-        var arrCreatedAt = <?php echo json_encode($arrCreatedAt);?>
+        var arrCreatedAt = <?php echo json_encode($arrCreatedAt);?>;
 
         var pd = new Date();
 
@@ -301,11 +305,10 @@
             $.each( transactions, function( tran_id, tran_val ) {
 
                 $.each( stalls, function( stall_id, stall_name ) {
-
-                    if(arrPrepTotalTime[tran_id][stall_id] != undefined)
+                    if(typeof arrPrepTotalTime[tran_id][stall_id] !== undefined)
                     {
                         var date = new Date();
-                        if(arrCreatedAt[tran_id][stall_id] != undefined)
+                        if(arrCreatedAt[tran_id][stall_id] !== "")
                         {
                             date = new Date(arrCreatedAt[tran_id][stall_id]);
                         }
@@ -331,8 +334,6 @@
                     }
                 });
             });
-
-
 
         }, 1);
     });

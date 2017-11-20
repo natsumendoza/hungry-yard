@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Notification;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Helpers;
 
 class NotificationController extends Controller
 {
@@ -16,11 +17,11 @@ class NotificationController extends Controller
     public function index()
     {
 
+        // GET NOTIFICATIONS INFO
+        Helpers::getNotifications();
+
         $notificationList = Notification::where('to', Auth::user()->id)
             ->orderBy('created_at', 'desc')->get()->toArray();
-
-        Notification::where('to', Auth::user()->id)
-            ->update(array('read_flag' => config('constants.ENUM_YES')));
 
         return view('notifications.notificationList', compact('notificationList'));
 
@@ -78,8 +79,8 @@ class NotificationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-
+        echo 'updateReadFlag';
+        die;
     }
 
     /**
@@ -97,11 +98,13 @@ class NotificationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateReadFlag($to)
+    public function updateReadFlag()
     {
-        // set flag red
+        Notification::where('to', Auth::user()->id)
+            ->update(array('read_flag' => config('constants.ENUM_YES')));
+
+        return response()->json(null, 200);
     }
 }

@@ -7,6 +7,7 @@ use App\Order;
 use Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Helpers;
 
 class CartController extends Controller
 {
@@ -17,6 +18,9 @@ class CartController extends Controller
      */
     public function index()
     {
+        // GET NOTIFICATIONS INFO
+        Helpers::getNotifications();
+
         if(Auth::user()->isCustomer()) {
             $cartItems = 0;
             Session::put('cartSize', 0);

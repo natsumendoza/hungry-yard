@@ -11,6 +11,7 @@ use App\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use App\Http\Helpers;
 
 class OrderController extends Controller
 {
@@ -48,7 +49,10 @@ class OrderController extends Controller
 
             $transactions = array_column($orderList, 'customer_id', 'transaction_code');
 
-            $transactionListTemp = Transaction::where('stall_id', Auth::user()->id)
+            $transactionListTemp = Transaction::where([
+                ['stall_id', Auth::user()->id],
+                ['status', '<>', config('constants.TRANSACTION_STATUS_PENDING')],
+            ])
                 ->get()->toArray();
 
 
@@ -111,7 +115,10 @@ class OrderController extends Controller
             }
 
 
-            $transactionListTemp = Transaction::where('customer_id', Auth::user()->id)
+            $transactionListTemp = Transaction::where([
+                ['customer_id', Auth::user()->id],
+                ['status', '<>', config('constants.TRANSACTION_STATUS_PENDING')],
+                ])
                 ->get()->toArray();
 
             foreach ($transactionListTemp as $tranTemp)
@@ -134,6 +141,10 @@ class OrderController extends Controller
             $data['stalls'] = $stalls;
             $view = 'orders.orderListByCustomer';
         }
+
+
+        // GET NOTIFICATIONS INFO
+        Helpers::getNotifications();
 
         if(!Auth::user()->isAdmin()) {
             $data['orderList'] = $orderList;
@@ -241,14 +252,11 @@ class OrderController extends Controller
         Order::where('id', $id)
             ->update(['status' => $status]);
 
-        //TODO MOVE TO COMMON NOTIF STORE
-        date_default_timezone_set('Asia/Manila');
+        // STORE NOTIFICATION
         $notification           = array();
-        $notification['from']   = Auth::user()->id;
         $notification['to']     = base64_decode($request['customer_id']);
-        $notification['action'] = Auth::user()->name." " . base64_decode($request['status']) ." the order with an ID " . $id ." under Transaction Code " . base64_decode($request['transaction_code']);
-        $notification['read_flag']  = config('constants.ENUM_NO');
-        Notification::create($notification);
+        $notification['action'] = Auth::user()->name." " . base64_decode($request['status']) ." the order with an ID " . $id ." under Transaction Code " . base64_decode($request['transaction_code']) .".";
+        Helpers::storeNotification($notification);
 
         return redirect('orders')->with('success','Order with ID ' . $id . ' status has been updated to ' . $status);
     }
@@ -264,14 +272,11 @@ class OrderController extends Controller
         $id =base64_decode($id);
         $order = Order::find($id);
 
-        //TODO MOVE TO COMMON NOTIF STORE
-        date_default_timezone_set('Asia/Manila');
+        // STORE NOTIFICATION
         $notification           = array();
-        $notification['from']   = Auth::user()->id;
         $notification['to']     = $order['stall_id'];
-        $notification['action'] = "User [". Auth::user()->id ."] " . Auth::user()->name . " DELETED the order with an ID " . $id ." under Transaction Code " . $order['transaction_code'];
-        $notification['read_flag']  = config('constants.ENUM_NO');
-        Notification::create($notification);
+        $notification['action'] = "User [". Auth::user()->id ."] " . Auth::user()->name . " DELETED the order with an ID " . $id ." under Transaction Code " . $order['transaction_code'] . ".";
+        Helpers::storeNotification($notification);
 
         $order->delete();
 
@@ -316,16 +321,14 @@ class OrderController extends Controller
 
         foreach ($stalls as $stall)
         {
-            //TODO MOVE TO COMMON NOTIF STORE
-            date_default_timezone_set('Asia/Manila');
-            $notification = array();
-            $notification['from'] = Auth::user()->id;
-            $notification['to'] = $stall;
-            $notification['action'] = "User [". Auth::user()->id ."] " . Auth::user()->name . " has placed order/s with Transaction Code " . $transactionCode;
-            $notification['read_flag'] = config('constants.ENUM_NO');
-            Notification::create($notification);
-        }
 
+            // STORE NOTIFICATION
+            $notification           = array();
+            $notification['to']     = $stall;
+            $notification['action'] = "User [". Auth::user()->id ."] " . Auth::user()->name . " has placed order/s with Transaction Code " . $transactionCode . ".";
+            Helpers::storeNotification($notification);
+
+        }
 
         Session::forget('cartSize');
         Session::forget('transactionCode');

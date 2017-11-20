@@ -23,7 +23,7 @@
             <tr>
                 <th colspan="9">Transaction code: <i>{{$transactionCode}}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ordered By: <i>{{$user}}</i></th>
             </tr>
-            <tr>
+            <tr style="background-color: #D2D4DC">
                 <th style="text-align: center">ID</th>
                 <th style="text-align: center">Transaction Code</th>
                 <th style="text-align: center" colspan="2">Product ID</th>
