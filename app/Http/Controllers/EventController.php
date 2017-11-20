@@ -112,10 +112,11 @@ class EventController extends Controller
             'name' => '|required',
             'description' => '|required',
             'date' => '|required',
-            'image' => 'required',
         ]);
 
-        File::delete(public_path('images/event/'.$event['image_path']));
+        if($request['image'] != NULL) {
+            File::delete(public_path('images/event/'.$event['image_path']));
+        }
 
         $cleanName = preg_replace('/\s+/', '_', $validatedEvent['name']);
         $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
