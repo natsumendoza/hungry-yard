@@ -101,11 +101,12 @@ class GalleryController extends Controller
         $gallery = Gallery::find($id);
 
         $validatedGallery = $this->validate($request, [
-            'name' => '|required',
-            'image' => 'required',
+            'name' => 'required',
         ]);
 
-        File::delete(public_path('images/gallery/'.$gallery['image_path']));
+        if($request['image'] != NULL) {
+            File::delete(public_path('images/gallery/'.$gallery['image_path']));
+        }
 
         $cleanName = preg_replace('/\s+/', '_', $validatedGallery['name']);
         $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
