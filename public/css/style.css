@@ -1291,7 +1291,7 @@ textarea:focus {
 
 /*Bottom Footer*/
 #bottom-footer {
-	min-height: 200px;
+	min-height: 300px;
 	background-color: #282828;
 	padding: 20px 0;
 	color: #8e8e8e;

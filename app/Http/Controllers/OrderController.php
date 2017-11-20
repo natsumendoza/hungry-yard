@@ -49,7 +49,10 @@ class OrderController extends Controller
 
             $transactions = array_column($orderList, 'customer_id', 'transaction_code');
 
-            $transactionListTemp = Transaction::where('stall_id', Auth::user()->id)
+            $transactionListTemp = Transaction::where([
+                ['stall_id', Auth::user()->id],
+                ['status', '<>', config('constants.TRANSACTION_STATUS_PENDING')],
+            ])
                 ->get()->toArray();
 
 
@@ -114,7 +117,7 @@ class OrderController extends Controller
 
             $transactionListTemp = Transaction::where([
                 ['customer_id', Auth::user()->id],
-                ['status', config('constants.TRANSACTION_STATUS_PAID')],
+                ['status', '<>', config('constants.TRANSACTION_STATUS_PENDING')],
                 ])
                 ->get()->toArray();
 

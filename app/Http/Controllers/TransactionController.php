@@ -48,11 +48,11 @@ class TransactionController extends Controller
         $request['pickup_time'] = date("h:i A", strtotime($request['pickup_time']));
         $request['preparation_time'] = base64_decode($request['preparation_time']);
         $request['total_price'] = base64_decode($request['total_price']);
-
+        $recommended = '5:00 PM';
         $validatedTransaction = $this->validate($request,[
             'transaction_code' => 'required',
             'stall_id' => 'required',
-            'pickup_time' => 'required|date_format:h:i A|after:04:00 PM',
+            'pickup_time' => 'required|date_format:h:i A|after_or_equal :' . $recommended,
             'preparation_time' => 'required|numeric',
             'total_price' => 'required|numeric'
         ]);
