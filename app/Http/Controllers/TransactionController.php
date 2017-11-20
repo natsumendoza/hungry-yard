@@ -12,6 +12,7 @@ use function PHPSTORM_META\elementType;
 use PDF;
 use Illuminate\Support\Facades\DB;
 use App\Notification;
+use App\Http\Helpers;
 
 class TransactionController extends Controller
 {
@@ -104,15 +105,7 @@ class TransactionController extends Controller
         $transactionPending['total_price'] = base64_encode($validatedTransaction['total_price']);
         $transactionPending['product_ids'] = base64_encode($request['productIds']);
         $transactionPending['quantities'] = base64_encode($request['quantities']);
-
-
-        // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
-        $notification           = array();
-        $notification['from']   = Auth::user()->id;
-        $notification['to']     = $cleanStallId;
-        $notification['action'] = "User [" . Auth::user()->id . "] "  . Auth::user()->name .  " paid the Orders with Transaction Code " . $cleanTransactionCode;
-        $notification['read_flag']  = config('constants.ENUM_NO');
-        Notification::create($notification);
+        $transactionPending['stall_id'] = base64_encode($createdTrans->stall_id);
 
         session(['transactionPending' => $transactionPending]);
         return redirect()->action(
@@ -185,14 +178,12 @@ class TransactionController extends Controller
             ])
                 ->update($updateTransaction);
 
+            // STORE NOTIFICATION
+            $notification           = array();
+            $notification['to']     = base64_decode($request['customer_id']);
+            $notification['action'] = Auth::user()->name . " updates the Orders with Transaction Code " . $cleanTransactionCode . ".";
+            Helpers::storeNotification($notification);
 
-            // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
-            $notification               = array();
-            $notification['from']       = $cleanStallId;
-            $notification['to']         = base64_decode($request['customer_id']);
-            $notification['action']     = Auth::user()->name . " updates the Orders with Transaction Code " . $cleanTransactionCode;
-            $notification['read_flag']  = config('constants.ENUM_NO');
-            Notification::create($notification);
         }
 
         if(Auth::user()->isCustomer())
@@ -205,13 +196,11 @@ class TransactionController extends Controller
             ])
                 ->update($updateTransaction);
 
-            // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
+            // STORE NOTIFICATION
             $notification           = array();
-            $notification['from']   = Auth::user()->id;
             $notification['to']     = $cleanStallId;
-            $notification['action'] = "User [" . Auth::user()->id . "] "  . Auth::user()->name .  " updates the Orders with Transaction Code " . $cleanTransactionCode;
-            $notification['read_flag']  = config('constants.ENUM_NO');
-            Notification::create($notification);
+            $notification['action'] ="User [" . Auth::user()->id . "] "  . Auth::user()->name .  " updates the Orders with Transaction Code " . $cleanTransactionCode.".";
+            Helpers::storeNotification($notification);
 
         }
 
@@ -256,14 +245,11 @@ class TransactionController extends Controller
                  ])
             ->update($data);
 
-        date_default_timezone_set('Asia/Manila');
-        // ADD TO NOTIFICATIONS TODO CREATE NOTIFICATIONS GENERAL METHOD
+        // STORE NOTIFICATION
         $notification           = array();
-        $notification['from']   = Auth::user()->id;
         $notification['to']     = base64_decode($request['customer_id']);
-        $notification['action'] = "[".Auth::user()->name."] The Orders with Transaction Code is now " . base64_decode($validatedTransaction['status']);
-        $notification['read_flag']  = config('constants.ENUM_NO');
-        Notification::create($notification);
+        $notification['action'] = "[".Auth::user()->name."] The Orders with Transaction Code is now " . base64_decode($validatedTransaction['status']) . ".";
+        Helpers::storeNotification($notification);
 
         return redirect('orders')->with('success','Transaction has been updated.');
     }

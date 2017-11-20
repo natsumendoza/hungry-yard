@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Menu;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Http\Helpers;
 
 class MenuController extends Controller
 {
@@ -16,6 +17,10 @@ class MenuController extends Controller
      */
     public function index()
     {
+
+        // GET NOTIFICATIONS INFO
+        Helpers::getNotifications();
+
         if(Auth::user()->isOwner()) {
             $menuList = Menu::where('stall_id', Auth::user()->id)
                 ->get()->toArray();

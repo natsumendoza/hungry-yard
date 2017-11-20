@@ -9,6 +9,7 @@ use App\Event;
 use App\Order;
 use PayMaya\API\Webhook;
 use PayMaya\PayMayaSDK;
+use App\Http\Helpers;
 
 
 /*
@@ -92,10 +93,10 @@ Route::group(['middleware' => ['web']], function () {
                 }
             }
 
-
-            //CHANGE THIS TO COMMON METHOD
-
         }
+
+        // GET NOTIFICATIONS INFO
+        Helpers::getNotifications();
 
 
         return view('index')->with(array('stalls' => $stalls, 'gallery' => $gallery, 'events' => $events));
@@ -141,6 +142,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('gallery', 'GalleryController');
     Route::resource('customer', 'CustomerController');
     Route::resource('paymaya', 'PaymayaAPIController');
+    Route::get('notifications/read', 'NotificationController@updateReadFlag');
     Route::resource('notifications', 'NotificationController');
 });
 

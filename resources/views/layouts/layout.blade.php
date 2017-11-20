@@ -7,7 +7,6 @@
     <title>Hungry Yard</title>
     <meta name="description" content="Free Bootstrap Theme by BootstrapMade.com">
     <meta name="keywords" content="free website templates, free bootstrap themes, free template, free bootstrap, free website template">
-
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Open+Sans|Raleway" rel="stylesheet">
     {{--<link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/flexslider.css') : secure_asset('css/flexslider.css') }}" />--}}
     {{--<link type="text/css" rel="stylesheet" href="{{ env('APP_URL') == 'http://localhost' ? asset('css/bootstrap.min.css') : secure_asset('css/bootstrap.min.css') }}" />--}}
@@ -127,7 +126,7 @@
                                 @endif
 
 
-                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i><span class="w3-badge w3-red">{{$cartSize}}</span></a></li>
+                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i>@if($cartSize>0)<span class="w3-badge w3-red">{{$cartSize}}</span>@endif</a></li>
                                 <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
                                 <li><a href="{{url('orders')}}">Orders</a></li>
                             @endif
@@ -172,25 +171,29 @@
                        {{-- <li class="hidden-sm hidden-xs">
                             <a href="#" id="ss"><i class="glyphicon glyphicon-search"></i></a>
                         </li>--}}
+
                         @if(!Auth::guest())
+                            <?php
+                                $newNotifs = 0;
+
+                                $newNotifs = \Session::get('newNotifs');
+                            ?>
+
+
                             @if(Auth::user()->isOwner() OR Auth::user()->isCustomer())
-                            <li class="">
-                                {{--<a href="{{url('/notifications')}}" id="notification"><i class="glyphicon glyphicon-bell fa-lg"></i></a>--}}
-
-                                    <a id="notification" data-toggle="dropdown"><i class="glyphicon glyphicon-bell fa-lg"></i></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Notif 1 sample</a></li>
-                                        <li><a href="#">Notif 2 sample</a></li>
-                                        <li><a href="#">Notif 1 sample</a></li>
-                                        <li><a href="#">Notif 2 sample</a></li>
-                                        <li><a href="#">Notif 1 sample</a></li>
-                                        <li><a href="#">Notif 2 sample</a></li>
-                                        <li><a href="{{url('/notifications')}}">See all notifications...</a></li>
+                                <li class="dropdown" id="notif_li"> <a id="notif_btn" data-toggle="dropdown"><i class="glyphicon glyphicon-bell fa-lg"></i>@if($newNotifs>0)<span class="w3-badge w3-red">{{$newNotifs}}</span>@endif</a>
+                                    <ul class="dropdown-menu" id="notif_menu">
+                                        @foreach(\Session::get('notifications') as $notif)
+                                            @if($notif['read_flag'] == config('constants.ENUM_NO'))
+                                                <li style="background-color: lightgrey;"><a href="#" style="font-size: 12px;">{{$notif['action']}}</a></li>
+                                            @else
+                                                <li style="background-color: white;"><a href="#" style="font-size: 12px;">{{$notif['action']}}</a></li>
+                                            @endif
+                                        @endforeach
+                                        <li class="divider"></li>
+                                        <li><a href="{{url('/notifications')}}" style="color: #2aabd2; font-size: 12px;" >See all notifications...</a></li>
                                     </ul>
-
-
-
-                            </li>
+                                </li>
                             @endif
                         @endif
                     </ul>
@@ -250,6 +253,49 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
 <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/contactform/contactform.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        var notifIsActive = false;
+        var position = 70;
+
+        $('#notif_li').on('shown.bs.dropdown', function(){
+            notifIsActive = true;
+            $("body, html").scrollTop(80);
+
+        });
+
+        $('#notif_li').on('hidden.bs.dropdown', function(){
+            notifIsActive = false;
+        });
+
+        $(window).scroll(function( e ){
+            var scroll = $(window).scrollTop();
+
+            if (scroll < position)
+            {
+                if(notifIsActive == true)
+                {
+                    $('.dropdown-menu').dropdown('toggle');
+                }
+            }
+
+        });
+        
+        $('#notif_btn').on('click', function () {
+            $.ajax({
+                type:'GET',
+                url:'/notifications/read',
+                data:null,
+                success:function(data){
+                }
+            });
+            
+        });
+
+
+
+    });
+</script>
 
 
 </body>
