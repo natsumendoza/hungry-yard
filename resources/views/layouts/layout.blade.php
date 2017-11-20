@@ -227,10 +227,23 @@
 
             <div class="col-md-8">
                 <div class="footer-right">
-                    <ul class="list-unstyled list-inline pull-right">
-                        <li><a href="#contact">Contact Us</a></li>
-                        <li><a href="#home">Location</a></li>
-                    </ul>
+                    <div class="pull-right">
+                        <h3>Location</h3>
+                        <p>Hungry Yard at San Vicente,</p>
+                        <p>Diversion Road Tarlac City, </p>
+                        <p>Tarlac (at the back of SM Tarlac)</p>
+                        <p>Open from 4PM – 12AM</p>
+                    </div>
+                    <div class="pull-right" style="margin-right: 10%">
+                        <h3>Contact Us</h3>
+                        <p>Phone: +63 917 514 1915</p>
+                        <p>Email: <a href="mailto:hungryyardtrlc@gmail.com">hungryyardtrlc@gmail.com</a></p>
+                    </div>
+
+                    {{--<ul class="list-unstyled list-inline pull-right">--}}
+                        {{--<li><a href="#contact">Contact Us</a></li>--}}
+                        {{--<li><a href="#home">Location</a></li>--}}
+                    {{--</ul>--}}
                 </div>
             </div>
         </div>
