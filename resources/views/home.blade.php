@@ -15,7 +15,11 @@
                     @endif
 
                     You are logged in!
+                    <div class="col-md-12" style="margin-top: 10px; text-align: center;">
+                        <a href="{{url('/')}}" style="color:#333;">← Back to Hungry Yard</a>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

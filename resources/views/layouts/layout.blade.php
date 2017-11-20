@@ -126,7 +126,33 @@
                                 @endif
 
 
-                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i><span class="w3-badge w3-red">{{$cartSize}}</span></a></li>
+                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i><span class="w3-badge w3-red">@if($cartSize>0){{$cartSize}}@endif</span></a></li>
+                            @endif
+                            @if(!Auth::guest())
+                                <?php
+                                $newNotifs = 0;
+
+                                $newNotifs = \Session::get('newNotifs');
+                                ?>
+
+
+                                @if(Auth::user()->isOwner() OR Auth::user()->isCustomer())
+                                    <li class="dropdown" id="notif_li"> <a id="notif_btn" data-toggle="dropdown"><i class="glyphicon glyphicon-bell fa-lg"></i>@if($newNotifs>0)<span class="w3-badge w3-red">{{$newNotifs}}</span>@endif</a>
+                                        <ul class="dropdown-menu" id="notif_menu">
+                                            @foreach(\Session::get('notifications') as $notif)
+                                                @if($notif['read_flag'] == config('constants.ENUM_NO'))
+                                                    <li style="background-color: lightgrey;"><a href="#" style="font-size: 12px;">{{$notif['action']}}</a></li>
+                                                @else
+                                                    <li style="background-color: white;"><a href="#" style="font-size: 12px;">{{$notif['action']}}</a></li>
+                                                @endif
+                                            @endforeach
+                                            <li class="divider"></li>
+                                            <li><a href="{{url('/notifications')}}" style="color: #2aabd2; font-size: 12px;" >See all notifications...</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
+                            @endif
+                            @if(Auth::user()->isCustomer())
                                 <li style="cursor: pointer;"><a data-toggle="dropdown" id="navigation">{{Auth::user()->name}}
                                         <i class="glyphicon glyphicon glyphicon-menu-down fa-lg"></i>
                                     </a>
@@ -149,9 +175,6 @@
                                         <li><a href="{{url('gallery')}}">Gallery</a></li>
                                     </ul>
                                 </li>
-
-
-
                             @endif
                             @if(Auth::user()->isOwner())
 
@@ -168,7 +191,6 @@
 
 
                             @endif
-
                             <li>
                                 <a class="nav-link" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
@@ -184,6 +206,7 @@
                             @else
                                 <li><a href="{{url('/login')}}">login</a></li>
                                 <li><a href="{{url('/register')}}">register</a></li>
+
                         @endauth
                         {{--<li><a href="#about">about</a></li>--}}
                         {{--<li><a href="#service">services</a></li>--}}
@@ -192,31 +215,6 @@
                        {{-- <li class="hidden-sm hidden-xs">
                             <a href="#" id="ss"><i class="glyphicon glyphicon-search"></i></a>
                         </li>--}}
-
-                        @if(!Auth::guest())
-                            <?php
-                                $newNotifs = 0;
-
-                                $newNotifs = \Session::get('newNotifs');
-                            ?>
-
-
-                            @if(Auth::user()->isOwner() OR Auth::user()->isCustomer())
-                                <li class="dropdown" id="notif_li"> <a id="notif_btn" data-toggle="dropdown"><i class="glyphicon glyphicon-bell fa-lg"></i>@if($newNotifs>0)<span class="w3-badge w3-red">{{$newNotifs}}</span>@endif</a>
-                                    <ul class="dropdown-menu" id="notif_menu">
-                                        @foreach(\Session::get('notifications') as $notif)
-                                            @if($notif['read_flag'] == config('constants.ENUM_NO'))
-                                                <li style="background-color: lightgrey;"><a href="#" style="font-size: 12px;">{{$notif['action']}}</a></li>
-                                            @else
-                                                <li style="background-color: white;"><a href="#" style="font-size: 12px;">{{$notif['action']}}</a></li>
-                                            @endif
-                                        @endforeach
-                                        <li class="divider"></li>
-                                        <li><a href="{{url('/notifications')}}" style="color: #2aabd2; font-size: 12px;" >See all notifications...</a></li>
-                                    </ul>
-                                </li>
-                            @endif
-                        @endif
                     </ul>
 
                 </div>
@@ -326,7 +324,9 @@
             
         });
 
-
+        setTimeout(function() {
+            location.reload();
+        }, 300000);
 
     });
 </script>
