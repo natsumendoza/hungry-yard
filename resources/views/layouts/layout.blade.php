@@ -260,7 +260,7 @@
                     </div>
                     <div class="pull-right" style="margin-right: 10%">
                         <h3>Contact Us</h3>
-                        <p>Phone: +63 917 514 1915</p>
+                        <p>Phone: +63 909 807 09363</p>
                         <p>Email: <a href="mailto:hungryyardtrlc@gmail.com">hungryyardtrlc@gmail.com</a></p>
                     </div>
 
