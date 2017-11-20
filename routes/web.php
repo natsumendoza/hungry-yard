@@ -144,6 +144,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('paymaya', 'PaymayaAPIController');
     Route::get('notifications/read', 'NotificationController@updateReadFlag');
     Route::resource('notifications', 'NotificationController');
+    Route::resource('useraccount', 'AccountController');
 });
 
 

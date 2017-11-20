@@ -126,25 +126,46 @@
                                 @endif
 
 
-                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i>@if($cartSize>0)<span class="w3-badge w3-red">{{$cartSize}}</span>@endif</a></li>
-                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
-                                <li><a href="{{url('orders')}}">Orders</a></li>
+                                <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i><span class="w3-badge w3-red">{{$cartSize}}</span></a></li>
+                                <li style="cursor: pointer;"><a data-toggle="dropdown" id="navigation">{{Auth::user()->name}}
+                                        <i class="glyphicon glyphicon glyphicon-menu-down fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{url('orders')}}">Orders</a></li>
+                                        <li><a href="{{url('useraccount')}}">Account</a></li>
+                                    </ul>
+                                </li>
+
                             @endif
                             @if(Auth::user()->isAdmin())
 
-                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
-                                <li><a href="{{url('stall')}}">Stalls</a></li>
-                                    <li><a href="{{url('customer')}}">Customers</a></li>
-                                    <li><a href="{{url('event')}}">Events</a></li>
-                                <li><a href="{{url('gallery')}}">Gallery</a></li>
+                                <li style="cursor: pointer;"><a data-toggle="dropdown" id="navigation">{{Auth::user()->name}}
+                                        <i class="glyphicon glyphicon glyphicon-menu-down fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{url('stall')}}">Stalls</a></li>
+                                        <li><a href="{{url('customer')}}">Customers</a></li>
+                                        <li><a href="{{url('event')}}">Events</a></li>
+                                        <li><a href="{{url('gallery')}}">Gallery</a></li>
+                                    </ul>
+                                </li>
+
 
 
                             @endif
                             @if(Auth::user()->isOwner())
 
-                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
-                                <li><a href="{{url('menu')}}">Menus</a></li>
-                                    <li><a href="{{url('orders')}}">Orders</a></li>
+                                <li style="cursor: pointer;">
+                                    <a data-toggle="dropdown" id="navigation">{{Auth::user()->name}}
+                                        <i class="glyphicon glyphicon glyphicon-menu-down fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{url('menu')}}">Menus</a></li>
+                                        <li><a href="{{url('orders')}}">Orders</a></li>
+                                        <li><a href="{{url('useraccount')}}">Account</a></li>
+                                    </ul>
+                                </li>
+
 
                             @endif
 
@@ -239,7 +260,7 @@
                     </div>
                     <div class="pull-right" style="margin-right: 10%">
                         <h3>Contact Us</h3>
-                        <p>Phone: +63 917 514 1915</p>
+                        <p>Phone: +63 909 807 09363</p>
                         <p>Email: <a href="mailto:hungryyardtrlc@gmail.com">hungryyardtrlc@gmail.com</a></p>
                     </div>
 
