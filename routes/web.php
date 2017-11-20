@@ -142,6 +142,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('customer', 'CustomerController');
     Route::resource('paymaya', 'PaymayaAPIController');
     Route::resource('notifications', 'NotificationController');
+    Route::resource('useraccount', 'AccountController');
 });
 
 

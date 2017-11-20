@@ -128,24 +128,45 @@
 
 
                                 <li><a href="{{ url('/cart/'.\base64_encode(Session::get('transactionCode'))) }}"><i class="glyphicon glyphicon-shopping-cart fa-lg"></i><span class="w3-badge w3-red">{{$cartSize}}</span></a></li>
-                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
-                                <li><a href="{{url('orders')}}">Orders</a></li>
+                                <li style="cursor: pointer;"><a data-toggle="dropdown" id="navigation">{{Auth::user()->name}}
+                                        <i class="glyphicon glyphicon glyphicon-menu-down fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{url('orders')}}">Orders</a></li>
+                                        <li><a href="{{url('useraccount')}}">Account</a></li>
+                                    </ul>
+                                </li>
+
                             @endif
                             @if(Auth::user()->isAdmin())
 
-                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
-                                <li><a href="{{url('stall')}}">Stalls</a></li>
-                                    <li><a href="{{url('customer')}}">Customers</a></li>
-                                    <li><a href="{{url('event')}}">Events</a></li>
-                                <li><a href="{{url('gallery')}}">Gallery</a></li>
+                                <li style="cursor: pointer;"><a data-toggle="dropdown" id="navigation">{{Auth::user()->name}}
+                                        <i class="glyphicon glyphicon glyphicon-menu-down fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{url('stall')}}">Stalls</a></li>
+                                        <li><a href="{{url('customer')}}">Customers</a></li>
+                                        <li><a href="{{url('event')}}">Events</a></li>
+                                        <li><a href="{{url('gallery')}}">Gallery</a></li>
+                                    </ul>
+                                </li>
+
 
 
                             @endif
                             @if(Auth::user()->isOwner())
 
-                                <li><a href="#" id="navigation">{{Auth::user()->name}}</a></li>
-                                <li><a href="{{url('menu')}}">Menus</a></li>
-                                    <li><a href="{{url('orders')}}">Orders</a></li>
+                                <li style="cursor: pointer;">
+                                    <a data-toggle="dropdown" id="navigation">{{Auth::user()->name}}
+                                        <i class="glyphicon glyphicon glyphicon-menu-down fa-lg"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{url('menu')}}">Menus</a></li>
+                                        <li><a href="{{url('orders')}}">Orders</a></li>
+                                        <li><a href="{{url('useraccount')}}">Account</a></li>
+                                    </ul>
+                                </li>
+
 
                             @endif
 
@@ -187,8 +208,6 @@
                                         <li><a href="#">Notif 2 sample</a></li>
                                         <li><a href="{{url('/notifications')}}">See all notifications...</a></li>
                                     </ul>
-
-
 
                             </li>
                             @endif
