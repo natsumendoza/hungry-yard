@@ -74,7 +74,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4" style="float: right;">
-                                    <a href="{{action('AccountController@index')}}" class="btn btn-default">Cancel</a>
+                                    <a href="{{url('')}}" class="btn btn-default">Cancel</a>
                                     <button type="submit" class="btn btn-success" style="margin-left:15px">Update</button>
                                 </div>
                             </div>

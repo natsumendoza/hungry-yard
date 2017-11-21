@@ -37,7 +37,7 @@
             <th style="text-align: center;" class="border-bot" colspan="2"><span style="font-size: 20px;">Receipt</span></th>
         </tr>
     </thead>
-    @if(count($data['receipt'])>1 AND $data['receipt'][0]['transaction_code'])
+    @if(count($data['receipt'])>0 AND $data['receipt'][0]['transaction_code'])
 
     @php
         $pickupDateTime = strtotime($data['receipt'][0]['pickup_time']);
