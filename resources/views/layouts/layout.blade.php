@@ -156,7 +156,7 @@
                             @if(Auth::user()->isOwner())
 
                                 <li style="cursor: pointer;">
-                                    <a data-toggle="dropdown" id="navigation">{{Auth::user()->name}}
+                                    <a data-toggle="dropdown" id="dropdown_a" id="navigation">{{Auth::user()->name}}
                                         <i class="glyphicon glyphicon glyphicon-menu-down fa-lg"></i>
                                     </a>
                                     <ul class="dropdown-menu">
