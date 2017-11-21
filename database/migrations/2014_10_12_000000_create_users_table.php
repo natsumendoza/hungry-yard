@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->integer('role_id')->index()->unsigned()->nullable();
             $table->string('name');
+            $table->string('paymaya_account')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();

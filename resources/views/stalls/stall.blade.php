@@ -48,7 +48,9 @@
                         <p style="color: forestgreen;">&#8369; {{$menu['price']}}</p>
                         <p><b>Preparation Time: {{$menu['preparation_time']}} mins.</b></p>
 
-                        <p><button class="btn">Add to cart</button></p>
+                        @if(Auth::guest() || Auth::user()->isCustomer())
+                            <p><button class="btn">Add to cart</button></p>
+                        @endif
 
                     </form>
                 </div>

@@ -114,18 +114,23 @@ class EventController extends Controller
             'date' => '|required',
         ]);
 
-        if($request['image'] != NULL) {
-            File::delete(public_path('images/event/'.$event['image_path']));
-        }
-
-        $cleanName = preg_replace('/\s+/', '_', $validatedEvent['name']);
-        $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(public_path('images/event'), $imageName);
-
         $event['name']               = $validatedEvent['name'];
         $event['description']               = $validatedEvent['description'];
         $event['date']               = $validatedEvent['date'];
-        $event['image_path']              = $imageName;
+
+        if($request['image'] != NULL) {
+            File::delete(public_path('images/event/'.$event['image_path']));
+
+            $cleanName = preg_replace('/\s+/', '_', $validatedEvent['name']);
+            $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('images/event'), $imageName);
+            $event['image_path']              = $imageName;
+        }
+
+
+
+
+
         $event->save();
 
         return redirect('event')->with('success', 'Event has been updated');

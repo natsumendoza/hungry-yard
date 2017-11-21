@@ -62,6 +62,7 @@ class StallController extends Controller
     {
         $validatedStall = $this->validate($request, [
             'name' => 'required|string|max:255',
+            'paymayaAccount' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'password' => 'required|string|min:6|confirmed',
@@ -74,6 +75,7 @@ class StallController extends Controller
         $stall = array();
         $stall['role_id'] = 2;
         $stall['name'] = $validatedStall['name'];
+        $stall['paymaya_account'] = $validatedStall['paymayaAccount'];
         $stall['email'] = $validatedStall['email'];
         $stall['password'] = bcrypt($validatedStall['password']);
         $insertedUser = User::create($stall);
@@ -128,6 +130,7 @@ class StallController extends Controller
 
         $validatedStall = $this->validate($request, [
             'name' => 'required|string|max:255',
+            'paymayaAccount' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
         ]);
 
@@ -145,6 +148,7 @@ class StallController extends Controller
         }
 
         $stall['name'] = $validatedStall['name'];
+        $stall['paymaya_account'] = $validatedStall['paymayaAccount'];
         $stall['email'] = $validatedStall['email'];
 
         $stall->save();

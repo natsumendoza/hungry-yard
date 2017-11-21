@@ -25,6 +25,20 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group{{ $errors->has('paymayaAccount') ? ' has-error' : '' }}">
+                                        <label for="paymayaAccount" class="col-md-4 control-label">Paymaya Account Number</label>
+
+                                        <div class="col-md-6">
+                                            <input id="paymayaAccount" type="text" class="form-control" name="paymayaAccount" value="{{ old('paymayaAccount') }}" required autofocus>
+
+                                            @if ($errors->has('paymayaAccount'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('paymayaAccount') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                         <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 

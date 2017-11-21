@@ -104,16 +104,19 @@ class GalleryController extends Controller
             'name' => 'required',
         ]);
 
+        $gallery['name']               = $validatedGallery['name'];
+
         if($request['image'] != NULL) {
             File::delete(public_path('images/gallery/'.$gallery['image_path']));
+
+            $cleanName = preg_replace('/\s+/', '_', $validatedGallery['name']);
+            $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('images/gallery'), $imageName);
+            $gallery['image_path']              = $imageName;
         }
 
-        $cleanName = preg_replace('/\s+/', '_', $validatedGallery['name']);
-        $imageName =   $cleanName . (Auth::user()->id * 2) . time() . '.'.$request->file('image')->getClientOriginalExtension();
-        $request->file('image')->move(public_path('images/gallery'), $imageName);
 
-        $gallery['name']               = $validatedGallery['name'];
-        $gallery['image_path']              = $imageName;
+
         $gallery->save();
 
         return redirect('gallery')->with('success', 'Gallery has been updated');
