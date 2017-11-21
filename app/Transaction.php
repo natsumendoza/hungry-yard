@@ -16,7 +16,9 @@ class Transaction extends Model
         'order_type',
         'status',
         'paymaya_receipt_number',
-        'paymaya_transaction_reference_number'
+        'paymaya_transaction_reference_number',
+        'customer_view',
+        'stall_view'
     ];
 
 }

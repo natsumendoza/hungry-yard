@@ -234,6 +234,7 @@ class TransactionController extends Controller
 
         $validatedTransaction = $this->validate($request,[
             'status' => 'required',
+            'transaction_code' => 'required'
         ]);
 
         $data = array(
@@ -249,7 +250,7 @@ class TransactionController extends Controller
         // STORE NOTIFICATION
         $notification           = array();
         $notification['to']     = base64_decode($request['customer_id']);
-        $notification['action'] = "[".Auth::user()->name."] The Orders with Transaction Code is now " . base64_decode($validatedTransaction['status']) . ".";
+        $notification['action'] = "[".Auth::user()->name."] The Orders with Transaction Code " . base64_decode($validatedTransaction['transaction_code']) . " is now " . base64_decode($validatedTransaction['status']) . ".";
         Helpers::storeNotification($notification);
 
         return redirect('orders')->with('success','Transaction has been updated.');
@@ -260,6 +261,7 @@ class TransactionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  string  $transactionCode
+     * @param  int  $stallId
      * @return \Illuminate\Http\Response
      */
     public function downloadReceipt($transactionCode, $stallId)
@@ -281,16 +283,14 @@ class TransactionController extends Controller
             ->select('transactions.*', 'orders.quantity', 'menus.name')
             ->where('transactions.transaction_code', $transactionCode)
             ->where('transactions.stall_id', $stallId)
-            ->where('transactions.customer_id', Auth::user()->id)
+//            ->where('transactions.customer_id', Auth::user()->id)
+            ->where('transactions.status', '<>', config('constants.TRANSACTION_STATUS_PENDING'))
             ->get();
 
 
         $receipt = array();
 
-        foreach ($receiptTemp as $temp)
-        {
-            $receipt[] = (array) $temp;
-        }
+        $receipt[] = (array) $receiptTemp[0];
 
         $data   = array();
         $data['receipt']   = $receipt;
@@ -300,5 +300,40 @@ class TransactionController extends Controller
 
         return $pdf->download('receipt_'. $transactionCode . '_' . $stallId . '.pdf');
 
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateViewFlag(Request $request, $id)
+    {
+        $id = base64_decode($id);
+
+        $data = array();
+        if(Auth::user()->isOwner())
+        {
+            $data = array(
+                'stall_view' => config('constants.ENUM_NO')
+            );
+        }
+
+        if(Auth::user()->isCustomer())
+        {
+            $data = array(
+                'customer_view' => config('constants.ENUM_NO')
+            );
+        }
+
+        Transaction::where([
+            ['id', $id]
+        ])
+            ->update($data);
+
+        return redirect('orders')->with('success','Transaction has been deleted.');
     }
 }

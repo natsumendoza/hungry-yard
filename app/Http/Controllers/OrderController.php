@@ -52,8 +52,7 @@ class OrderController extends Controller
             $transactionListTemp = Transaction::where([
                 ['stall_id', Auth::user()->id],
                 ['status', '<>', config('constants.TRANSACTION_STATUS_PENDING')],
-            ])
-                ->get()->toArray();
+            ])->get()->toArray();
 
 
             foreach ($transactionListTemp as $tranTemp)
@@ -66,10 +65,6 @@ class OrderController extends Controller
                     }
                 }
             }
-
-//            echo '<pre>';
-//            print_r($transactionList);
-//            die;
 
             $view = 'orders.orderList';
         }
@@ -118,8 +113,7 @@ class OrderController extends Controller
             $transactionListTemp = Transaction::where([
                 ['customer_id', Auth::user()->id],
                 ['status', '<>', config('constants.TRANSACTION_STATUS_PENDING')],
-                ])
-                ->get()->toArray();
+                ])->get()->toArray();
 
             foreach ($transactionListTemp as $tranTemp)
             {

@@ -137,6 +137,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::resource('cart', 'CartController');
     Route::patch('transactions/status/{id}', 'TransactionController@updateStatus');
     Route::get('receipt/{transactionCode}/{stallId}', 'TransactionController@downloadReceipt');
+    Route::patch('transactions/remove/{transactionId}', 'TransactionController@updateViewFlag');
     Route::resource('transactions', 'TransactionController');
     Route::resource('event', 'EventController');
     Route::resource('gallery', 'GalleryController');

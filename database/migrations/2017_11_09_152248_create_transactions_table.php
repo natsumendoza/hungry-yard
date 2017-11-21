@@ -25,6 +25,8 @@ class CreateTransactionsTable extends Migration
             $table->string('status');
             $table->string('paymaya_receipt_number')->nullable();
             $table->string('paymaya_transaction_reference_number')->nullable();
+            $table->enum('customer_view', ['Y', 'N'])->default('Y');
+            $table->enum('stall_view', ['Y', 'N'])->default('Y');
             $table->timestamps();
         });
     }
