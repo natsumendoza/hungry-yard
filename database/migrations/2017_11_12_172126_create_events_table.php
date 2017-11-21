@@ -13,17 +13,14 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('events'))
-        {
-            Schema::create('events', function (Blueprint $table) {
-                $table->increments('id');
-                $table->string('name');
-                $table->string('description');
-                $table->string('image_path');
-                $table->dateTime('date');
-                $table->timestamps();
-            });
-        }
+        Schema::create('events', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('description');
+            $table->string('image_path');
+            $table->dateTime('date');
+            $table->timestamps();
+        });
     }
 
     /**

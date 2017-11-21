@@ -13,17 +13,14 @@ class CreateNotificationsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('notifications'))
-        {
-            Schema::create('notifications', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('from');
-                $table->integer('to');
-                $table->string('action');
-                $table->enum('read_flag', ['Y', 'N']);
-                $table->timestamps();
-            });
-        }
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('from');
+            $table->integer('to');
+            $table->string('action');
+            $table->enum('read_flag', ['Y', 'N']);
+            $table->timestamps();
+        });
     }
 
     /**

@@ -13,18 +13,15 @@ class CreateMenusTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('menus'))
-        {
-            Schema::create('menus', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('stall_id');
-                $table->string('name');
-                $table->string('image');
-                $table->decimal('price', 10, 2);
-                $table->integer('preparation_time');
-                $table->timestamps();
-            });
-        }
+        Schema::create('menus', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('stall_id');
+            $table->string('name');
+            $table->string('image');
+            $table->decimal('price', 10, 2);
+            $table->integer('preparation_time');
+            $table->timestamps();
+        });
     }
 
     /**

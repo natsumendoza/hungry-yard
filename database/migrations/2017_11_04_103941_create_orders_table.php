@@ -13,20 +13,17 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('orders'))
-        {
-            Schema::create('orders', function (Blueprint $table) {
-                $table->increments('id');
-                $table->string('transaction_code');
-                $table->integer('stall_id');
-                $table->integer('product_id');
-                $table->integer('customer_id');
-                $table->integer('quantity');
-                $table->string('comment')->nullable();
-                $table->string('status');
-                $table->timestamps();
-            });
-        }
+        Schema::create('orders', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('transaction_code');
+            $table->integer('stall_id');
+            $table->integer('product_id');
+            $table->integer('customer_id');
+            $table->integer('quantity');
+            $table->string('comment')->nullable();
+            $table->string('status');
+            $table->timestamps();
+        });
     }
 
     /**

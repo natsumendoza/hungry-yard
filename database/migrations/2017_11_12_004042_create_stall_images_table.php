@@ -13,15 +13,12 @@ class CreateStallImagesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('stall_images'))
-        {
-            Schema::create('stall_images', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('user_id');
-                $table->string('image_path');
-                $table->timestamps();
-            });
-        }
+        Schema::create('stall_images', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id');
+            $table->string('image_path');
+            $table->timestamps();
+        });
     }
 
     /**
