@@ -30,20 +30,18 @@
         .panel {
             margin-top:20px;
         }
-
         @media only screen and (max-width: 768px) {
             /* For mobile phones: */
             /*.navbar-header {*/
-                /*width: 100% !important;*/
+            /*width: 100% !important;*/
             /*}*/
             /*.container-fluid>.navbar-collapse, .container-fluid>.navbar-header, .container>.navbar-collapse, .container>.navbar-header {*/
-                /*margin-left: 0 !important;*/
+            /*margin-left: 0 !important;*/
             /*}*/
             #about {
                 margin-top: 30px;
             }
         }
-
         @font-face {
             font-family: Scrap Food Regular;
             src: url('{{ asset('fonts/scrap-food-regular.ttf')}}');
@@ -131,7 +129,6 @@
                             @if(!Auth::guest())
                                 <?php
                                 $newNotifs = 0;
-
                                 $newNotifs = \Session::get('newNotifs');
                                 ?>
 
@@ -207,14 +204,14 @@
                                 <li><a href="{{url('/login')}}">login</a></li>
                                 <li><a href="{{url('/register')}}">register</a></li>
 
-                        @endauth
-                        {{--<li><a href="#about">about</a></li>--}}
-                        {{--<li><a href="#service">services</a></li>--}}
-                        {{--<li><a href="#portfolio">portfolio</a></li>--}}
-                        {{--<li><a href="#contact">contact</a></li>--}}
-                       {{-- <li class="hidden-sm hidden-xs">
-                            <a href="#" id="ss"><i class="glyphicon glyphicon-search"></i></a>
-                        </li>--}}
+                                @endauth
+                                {{--<li><a href="#about">about</a></li>--}}
+                                {{--<li><a href="#service">services</a></li>--}}
+                                {{--<li><a href="#portfolio">portfolio</a></li>--}}
+                                {{--<li><a href="#contact">contact</a></li>--}}
+                                {{-- <li class="hidden-sm hidden-xs">
+                                     <a href="#" id="ss"><i class="glyphicon glyphicon-search"></i></a>
+                                 </li>--}}
                     </ul>
 
                 </div>
@@ -263,8 +260,8 @@
                     </div>
 
                     {{--<ul class="list-unstyled list-inline pull-right">--}}
-                        {{--<li><a href="#contact">Contact Us</a></li>--}}
-                        {{--<li><a href="#home">Location</a></li>--}}
+                    {{--<li><a href="#contact">Contact Us</a></li>--}}
+                    {{--<li><a href="#home">Location</a></li>--}}
                     {{--</ul>--}}
                 </div>
             </div>
@@ -289,20 +286,15 @@
     $(document).ready(function() {
         var notifIsActive = false;
         var position = 70;
-
         $('#notif_li').on('shown.bs.dropdown', function(){
             notifIsActive = true;
             $("body, html").scrollTop(80);
-
         });
-
         $('#notif_li').on('hidden.bs.dropdown', function(){
             notifIsActive = false;
         });
-
         $(window).scroll(function( e ){
             var scroll = $(window).scrollTop();
-
             if (scroll < position)
             {
                 if(notifIsActive == true)
@@ -310,9 +302,8 @@
                     $('.dropdown-menu').dropdown('toggle');
                 }
             }
-
         });
-        
+
         $('#notif_btn').on('click', function () {
             $.ajax({
                 type:'GET',
@@ -321,13 +312,11 @@
                 success:function(data){
                 }
             });
-            
-        });
 
+        });
         setTimeout(function() {
             location.reload();
         }, 300000);
-
     });
 </script>
 
