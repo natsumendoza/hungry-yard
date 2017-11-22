@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\StallImage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class AccountController extends Controller
 {
@@ -85,6 +86,7 @@ class AccountController extends Controller
 
         $validatedUser = $this->validate($request, [
             'name' => 'required|string|max:255',
+            'paymayaAccount' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
         ]);
 
@@ -103,6 +105,7 @@ class AccountController extends Controller
         }
 
         $user['name'] = $validatedUser['name'];
+        $stall['paymaya_account'] = $validatedUser['paymayaAccount'];
         $user['email'] = $validatedUser['email'];
 
         $user->save();

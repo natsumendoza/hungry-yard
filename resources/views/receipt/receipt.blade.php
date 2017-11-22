@@ -68,7 +68,7 @@
             <td class="border-bot">{{$createdDate}}</td>
         </tr>
         <tr class="border-bot">
-            <td style="font-weight: bold;" class="border-bot">Preparation Time:</td>
+            <td style="font-weight: bold;" class="border-bot">Preparation Time (min):</td>
             <td class="border-bot">{{$data['receipt'][0]['preparation_time']}}</td>
         </tr>
         <tr>
