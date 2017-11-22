@@ -26,7 +26,7 @@
                         @php
                             $ctr++;
                         @endphp
-                        <table class="table table-striped">
+                        <table class="table table-responsive">
                             <thead>
                             <tr>
                                 <th colspan="9">Transaction code: <i>{{$transactionCode}}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ordered By: <i>{{$user}}</i></th>
@@ -114,7 +114,7 @@
                     @php
                         $ctr++;
                     @endphp
-                    <table class="table table-striped">
+                    <table class="table table-responsive">
                         <thead>
                         <tr>
                             <th colspan="9">Transaction code: <i>{{$transactionCode}}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ordered By: <i>{{$user}}</i></th>
@@ -201,7 +201,7 @@
                 @endif
                 @if(ISSET($data['transactionList'][$transactionCode]) AND !EMPTY($data['transactionList'][$transactionCode]) AND $data['transactionList'][$transactionCode]['stall_view'] == config('constants.ENUM_YES'))
 
-                    <table class="table" style="width:40%; float: right;">
+                    <table class="table table-responsive" style="width:40%; float: right;">
                         <form class="form-horizontal" method="POST" action="{{action('TransactionController@update', base64_encode($data['transactionList'][$transactionCode]['id']))}}">
                             {{csrf_field()}}
                             <input name="_method" type="hidden" value="PATCH">
@@ -309,7 +309,7 @@
             @endforeach
 
         @else
-            <table class="table table-striped">
+            <table class="table table-responsive">
                 <thead>
                 <tr style="background-color: #D2D4DC">
                     <th style="text-align: center">ID</th>

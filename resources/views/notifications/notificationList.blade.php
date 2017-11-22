@@ -16,7 +16,7 @@
                 <p>{{ \Session::get('success') }}</p>
             </div><br />
         @endif
-        <table class="table table-striped" width="100%">
+        <table class="table table-responsive" width="100%">
             <thead>
             <tr>
                 <th style="text-align: center" colspan="2">Notifications</th>

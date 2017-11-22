@@ -1310,3 +1310,17 @@ textarea:focus {
 	background-image: url("../images/Hungry-Yard.jpg");
 }
 
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	#title-font {
+		font-size: 60px !important;
+	}
+
+	#location, #contact-us {
+		float: left !important;
+	}
+
+	.table-responsive {
+		display: block;
+	}
+}

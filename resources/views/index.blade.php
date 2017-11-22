@@ -26,7 +26,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div style="text-align: center;">
-                                    <h2 style="font-family:'Scrap Food Regular'; font-size: 100px;">HUNGRY YARD</h2>
+                                    <h2 id="title-font" style="font-family:'Scrap Food Regular'; font-size: 100px;">HUNGRY YARD</h2>
                                     <h3>Tarlac's first food park</h3>
                                 </div>
                             </div>

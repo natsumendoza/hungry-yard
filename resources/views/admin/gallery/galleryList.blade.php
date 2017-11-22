@@ -15,7 +15,7 @@
             <div>
                 <a href="{{action('GalleryController@create')}}" class="btn btn-success" style="float: right; width: 170px;"><i class="glyphicon glyphicon-plus"></i>Add New Image</a>
             </div>
-            <table class="table table-striped">
+            <table class="table table-responsive">
                 <thead>
                 <tr>
                     <th style="text-align: center" width="40%">Name</th>

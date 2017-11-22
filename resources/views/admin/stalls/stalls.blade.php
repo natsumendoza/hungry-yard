@@ -15,7 +15,7 @@
             <div>
                 <a href="{{action('StallController@create')}}" class="btn btn-success" style="float: right; width:150px;"><i class="glyphicon glyphicon-plus"></i>Add New Stall</a>
             </div>
-            <table class="table table-striped">
+            <table class="table table-responsive">
                 <thead>
                 <tr>
                     <th style="text-align: center">Stall Name</th>

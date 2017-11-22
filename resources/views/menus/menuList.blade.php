@@ -19,7 +19,7 @@
         <div>
             <a href="{{action('MenuController@create')}}" class="btn btn-success" style="float: right;"><i class="glyphicon glyphicon-plus"></i>Add Item</a>
         </div>
-        <table class="table table-striped" width="100%">
+        <table class="table table-responsive" width="100%">
             <thead>
             <tr>
                 <th style="text-align: center" width="20%">Name</th>

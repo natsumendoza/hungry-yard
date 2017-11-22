@@ -41,7 +41,7 @@
                             @php
                                 $ctr++;
                             @endphp
-                            <table class="table table-striped">
+                            <table class="table table-responsive">
                                 <thead>
                                 <tr>
                                     <th colspan="9">Transaction code: <i>{{$transactionCode}} - {{$stallName}}</i></th>
@@ -275,7 +275,7 @@
 
             @endforeach
         @else
-            <table class="table table-striped">
+            <table class="table table-responsive">
                 <thead>
                 <tr style="background-color: #D2D4DC">
                     <th style="text-align: center">ID</th>
@@ -301,7 +301,7 @@
 
 
         @if(count($data['transactions'])>0 AND $ctr==0)
-            <table class="table table-striped">
+            <table class="table table-responsive">
                 <thead>
                 <tr style="background-color: #D2D4DC">
                     <th style="text-align: center">ID</th>

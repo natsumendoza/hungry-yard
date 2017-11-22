@@ -15,7 +15,7 @@
             <div style="text-align: center;">
                 <h2>Customers</h2>
             </div>
-            <table class="table table-striped">
+            <table class="table table-responsive">
                 <thead>
                 <tr>
                     <th style="text-align: center" width="40%">Name</th>

@@ -34,7 +34,7 @@
 
         @endif
 
-        <table class="table table-striped">
+        <table class="table table-responsive">
             <thead>
             <tr>
                 <th style="text-align: center" width="5%">ID</th>

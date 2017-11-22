@@ -18,7 +18,7 @@
     <link type="text/css" rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
     <link type="text/css" rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--}}
 
     <!-- =======================================================
     Theme Name: MyBiz
@@ -245,15 +245,15 @@
             </div>
 
             <div class="col-md-8">
-                <div class="footer-right">
-                    <div class="pull-right">
+                <div class="location">
+                    <div id="contact-us" class="pull-right">
                         <h3>Location</h3>
                         <p>Hungry Yard at San Vicente,</p>
                         <p>Diversion Road Tarlac City, </p>
                         <p>Tarlac (at the back of SM Tarlac)</p>
                         <p>Open from 4PM – 12AM</p>
                     </div>
-                    <div class="pull-right" style="margin-right: 10%">
+                    <div id="contact-us" class="pull-right" style="margin-right: 10%">
                         <h3>Contact Us</h3>
                         <p>Phone: 09098079363</p>
                         <p>Email: <a href="mailto:hungryyardtrlc@gmail.com">hungryyardtrlc@gmail.com</a></p>

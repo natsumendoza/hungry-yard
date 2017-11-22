@@ -15,7 +15,7 @@
             <div>
                 <a href="{{action('EventController@create')}}" class="btn btn-success" style="float: right; width: 170px;"><i class="glyphicon glyphicon-plus"></i>Add New Event</a>
             </div>
-            <table class="table table-striped">
+            <table class="table table-responsive">
                 <thead>
                 <tr>
                     <th style="text-align: center">Name</th>
