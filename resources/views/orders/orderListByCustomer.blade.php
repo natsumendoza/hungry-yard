@@ -178,7 +178,7 @@
                                     <tbody>
                                     <tr>
                                         <td style="width: 350px;">Transaction code: </td>
-                                        <td style="width: 350px;"><b>{{$transactionCode}}</b></td>
+                                        <td style="width: 450px;"><b>{{$transactionCode}}</b></td>
                                     </tr>
                                     <tr>
                                         <td>Stall: </td>
@@ -218,9 +218,10 @@
                                             @if ($hasError)
                                                 <br>
                                                 <span class="help-blocker">
-                                <strong style="color: {{$errFontColor}};">{{ str_replace("date", "time", $errors->first('pickup_time')) }}</strong>
-                            </span>
+                                                    <strong style="color: {{$errFontColor}};">{{ str_replace("date", "time", $errors->first('pickup_time')) }}</strong>
+                                                </span>
                                             @endif
+                                            <button class="accept btn btn-success" style="width: 260px; margin-top: 10px;" id="acc_rec_time_{{$transactionCode."_".$stallId}}" name="{{$transactionCode."_".$stallId}}" value="{{$transactionCode."_".$stallId}}" type="button" data-toggle="tooltip" title="Accept Recommended Time">Accept Recommended Pickup Time</button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -248,10 +249,10 @@
                                     <form action="{{action('TransactionController@updateViewFlag', base64_encode($data['transactionList'][$transactionCode][$stallId]['id']))}}" method="post">
                                         {{csrf_field()}}
                                         <input name="_method" type="hidden" value="PATCH">
-                                        <input name="tranacation_code" id="transaction_code" type="hidden" value="{{$transactionCode}}">
+                                        <input name="transaction_code" id="transaction_code" type="hidden" value="{{$transactionCode}}">
                                         <button type="submit" class="btn btn-danger" style="width:190px; float: right; margin-top: 5px;">Delete Transaction</button>
                                     </form>
-                                    @endif
+                                @endif
                                     </td>
                                     </tr>
                                     </tbody>
@@ -393,6 +394,7 @@
 
 
                         $('#recom_' + tran_id + '_' + stall_id).text(time);
+                        $('#acc_rec_time_' + tran_id + '_' + stall_id).val(time);
                         $('#recommended_' + tran_id + '_' + stall_id).val(btoa(time));
 
                     }
@@ -400,6 +402,23 @@
             });
 
         }, 1);
+
+        $('.accept').on('click', function () {
+            var time=$(this).val();
+
+            var hours = Number(time.match(/^(\d+)/)[1]);
+            var minutes = Number(time.match(/:(\d+)/)[1]);
+            var AMPM = time.match(/\s(.*)$/)[1].toLowerCase();
+
+            if (AMPM == "pm" && hours < 12) hours = hours + 12;
+            if (AMPM == "am" && hours == 12) hours = hours - 12;
+            var sHours = hours.toString();
+            var sMinutes = minutes.toString();
+            if (hours < 10) sHours = "0" + sHours;
+            if (minutes < 10) sMinutes = "0" + sMinutes;
+
+            $('.time_'+$(this).attr('name')).val(sHours +':'+sMinutes);
+        });
     });
 </script>
 

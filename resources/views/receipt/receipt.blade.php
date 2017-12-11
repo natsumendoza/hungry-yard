@@ -20,6 +20,15 @@
             border-bottom: 1px solid black;
             border-collapse: collapse;
         }
+
+        .watermark
+        {
+            bottom:5px;
+            right:5px;
+            opacity:0.5;
+            z-index:99;
+            color:white;
+        }
     </style>
 </head>
 
@@ -27,11 +36,15 @@
 <table style="width: 100%">
     <thead>
         <tr>
-            <th style="text-align: center;"  colspan="2"><p style="font-size: 20px;">HUNGRY YARD</p></th>
+            <th style="text-align: right;" colspan="2"><img class="watermark" width="50px" height="50px" src="{{ public_path() }}/images/stall/{{$data['stallImage']}}" />
+            </th>
+        </tr>
+        <tr>
+            <th style="text-align: center;" colspan="2"><p style="font-size: 20px;">HUNGRY YARD</p></th>
         </tr>
     </thead>
 </table>
-<table class="border" style="width: 100%">
+<table class="border" style="width: 100%;">
     <thead>
         <tr>
             <th style="text-align: center;" class="border-bot" colspan="2"><span style="font-size: 20px;">Receipt</span></th>
@@ -49,7 +62,7 @@
     <tbody>
         <tr>
             <td style="font-weight: bold;" class="border-bot">Stall: </td>
-            <td class="border-bot" style="width:150px;">{{$data['stallName']}}</td>
+            <td class="border-bot" style="width:50%;">{{$data['stallName']}}</td>
         </tr>
         <tr class="border-bot">
             <td style="font-weight: bold;" class="border-bot">Transaction Code: </td>

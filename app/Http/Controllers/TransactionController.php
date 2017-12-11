@@ -13,6 +13,7 @@ use PDF;
 use Illuminate\Support\Facades\DB;
 use App\Notification;
 use App\Http\Helpers;
+use App\StallImage;
 
 class TransactionController extends Controller
 {
@@ -292,9 +293,12 @@ class TransactionController extends Controller
 
         $receipt[] = (array) $receiptTemp[0];
 
+        $stallImage = StallImage::where('user_id', $stallId)->get()->toArray();
+
         $data   = array();
-        $data['receipt']   = $receipt;
-        $data['stallName'] = $stallName['name'];
+        $data['receipt']    = $receipt;
+        $data['stallName']  = $stallName['name'];
+        $data['stallImage'] = $stallImage[0]['image_path'];
 
         $pdf = PDF::loadView('receipt.receipt', compact('data'));
 

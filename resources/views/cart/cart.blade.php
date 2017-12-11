@@ -61,7 +61,7 @@
                             <td style="text-align: right;">{{number_format($item['quantity'] * $item['price'], 2)}}</td>
                             <td style="text-align: right;"><textarea id="comment" name="comment" style="resize:none" cols="30" rows="2">{{$item['comment']}}</textarea></td>
                             <td style="text-align: center;">
-                                <button class="btn btn-small btn-warning" type="submit"  data-toggle="tooltip" title="Update Item">Update</button>
+                                <button class="btn btn-warning" type="submit"  data-toggle="tooltip" title="Update Item">Update</button>
                         </form>
                         <form action="{{action('CartController@destroy', base64_encode($item['id']))}}" method="POST">
                             {{csrf_field()}}
