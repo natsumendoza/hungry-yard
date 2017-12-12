@@ -1,11 +1,13 @@
 <!-- orderList.blade.php -->
 @extends('layouts.layout')
 @section('content')
-        <!DOCTYPE html>
+@include('modals.cancelOrderModal')
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>Orders</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 <div id="about">
@@ -88,14 +90,23 @@
                                                     @endif
 
                                                     @if($order['status'] == config('constants.ORDER_STATUS_PENDING'))
-                                                        <form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">
-                                                            {{csrf_field()}}
-                                                            <input name="_method" type="hidden" value="PATCH">
-                                                            <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
-                                                            <input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($user)}}">
-                                                            <input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_CANCELLED'))}}">
-                                                            <button class="btn btn-small btn-danger" type="submit">Cancel</button>
-                                                        </form>
+                                                        {{--<form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">--}}
+                                                            {{--{{csrf_field()}}--}}
+                                                            {{--<input name="_method" type="hidden" value="PATCH">--}}
+                                                            {{--<input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">--}}
+                                                            {{--<input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($user)}}">--}}
+                                                            {{--<input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_CANCELLED'))}}">--}}
+                                                            {{--<button class="btn btn-small btn-danger" type="submit">Cancel</button>--}}
+                                                            <a class="cancelOrderModal btn btn-small btn-danger"
+                                                               type="button"
+                                                               data-toggle="modal"
+                                                               data-target="#cancelOrderModal"
+                                                               data-action="{{action('OrderController@update', base64_encode($order['id']))}}"
+                                                               data-transaction_code="{{base64_encode($transactionCode)}}"
+                                                               data-customer_id="{{base64_encode($user)}}"
+                                                               data-status={{base64_encode(config('constants.ORDER_STATUS_CANCELLED'))}}
+                                                            >Cancel</a>
+                                                        {{--</form>--}}
                                                     @endif
                                                 </form>
                                             </td>
@@ -177,14 +188,23 @@
                                                 @endif
 
                                                 @if($order['status'] == config('constants.ORDER_STATUS_PENDING'))
-                                                    <form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">
+                                                    {{--<form action="{{action('OrderController@update', base64_encode($order['id']))}}" method="post">
                                                         {{csrf_field()}}
                                                         <input name="_method" type="hidden" value="PATCH">
                                                         <input type="hidden" name="transaction_code" id="transaction_code" value="{{base64_encode($transactionCode)}}">
                                                         <input type="hidden" name="customer_id" id="customer_id" value="{{base64_encode($user)}}">
                                                         <input name="status" type="hidden" value="{{base64_encode(config('constants.ORDER_STATUS_CANCELLED'))}}">
                                                         <button class="btn btn-small btn-danger" type="submit">Cancel</button>
-                                                    </form>
+                                                    </form>--}}
+                                                    <a class="cancelOrderModal btn btn-small btn-danger"
+                                                       type="button"
+                                                       data-toggle="modal"
+                                                       data-target="#cancelOrderModal"
+                                                       data-action="{{action('OrderController@update', base64_encode($order['id']))}}"
+                                                       data-transaction_code="{{base64_encode($transactionCode)}}"
+                                                       data-customer_id="{{base64_encode($user)}}"
+                                                       data-status={{base64_encode(config('constants.ORDER_STATUS_CANCELLED'))}}
+                                                    >Cancel</a>
                                                 @endif
                                             </form>
                                         </td>
@@ -357,5 +377,22 @@
     </div>
 </div>
 </body>
+<script>
+    $(function() {
+        $('.cancelOrderModal').on('click', function (e) {
+            var link = $(this),
+                modal = $('#cancelOrderModal'),
+                action = link.data("action"),
+                transaction_code = link.data("transaction_code"),
+                customer_id = link.data("customer_id"),
+                status = link.data("status");
+
+            modal.find("#cancel_order_form").attr('action', action);
+            modal.find("#transaction_code").val(transaction_code);
+            modal.find("#customer_id").val(customer_id);
+            modal.find("#status").val(status);
+        });
+    });
+</script>
 </html>
 @endsection

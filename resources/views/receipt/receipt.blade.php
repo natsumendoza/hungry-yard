@@ -36,7 +36,7 @@
 <table style="width: 100%">
     <thead>
         <tr>
-            <th style="text-align: right;" colspan="2"><img class="watermark" width="50px" height="50px" src="{{ public_path() }}/images/stall/{{$data['stallImage']}}" />
+            <th style="text-align: right;" colspan="2"><img class="watermark" width="70px" height="70px" src="{{ public_path() }}/images/stall/{{$data['stallImage']}}" />
             </th>
         </tr>
         <tr>

@@ -243,8 +243,12 @@ class OrderController extends Controller
         ]);
         $status   = base64_decode($request->get('status'));
 
+        $data = array();
+        $data['status'] = $status;
+        $data['cancel_reason'] = $request->get('cancel_reason');
+
         Order::where('id', $id)
-            ->update(['status' => $status]);
+            ->update($data);
 
         // STORE NOTIFICATION
         $notification           = array();

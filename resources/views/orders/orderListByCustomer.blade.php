@@ -1,6 +1,7 @@
 <!-- orderList.blade.php -->
 @extends('layouts.layout')
 @section('content')
+@include('modals.showReasonModal')
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,7 +82,7 @@
                                     <tr style="background-color: {{$color}}">
                                         <td>{{$order['id']}}</td>
                                         <td>{{$order['name']}}</td>
-                                        <td><a href="{{asset('images/menu/'.$order['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="30" width="40" src="{{asset('images/menu/'.$order['image'])}}"></a></td>
+                                        <td><a href="{{asset('images/menu/'.$order['image'])}}" target="_blank" data-toggle="tooltip" title="Click image"><img height="50" width="70" src="{{asset('images/menu/'.$order['image'])}}"></a></td>
                                         <td style="text-align: center;">{{$order['quantity']}}</td>
                                         <td style="text-align: right;">{{number_format($order['price'] * $order['quantity'], 2)}}</td>
                                         <td style="text-align: right;">{{$prepTime}} mins.</td>
@@ -96,6 +97,15 @@
                                                         {{csrf_field()}}
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button class="btn btn-small btn-danger" type="submit">Delete</button>
+                                                        @if($order['status'] == config('constants.ORDER_STATUS_CANCELLED'))
+                                                            <br>
+                                                            <a class="showReasonModal"
+                                                               style="color: blue;"
+                                                               data-toggle="modal"
+                                                               data-target="#showReasonModal"
+                                                               data-reason="{{$order['cancel_reason']}}"
+                                                            >Show cancel reason</a>
+                                                        @endif
                                                     </form>
                                                 @endif
                                             @else
@@ -418,6 +428,18 @@
             if (minutes < 10) sMinutes = "0" + sMinutes;
 
             $('.time_'+$(this).attr('name')).val(sHours +':'+sMinutes);
+        });
+
+        $('.showReasonModal').on('click', function (e) {
+            var link = $(this),
+                modal = $('#showReasonModal'),
+                reason = link.data("reason");
+            if(reason == "")
+            {
+                reason = "There is no reason inputted."
+            }
+
+            modal.find("#reason").text(reason);
         });
     });
 </script>
