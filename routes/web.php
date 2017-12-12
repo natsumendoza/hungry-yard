@@ -102,6 +102,10 @@ Route::group(['middleware' => ['web']], function () {
         return view('index')->with(array('stalls' => $stalls, 'gallery' => $gallery, 'events' => $events));
     });
 
+    Route::get('/location', function () {
+        return view('map');
+    });
+
     Route::get('/stalls/{id}', function ($id) {
 
         $id = base64_decode($id);

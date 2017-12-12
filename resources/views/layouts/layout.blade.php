@@ -50,6 +50,12 @@
             font-family: Tastysushi Line;
             src: url('{{ asset('fonts/tastysushi-line.ttf')}}');
         }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
     </style>
 </head>
 
@@ -247,7 +253,7 @@
             <div class="col-md-8">
                 <div class="location">
                     <div id="contact-us" class="pull-right">
-                        <h3>Location</h3>
+                        <h3>Location (<a href="{{url('/location')}}">show map</a>)</h3>
                         <p>Hungry Yard at San Vicente,</p>
                         <p>Diversion Road Tarlac City, </p>
                         <p>Tarlac (at the back of SM Tarlac)</p>
@@ -279,7 +285,6 @@
 <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jquery.flexslider.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jquery.inview.js') }}"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8HeI8o-c1NppZA-92oYlXakhDPYR7XMY"></script>
 <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/contactform/contactform.js') }}"></script>
 <script>
@@ -319,6 +324,29 @@
         }, 300000);
     });
 </script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXOwkYXufIFwPbsZMMbYUwezjezHUYoHY&callback=initMap"
+        async defer></script>
+
+<script>
+    var map;
+    function initMap() {
+
+        var myLatLng = {lat: 15.4748009, lng: 120.5904892};
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: myLatLng,
+            zoom: 17
+        });
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            label: 'Hungry Yard Tarlac',
+            map: map,
+            title: 'Hungry Yard Tarlac'
+        });
+    }
+
+    // initMap();
+</script>
+
 
 
 </body>
